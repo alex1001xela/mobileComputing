@@ -111,19 +111,7 @@ public class WebUntisClient implements iWebUntisClient {
 
 	@Override
 	public JSONObject getCurrentSchoolYear() {
-		JSONObject response = null;
-		try {
-			// here you must create an instance of WebUntisTask and pass your arguments in the
-			// execute(). The get() will give you the response.
-			response = new WebUntisTask().execute("getCurrentSchoolyear").get();
-
-			Log.i("RESULT", response.toString());
-		}
-		catch (Exception e){
-			Log.i("error", e.toString());
-		}
-
-		return response;
+		return getData("getCurrentSchoolyear", null);
 	}
 
 	@Override
@@ -134,6 +122,21 @@ public class WebUntisClient implements iWebUntisClient {
 	@Override
 	public JSONObject getTimetableForElement(String id, int type, Date startDate, Date endDate) {
 		return null;
+	}
+
+	private JSONObject getData(String methodName, Object[] args){
+		JSONObject response = null;
+		try {
+			WebUntisTask wut = new WebUntisTask(this, methodName, args);
+			Thread t = new Thread(wut);
+			t.start();
+			t.join();
+			response = wut.getResponse();
+		}
+		catch (Exception e){
+
+		}
+		return response;
 	}
 
 	private JSONObject httpPostJSON(URL url, JSONObject jsonData){
@@ -178,29 +181,39 @@ public class WebUntisClient implements iWebUntisClient {
 		return response;
 	}
 
-	private class WebUntisTask extends AsyncTask<Object, Void, JSONObject> {
+	private class WebUntisTask implements Runnable {
 
-		// In this function you receive the arguments you passed into execute as an array (args).
+		private String method = "";
+		private Object args;
+		private JSONObject response;
+		private WebUntisClient wuc;
+
+		WebUntisTask(WebUntisClient wuc, String method, Object args){
+			this.method = method;
+			this.args = args;
+			this.wuc = wuc;
+		}
+
 		@Override
-		protected JSONObject doInBackground(Object... args) {
+		public void run() {
 			JSONObject response = null;
 			JSONObject session;
 			JSONObject jsonData;
 			String sessionId;
 			try {
-				session = startSession();
+				session = wuc.startSession();
 				response = new JSONObject();
 				sessionId = session.getJSONObject("result").getString("sessionId");
 
 				URL url = new URL(webPath + ";jsessionid=" + sessionId + school);
 
 				jsonData = new JSONObject(standardJSONData.toString());
-				jsonData.put("method", args[0]);
+				jsonData.put("method", this.method);
 
 
 				response.put("session", sessionId);
-				response.put("response", httpPostJSON(url, jsonData));
-				endSession(sessionId);
+				response.put("response", wuc.httpPostJSON(url, jsonData));
+				wuc.endSession(sessionId);
 			}
 			catch (JSONException error){
 				Log.i("error", "JSONException");
@@ -208,9 +221,13 @@ public class WebUntisClient implements iWebUntisClient {
 			catch (MalformedURLException error){
 				Log.i("error", "MalformedURLException");
 			}
-			return response;
+			finally {
+				this.response = response;
+			}
 		}
 
+		JSONObject getResponse(){
+			return this.response;
+		}
 	}
-
 }
