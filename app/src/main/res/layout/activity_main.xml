@@ -11,14 +11,16 @@
             android:hint="Username"
             android:id="@+id/editText4"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignStart="@+id/button" />
+
         <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:id="@+id/editText5"
+            android:inputType="textPassword"
             android:layout_below="@+id/editText4"
-            android:layout_alignStart="@+id/editText4"
-            android:id="@+id/editText5" />
+            android:layout_alignStart="@+id/editText4" />
 
     <Button
         android:id="@+id/button"
