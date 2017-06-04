@@ -22,9 +22,11 @@ public class ExampleUnitTest {
 
     @Test
     public void getCurrentSchoolYear() throws Exception{
-        JSONObject result = JSONFileReader.readPersonalData();
+        JSONObject result = JSONFileReader.readPersonalData(); //hier wird die Datei gelesen
+        String username = result.getString("username");
+        String password = result.getString("password");
 
-        WebUntisClient wuc = new WebUntisClient(result.getString("username"), result.getString("password"), "HS+Reutlingen");
+        WebUntisClient wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject res = new JSONObject("{\"result\":{\"id\": 7,\"name\": \"2016/2017\",\"startDate\": 20160829,\"endDate\": 20170731}}");
         assertEquals(res.getJSONObject("result").toString(),
                 wuc.getCurrentSchoolYear().getJSONObject("response").getJSONObject("result").toString());
