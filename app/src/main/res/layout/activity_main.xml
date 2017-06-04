@@ -34,7 +34,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/capicon"
+        android:src="@drawable/logo"
         android:id="@+id/imageView"
         android:layout_marginBottom="25dp"
         android:layout_above="@+id/editText4"
