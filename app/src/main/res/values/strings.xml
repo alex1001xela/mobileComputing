@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WebUntisApp</string>
+    <string name="monday_button">1</string>
+    <string name="tuesday_button">2</string>
+    <string name="wednesday_button">3</string>
+    <string name="thursday_button">4</string>
+    <string name="friday_button">5</string>
+    <string name="saturday_button">6</string>
+    <string name="sunday_button">7</string>
+    <string name="date">Tuesday, 06.06.2017</string>
 </resources>
