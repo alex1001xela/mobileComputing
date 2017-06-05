@@ -13,18 +13,7 @@ import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 public class MainActivity extends Activity {
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
 
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +21,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Intent intent1 = new Intent(this, CalendarPresenter.class);
-        bindService(intent1, connection, Context.BIND_AUTO_CREATE);
-        Intent intent2 = new Intent(this, GlobalCalendar.class);
-        startActivity(intent2);
+        startService(intent1);
+//        Intent intent2 = new Intent(this, GlobalCalendar.class);
+//        startActivity(intent2);
     }
 
 

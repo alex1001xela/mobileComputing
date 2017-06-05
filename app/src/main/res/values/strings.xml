@@ -1,4 +1,11 @@
 <resources>
+    <string name="monday_label">Mo</string>
+    <string name="tuesday_label">Tu</string>
+    <string name="wednesday_label">We</string>
+    <string name="thursday_label">Th</string>
+    <string name="friday_label">Fr</string>
+    <string name="saturday_label">Sa</string>
+    <string name="sunday_label">Su</string>
     <string name="app_name">WebUntisApp</string>
     <string name="monday_button">1</string>
     <string name="tuesday_button">2</string>

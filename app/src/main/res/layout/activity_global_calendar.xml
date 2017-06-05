@@ -7,6 +7,82 @@
     tools:context="com.wua.mc.webuntisapp.view.GlobalCalendar">
 
     <LinearLayout
+        android:id="@+id/day_labels"
+        android:layout_width="351dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/day_buttons"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/monday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/monday_label" />
+
+        <TextView
+            android:id="@+id/tuesday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tuesday_label" />
+
+        <TextView
+            android:id="@+id/wednesday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/wednesday_label" />
+
+        <TextView
+            android:id="@+id/thursday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/thursday_label" />
+
+        <TextView
+            android:id="@+id/friday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/friday_label" />
+
+        <TextView
+            android:id="@+id/saturday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/saturday_label" />
+
+        <TextView
+            android:id="@+id/sunday_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sunday_label" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="348dp"
         android:layout_height="40dp"
         android:orientation="horizontal"
@@ -14,13 +90,11 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/linearLayout"
+        android:id="@+id/day_buttons"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/date"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="10dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <Button
             android:id="@+id/monday_button"
@@ -29,6 +103,7 @@
             android:layout_weight="1"
             android:text="@string/monday_button"
             android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
             />
 
         <Button
@@ -38,6 +113,7 @@
             android:layout_weight="1"
             android:text="@string/tuesday_button"
             android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
             />
 
         <Button
@@ -47,6 +123,7 @@
             android:layout_weight="1"
             android:text="@string/wednesday_button"
             android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
             />
 
         <Button
@@ -54,8 +131,10 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:background="@drawable/rounded_button"
             android:text="@string/thursday_button"
-            android:background="@drawable/rounded_button" />
+            style="?android:attr/borderlessButtonStyle"
+            />
 
         <Button
             android:id="@+id/friday_button"
@@ -63,7 +142,10 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/friday_button"
-            android:background="@drawable/rounded_button" />
+            android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
+            />
+
 
 
         <Button
@@ -72,7 +154,9 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/saturday_button"
-            android:background="@drawable/rounded_button" />
+            android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
 
         <Button
@@ -81,7 +165,9 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/sunday_button"
-            android:background="@drawable/rounded_button" />
+            android:background="@drawable/rounded_button"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
 
     </LinearLayout>
@@ -95,8 +181,23 @@
         android:text="@string/date"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/day_plan" />
+
+    <ScrollView
+        android:layout_width="373dp"
+        android:layout_height="413dp"
+        android:id="@+id/day_plan"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="427dp" />
+        android:layout_marginBottom="8dp">
+
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
