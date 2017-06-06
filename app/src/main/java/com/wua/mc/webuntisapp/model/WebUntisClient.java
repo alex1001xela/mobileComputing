@@ -1,7 +1,6 @@
 package com.wua.mc.webuntisapp.model;
-import android.os.AsyncTask;
-import android.util.Log;
 
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
