@@ -1,13 +1,8 @@
 package com.wua.mc.webuntisapp.presenter;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-
 import java.util.Date;
 
-public class CalendarPresenter extends Service  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
+public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     private Event[] currentShownEvents;
 
@@ -16,13 +11,6 @@ public class CalendarPresenter extends Service  implements iCalendarPresenter.iC
     private FieldOfStudy[] fieldsOfStudy;
 
     public CalendarPresenter() {
-    }
-
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     @Override

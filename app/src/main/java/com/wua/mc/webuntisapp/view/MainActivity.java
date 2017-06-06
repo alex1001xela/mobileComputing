@@ -1,15 +1,11 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 
 import com.wua.mc.webuntisapp.R;
-import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
+import com.wua.mc.webuntisapp.model.WebUntisChecker;
 
 public class MainActivity extends Activity {
 
@@ -20,10 +16,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent1 = new Intent(this, CalendarPresenter.class);
+        Intent intent1 = new Intent(this, WebUntisChecker.class);
         startService(intent1);
-//        Intent intent2 = new Intent(this, GlobalCalendar.class);
-//        startActivity(intent2);
     }
 
 
