@@ -30,7 +30,7 @@
         android:layout_marginTop="390dp"
         android:text="Add Event to my calendar"
         android:textColor="@android:color/background_light"
-        android:background="@drawable/button_color"
+        android:background="#424647"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -40,7 +40,7 @@
         android:layout_marginTop="450dp"
         android:text="Add Course to my calendar"
         android:textColor="@android:color/background_light"
-        android:background="@drawable/button_color"
+        android:background="#424647"
         android:layout_centerHorizontal="true" />
 
 

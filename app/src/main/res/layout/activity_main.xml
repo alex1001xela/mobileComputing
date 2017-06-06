@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wua.mc.webuntisapp.view.MainActivity">
+    tools:context="com.wua.mc.webuntisapp.view.MainActivity"
+    android:background="@drawable/background">
         <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -14,7 +15,7 @@
             android:layout_alignStart="@+id/loginButton"
             android:drawableLeft="@drawable/ic_username"
             android:drawablePadding="7dp"
-            android:drawableTint="#4d0000"/>
+            android:drawableTint="#373D40"/>
 
         <EditText
             android:layout_width="300dp"
@@ -26,7 +27,7 @@
             android:layout_alignStart="@+id/usernameField"
             android:drawableLeft="@drawable/ic_password"
             android:drawablePadding="7dp"
-            android:drawableTint="#4d0000"/>
+            android:drawableTint="#373D40"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -35,17 +36,17 @@
         android:layout_below="@+id/passwordField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@drawable/button_color"
+        android:background="#424647"
         android:text="Login"
         android:textColor="@android:color/background_light" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/usernameField"
+        android:layout_width="190dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/logo" />
 
 
