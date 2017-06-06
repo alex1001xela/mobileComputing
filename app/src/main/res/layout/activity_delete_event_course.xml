@@ -24,23 +24,23 @@
         android:text="Course"/>
 
     <Button
-        android:id="@+id/buttonAddEvent"
+        android:id="@+id/buttonDeleteCourse"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="390dp"
-        android:text="Add Event to my calendar"
+        android:text="Delete Course"
         android:textColor="@android:color/background_light"
-        android:background="#424647"
+        android:background="@drawable/button_color"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/buttonAddCourse"
+        android:id="@+id/buttonDeleteEvent"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="450dp"
-        android:text="Add Course to my calendar"
+        android:text="Delete Event"
         android:textColor="@android:color/background_light"
-        android:background="#424647"
+        android:background="@drawable/button_color"
         android:layout_centerHorizontal="true" />
 
 
