@@ -1,6 +1,6 @@
 package com.wua.mc.webuntisapp.presenter;
 
-enum EventType {
+public enum EventType {
 	PERSONAL,
 	DEADLINE
 }
