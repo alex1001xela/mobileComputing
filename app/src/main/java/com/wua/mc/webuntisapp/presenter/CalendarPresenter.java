@@ -1,9 +1,14 @@
 package com.wua.mc.webuntisapp.presenter;
 
+import android.util.Log;
+
+import com.wua.mc.webuntisapp.model.WebUntisClient;
+
 import java.util.Date;
 
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
+    WebUntisClient wuc;
     private Event[] currentShownEvents;
 
     private Filter[] filters;
@@ -74,8 +79,19 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void login(String username, String password) {
+    public boolean login(String username, String password) {
+        //ToDo Change user:pass to use given one
+        //username = "Usercampusap2";
+        //password = "konst6app6";
+        wuc = new WebUntisClient(username, password, "HS+Reutlingen");
 
+        Log.v("login", wuc.startSession().toString());
+        return true;
+    }
+
+    @Override
+    public boolean areLoginDataValid(String username, String password){
+        return true;
     }
 
     @Override
