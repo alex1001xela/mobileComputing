@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/day_labels"
-        android:layout_width="351dp"
+        android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -83,7 +83,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="348dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:layout_marginRight="8dp"
@@ -188,16 +188,14 @@
 
     <ScrollView
         android:id="@+id/day_plan"
-        android:layout_width="373dp"
-        android:layout_height="403dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="1dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -205,7 +203,8 @@
 
             <TextView
                 android:id="@+id/hour00"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -214,28 +213,44 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:layout_width="300dp"
+                android:id="@+id/hour00Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
                 android:layout_height="1dp"
                 android:background="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="16dp"
                 app:layout_constraintLeft_toRightOf="@+id/hour00"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="2dp"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/hour01"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour01"
                 android:layout_marginTop="30dp"
                 app:layout_constraintTop_toBottomOf="@+id/hour00"
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
+            
+            <View
+                android:id="@+id/hour01Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour00Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour01"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/hour02"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/hour02"
@@ -243,9 +258,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour02Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour01Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour02"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour03"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/hour03"
@@ -253,9 +281,22 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/hour02" />
 
+            <View
+                android:id="@+id/hour03Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour02Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour03"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour04"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour04"
                 android:layout_marginTop="30dp"
@@ -263,9 +304,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour04Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour03Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour04"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour05"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/hour05"
@@ -273,9 +327,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour05Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour04Line"
+                android:layout_marginTop="46dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour05"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour06"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/hour06"
@@ -283,9 +350,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour06Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour05Line"
+                android:layout_marginTop="46dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour06"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour07"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour07"
                 android:layout_marginTop="30dp"
@@ -293,9 +373,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour07Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour06Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour07"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour08"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour08"
                 android:layout_marginTop="30dp"
@@ -303,9 +396,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour08Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour07Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour08"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour09"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour09"
                 android:layout_marginTop="30dp"
@@ -313,9 +419,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour09Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour08Line"
+                android:layout_marginTop="47dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour09"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour10"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour10"
                 android:layout_marginTop="30dp"
@@ -323,9 +442,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour10Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour09Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour10"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour11"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour11"
                 android:layout_marginTop="30dp"
@@ -333,9 +465,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour11Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour10Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour11"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour12"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour12"
                 android:layout_marginTop="30dp"
@@ -343,9 +488,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour12Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour11Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour12"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour13"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour13"
                 android:layout_marginTop="30dp"
@@ -353,9 +511,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour13Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour12Line"
+                android:layout_marginTop="47dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour13"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour14"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour14"
                 android:layout_marginTop="30dp"
@@ -363,9 +534,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour14Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour13Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour14"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour15"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour15"
                 android:layout_marginTop="30dp"
@@ -373,9 +557,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour15Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour14Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour15"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour16"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour16"
                 android:layout_marginTop="30dp"
@@ -383,9 +580,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour16Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour15Line"
+                android:layout_marginTop="47dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour16"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour17"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour17"
                 android:layout_marginTop="30dp"
@@ -393,9 +603,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour17Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour16Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour17"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour18"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour18"
                 android:layout_marginTop="30dp"
@@ -403,9 +626,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour18Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour17Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour18"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour19"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour19"
                 android:layout_marginTop="30dp"
@@ -413,9 +649,22 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour19Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour18Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour19"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour20"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour20"
                 android:layout_marginTop="30dp"
@@ -423,20 +672,45 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour20Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour19Line"
+                android:layout_marginTop="47dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour20"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour21"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour21"
                 android:layout_marginTop="30dp"
                 app:layout_constraintTop_toBottomOf="@+id/hour20"
                 android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <View
+                android:id="@+id/hour21Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour20Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour21"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/hour22"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour22"
                 android:layout_marginTop="30dp"
@@ -444,15 +718,66 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <View
+                android:id="@+id/hour22Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour21Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour22"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <TextView
                 android:id="@+id/hour23"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:text="@string/hour23"
                 android:layout_marginTop="30dp"
                 app:layout_constraintTop_toBottomOf="@+id/hour22"
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
+
+            <View
+                android:id="@+id/hour23Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour22Line"
+                android:layout_marginTop="45dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour23"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/hour24"
+                android:layout_width="0dp"                 
+                android:layout_weight=".10"
+                android:layout_height="wrap_content"
+                android:text="@string/hour24"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/hour23"
+                android:layout_marginStart="8dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <View
+                android:id="@+id/hour24Line"
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/hour23Line"
+                android:layout_marginTop="47dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintLeft_toRightOf="@+id/hour24"
+                android:layout_marginStart="2dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

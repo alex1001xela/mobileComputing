@@ -39,4 +39,5 @@
     <string name="hour21">21:00</string>
     <string name="hour22">22:00</string>
     <string name="hour23">23:00</string>
+    <string name="hour24">00:00</string>
 </resources>
