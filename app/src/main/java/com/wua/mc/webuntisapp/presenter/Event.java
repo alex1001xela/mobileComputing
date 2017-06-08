@@ -1,24 +1,52 @@
 package com.wua.mc.webuntisapp.presenter;
-import java.util.*;
+
+import java.util.Date;
 
 public class Event {
 
-	public Event() {
+	private String id;
+	private String details;
+	private String name;
+	private Date date;
+	private long startTime;
+	private long endTime;
+	private EventType eventType;
+
+	public Event(String id, String details, String name, Date date, long startTime, long endTime, EventType eventType) {
+		this.id = id;
+		this.details = details;
+		this.name = name;
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.eventType = eventType;
 	}
 
-	private String id;
+	public String getId() {
+		return id;
+	}
 
-	private String details;
+	public String getDetails() {
+		return details;
+	}
 
-	private String name;
+	public String getName() {
+		return name;
+	}
 
-	private Date date;
+	public Date getDate() {
+		return date;
+	}
 
-	private long startTime;
+	public long getStartTime() {
+		return startTime;
+	}
 
-	private long endTime;
+	public long getEndTime() {
+		return endTime;
+	}
 
-	public EventType eventType;
-
-
+	public EventType getEventType() {
+		return eventType;
+	}
 }

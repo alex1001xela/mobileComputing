@@ -46,7 +46,9 @@
         <service
             android:name=".model.WebUntisChecker"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".view.Calendar"></activity>
     </application>
 
 </manifest>
