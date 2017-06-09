@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.Event;
 
-public class PersonalCalendar extends Calendar {
+public class PersonalCalendarView extends CalendarView {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

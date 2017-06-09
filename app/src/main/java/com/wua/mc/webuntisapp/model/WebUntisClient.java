@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.model;
 
 import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,34 +35,12 @@ public class WebUntisClient implements iWebUntisClient {
 			standardJSONData.put("jsonrpc", "2.0");
 			standardJSONData.put("params", new JSONObject());
 		} catch (JSONException error) {
-			Log.i("error", "JSONException");
+			Log.i("JSONException", error.toString());
 		}
 	}
 
 	@Override
-	public JSONObject startSession(){
-		URL url = null;
-		JSONObject authenticationData = null;
-		try {
-			authenticationData = new JSONObject(standardJSONData.toString());
-			JSONObject params = authenticationData.getJSONObject("params");
-			params.put("user", username);
-			params.put("password", password);
-			params.put("client", "CLIENT");
-
-			authenticationData.put("method", "authenticate");
-			authenticationData.put("params", params);
-
-			url = new URL(webPath + school);
-		}
-		catch (MalformedURLException error){
-			Log.i("error", "MalformedURLException");
-		}
-		catch (JSONException error){
-			Log.i("error", "JSONException");
-		}
-		return httpPostJSON(url, authenticationData);
-	}
+	public JSONObject startSession(){return getData("authenticate", null);}
 
 	@Override
 	public JSONObject endSession(String sessionID){
@@ -133,7 +112,7 @@ public class WebUntisClient implements iWebUntisClient {
 			response = wut.getResponse();
 		}
 		catch (Exception e){
-
+			Log.i("Exception", e.toString());
 		}
 		return response;
 	}
@@ -163,9 +142,9 @@ public class WebUntisClient implements iWebUntisClient {
 			}
 			br.close();
 		} catch (SocketTimeoutException error) {
-			Log.i("error", "SocketTimeoutException");
+			Log.i("SocketTimeoutException", error.toString());
 		} catch (IOException error) {
-			Log.i("error", "IOException");
+			Log.i("IOException", error.toString());
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -173,7 +152,7 @@ public class WebUntisClient implements iWebUntisClient {
 					response = new JSONObject(jsonString);
 				}
 				catch(JSONException error){
-					Log.i("error", "JSONException");
+					Log.i("JSONException", error.toString());
 				}
 			}
 		}
@@ -200,25 +179,29 @@ public class WebUntisClient implements iWebUntisClient {
 			JSONObject jsonData;
 			String sessionId;
 			try {
-				session = wuc.startSession();
-				response = new JSONObject();
+				session = wuc.getSession();
 				sessionId = session.getJSONObject("result").getString("sessionId");
 
-				URL url = new URL(webPath + ";jsessionid=" + sessionId + school);
+				if(this.method.equals("authenticate")){
+					response = session;
+					wuc.endSession(sessionId);
+				}
+				else{
+					URL url = new URL(webPath + ";jsessionid=" + sessionId + school);
+					response = new JSONObject();
+					jsonData = new JSONObject(standardJSONData.toString());
+					jsonData.put("method", this.method);
 
-				jsonData = new JSONObject(standardJSONData.toString());
-				jsonData.put("method", this.method);
-
-
-				response.put("session", sessionId);
-				response.put("response", wuc.httpPostJSON(url, jsonData));
-				wuc.endSession(sessionId);
+					response.put("session", sessionId);
+					response.put("response", wuc.httpPostJSON(url, jsonData));
+					wuc.endSession(sessionId);
+				}
 			}
 			catch (JSONException error){
-				Log.i("error", "JSONException");
+				Log.i("JSONException", error.toString());
 			}
 			catch (MalformedURLException error){
-				Log.i("error", "MalformedURLException");
+				Log.i("MalformedURLException", error.toString());
 			}
 			finally {
 				this.response = response;
@@ -228,5 +211,29 @@ public class WebUntisClient implements iWebUntisClient {
 		JSONObject getResponse(){
 			return this.response;
 		}
+	}
+
+	private JSONObject getSession(){
+		URL url = null;
+		JSONObject authenticationData = null;
+		try {
+			authenticationData = new JSONObject(standardJSONData.toString());
+			JSONObject params = authenticationData.getJSONObject("params");
+			params.put("user", username);
+			params.put("password", password);
+			params.put("client", "CLIENT");
+
+			authenticationData.put("method", "authenticate");
+			authenticationData.put("params", params);
+
+			url = new URL(webPath + school);
+		}
+		catch (MalformedURLException error){
+			Log.i("MalformedURLException", error.toString());
+		}
+		catch (JSONException error){
+			Log.i("JSONException", error.toString());
+		}
+		return httpPostJSON(url, authenticationData);
 	}
 }

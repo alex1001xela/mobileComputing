@@ -18,6 +18,9 @@ public class MainActivity extends Activity {
 
         Intent intent1 = new Intent(this, WebUntisChecker.class);
         startService(intent1);
+
+        // Intent intent2 = new Intent(this, GlobalCalendarView.class);
+        // startActivity(intent2);
     }
 
 

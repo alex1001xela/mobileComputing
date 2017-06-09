@@ -16,24 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.GlobalCalendar">
+        <activity android:name=".view.GlobalCalendarView">
             <intent-filter>
                 <action android:name="com.wua.mc.webuntisapp.view.GlobalCalendar" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.PersonalCalendar">
+        <activity android:name=".view.PersonalCalendarView">
             <intent-filter>
                 <action android:name="com.wua.mc.webuntisapp.view.PersonalCalendar" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".presenter.CalendarPresenter"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.wua.mc.webuntisapp.presenter.CalendarPresenter" />
-            </intent-filter>
-        </service>
 
         <activity android:name=".view.MainActivity">
             <intent-filter>
@@ -48,7 +40,7 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".view.Calendar"></activity>
+
     </application>
 
 </manifest>

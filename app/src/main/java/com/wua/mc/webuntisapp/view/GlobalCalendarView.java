@@ -5,17 +5,12 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.presenter.Event;
-import com.wua.mc.webuntisapp.presenter.EventType;
 
-import java.util.Date;
-
-public class GlobalCalendar extends Calendar {
+public class GlobalCalendarView extends CalendarView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_global_calendar);
-        createEventBox(new Event("1", "Blablabla", "Important Event", new Date(), 10, 20, EventType.DEADLINE));
     }
 
     @Override

@@ -7,16 +7,14 @@ public class Event {
 	private String id;
 	private String details;
 	private String name;
-	private Date date;
-	private long startTime;
-	private long endTime;
+	private Date startTime;
+	private Date endTime;
 	private EventType eventType;
 
-	public Event(String id, String details, String name, Date date, long startTime, long endTime, EventType eventType) {
+	public Event(String id, String details, String name, Date startTime, Date endTime, EventType eventType) {
 		this.id = id;
 		this.details = details;
 		this.name = name;
-		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.eventType = eventType;
@@ -34,15 +32,11 @@ public class Event {
 		return name;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public long getStartTime() {
+	public Date getStartTime() {
 		return startTime;
 	}
 
-	public long getEndTime() {
+	public Date getEndTime() {
 		return endTime;
 	}
 
