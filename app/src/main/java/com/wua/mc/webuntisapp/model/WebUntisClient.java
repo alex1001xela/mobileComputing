@@ -53,12 +53,14 @@ public class WebUntisClient implements iWebUntisClient {
 			authenticationData.put("params", params);
 
 			url = new URL(webPath + school);
+
 		}
 		catch (MalformedURLException error){
 			Log.i("error", "MalformedURLException");
 		}
 		catch (JSONException error){
 			Log.i("error", "JSONException");
+
 		}
 		return httpPostJSON(url, authenticationData);
 	}

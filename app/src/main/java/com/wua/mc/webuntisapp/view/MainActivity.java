@@ -32,10 +32,18 @@ public class MainActivity extends Activity {
                 try {
                     EditText username   = (EditText)findViewById(R.id.usernameField);
                     EditText password   = (EditText)findViewById(R.id.passwordField);
+
+                    String u= username.getText().toString();
+                    String p = password.getText().toString();
+                    Log.v(u,p );
+
+
                     cp.login(username.getText().toString(), password.getText().toString());
-                    Log.v("statusLogin","Login Sucessfull");
+                    Log.v("statusLogin","Login Successfull");
                 }catch (Exception e){
                     Log.v("statusLogin","Login Failed");
+
+
                 }
             }
         });

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
@@ -80,12 +82,12 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public boolean login(String username, String password) {
-        //ToDo Change user:pass to use given one
-        //username = "Usercampusap2";
-        //password = "konst6app6";
-        wuc = new WebUntisClient(username, password, "HS+Reutlingen");
 
-        Log.v("login", wuc.startSession().toString());
+        wuc = new WebUntisClient(username, password, "HS+Reutlingen");
+        JSONObject jsonObject = wuc.startSession();
+        Log.v("login", jsonObject.toString());
+        //ToDO Check the content of the json object and validate
+        //Login failed : - {"id":"ID","jsonrpc":"2.0","error":{"code":-8504,"message":"bad credentials"}}
         return true;
     }
 
