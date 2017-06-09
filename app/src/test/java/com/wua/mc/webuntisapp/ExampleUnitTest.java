@@ -1,6 +1,9 @@
 package com.wua.mc.webuntisapp;
 
+import android.util.Log;
+
 import com.wua.mc.webuntisapp.model.WebUntisClient;
+import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -32,5 +35,8 @@ public class ExampleUnitTest {
         JSONObject res = new JSONObject("{\"result\":{\"id\": 7,\"name\": \"2016/2017\",\"startDate\": 20160829,\"endDate\": 20170731}}");
         assertEquals(res.getJSONObject("result").toString(),
                 wuc.getCurrentSchoolYear().getJSONObject("response").getJSONObject("result").toString());
+
     }
+
+
 }

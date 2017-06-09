@@ -15,7 +15,8 @@
             android:layout_alignStart="@+id/loginButton"
             android:drawableLeft="@drawable/ic_username"
             android:drawablePadding="7dp"
-            android:drawableTint="#373D40"/>
+            android:drawableTint="#373D40"
+            android:maxLines="1"/>
 
         <EditText
             android:layout_width="300dp"
@@ -27,7 +28,8 @@
             android:layout_alignStart="@+id/usernameField"
             android:drawableLeft="@drawable/ic_password"
             android:drawablePadding="7dp"
-            android:drawableTint="#373D40"/>
+            android:drawableTint="#373D40"
+            android:maxLines="1"/>
 
     <Button
         android:id="@+id/loginButton"

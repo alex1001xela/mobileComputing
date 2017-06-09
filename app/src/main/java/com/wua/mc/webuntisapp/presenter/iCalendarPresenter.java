@@ -31,7 +31,7 @@ interface iCalendarPresenter {
 
         void exportEventICS(String path, String eventID);
 
-        void login(String username, String password);
+        boolean login(String username, String password);
 
         void logout();
 
@@ -50,6 +50,7 @@ interface iCalendarPresenter {
 
         Filter[] getFilters();
 
+        boolean areLoginDataValid(String username, String password);
     }
 
 
