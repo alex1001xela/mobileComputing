@@ -5,6 +5,7 @@ import android.util.Log;
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
@@ -46,8 +47,18 @@ public class ExampleUnitTest {
 
         WebUntisClient wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject json= wuc.startSession();
-
         System.out.println(json.toString());
+        try {
+
+            String sessionID = json.getJSONObject("result").getString("sessionId");
+            System.out.println("Session ID : "+sessionID);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
 }

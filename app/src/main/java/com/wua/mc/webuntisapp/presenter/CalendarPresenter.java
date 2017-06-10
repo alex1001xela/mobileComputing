@@ -11,6 +11,7 @@ import java.util.Date;
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     WebUntisClient wuc;
+    static String sessionID;
     private Event[] currentShownEvents;
 
     private Filter[] filters;
@@ -86,7 +87,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject jsonObject = wuc.startSession();
         Log.v("login", jsonObject.toString());
+        try {
 
+            sessionID = jsonObject.getJSONObject("result").getString("sessionId");
+
+        }catch (Exception e){
+            Log.e("sessionID", e.toString());
+        }
 
 
     }
@@ -98,7 +105,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void logout() {
-
+        wuc.endSession(sessionID);
     }
 
     @Override
