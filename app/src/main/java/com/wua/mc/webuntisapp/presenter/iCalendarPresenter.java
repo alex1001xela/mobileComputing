@@ -31,7 +31,7 @@ interface iCalendarPresenter {
 
         void exportEventICS(String path, String eventID);
 
-        boolean login(String username, String password);
+        void login(String username, String password);
 
         void logout();
 

@@ -81,14 +81,14 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public void login(String username, String password) {
 
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject jsonObject = wuc.startSession();
         Log.v("login", jsonObject.toString());
-        //ToDO Check the content of the json object and validate
-        //Login failed : - {"id":"ID","jsonrpc":"2.0","error":{"code":-8504,"message":"bad credentials"}}
-        return true;
+
+
+
     }
 
     @Override
