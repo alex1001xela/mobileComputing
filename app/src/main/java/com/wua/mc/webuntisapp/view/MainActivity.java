@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
+import static com.wua.mc.webuntisapp.R.layout.activity_add_color;
+import static com.wua.mc.webuntisapp.R.layout.activity_add_event_course;
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
@@ -47,7 +50,14 @@ public class MainActivity extends Activity {
                         dbmgr.loginDB(username.getText().toString(), password.getText().toString());
 
                         Log.v("statusLogin","Login Successfull");
-                        setContentView(activity_choose_fieldofstudy);
+                        setContentView(activity_add_color);
+                        Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
+                        buttonSelectColor.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view){
+                                setContentView(activity_add_event_course);
+                            }
+                        });
                         firstLogin=false;
                     }catch (Exception e){
                         Log.v("statusLogin","Login Failed");
