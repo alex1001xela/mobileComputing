@@ -39,4 +39,15 @@ public class ExampleUnitTest {
     }
 
 
+    @Test
+    public void LoginTest(){
+        String username = "Usercampusap2";//result.getString("username");
+        String password = "konst6app6";//result.getString("password");
+
+        WebUntisClient wuc = new WebUntisClient(username, password, "HS+Reutlingen");
+        JSONObject json= wuc.startSession();
+
+        System.out.println(json.toString());
+    }
+
 }
