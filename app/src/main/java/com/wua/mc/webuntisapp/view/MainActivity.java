@@ -21,7 +21,7 @@ import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 public class MainActivity extends Activity {
 
     CalendarPresenter cp = new CalendarPresenter();
-    static boolean firstLogin=false;
+    static boolean firstLogin=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
                         cp.login(username.getText().toString(), password.getText().toString());
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
+                        firstLogin=false;
                     }catch (Exception e){
                         Log.v("statusLogin","Login Failed");
                         Toast errorToast = Toast.makeText(getApplication() , "Login data wrong", Toast.LENGTH_SHORT);
