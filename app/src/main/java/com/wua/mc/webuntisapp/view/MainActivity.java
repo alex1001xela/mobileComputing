@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
+import com.wua.mc.webuntisapp.model.DatabaseManager;
+import com.wua.mc.webuntisapp.model.WebUntisChecker;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
@@ -18,6 +20,8 @@ public class MainActivity extends Activity {
 
     CalendarPresenter cp = new CalendarPresenter();
     static boolean firstLogin=true;
+    DatabaseManager dbmgr = new DatabaseManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +45,14 @@ public class MainActivity extends Activity {
                         Log.v(u,p );
 
                         cp.login(username.getText().toString(), password.getText().toString());
+                        dbmgr.loginDB(username.getText().toString(), password.getText().toString());
+
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
                         firstLogin=false;
                     }catch (Exception e){
                         Log.v("statusLogin","Login Failed");
-                        Toast errorToast = Toast.makeText(getApplication() , "Login data wrong", Toast.LENGTH_SHORT);
+                        Toast errorToast = Toast.makeText(getApplication() , "Login failed", Toast.LENGTH_SHORT);
                         errorToast.show();
 
                     }

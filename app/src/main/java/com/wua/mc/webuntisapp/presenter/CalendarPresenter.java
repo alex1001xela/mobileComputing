@@ -11,6 +11,7 @@ import java.util.Date;
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     WebUntisClient wuc;
+    static String sessionID;
     private Event[] currentShownEvents;
 
     private Filter[] filters;
@@ -81,14 +82,20 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public void login(String username, String password) {
 
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject jsonObject = wuc.startSession();
         Log.v("login", jsonObject.toString());
-        //ToDO Check the content of the json object and validate
-        //Login failed : - {"id":"ID","jsonrpc":"2.0","error":{"code":-8504,"message":"bad credentials"}}
-        return true;
+        try {
+
+            sessionID = jsonObject.getJSONObject("result").getString("sessionId");
+
+        }catch (Exception e){
+            Log.e("sessionID", e.toString());
+        }
+
+
     }
 
     @Override
@@ -98,7 +105,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void logout() {
-
+        wuc.endSession(sessionID);
     }
 
     @Override
