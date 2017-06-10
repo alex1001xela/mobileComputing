@@ -21,6 +21,6 @@ public class GlobalCalendarView extends CalendarView {
     @Override
     public void showToast(String text) {
         Context context = getApplicationContext();
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }

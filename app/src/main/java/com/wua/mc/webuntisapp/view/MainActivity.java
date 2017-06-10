@@ -1,18 +1,14 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
-import com.wua.mc.webuntisapp.model.WebUntisChecker;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
@@ -27,9 +23,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent1 = new Intent(this, WebUntisChecker.class);
+//        Intent intent1 = new Intent(this, GlobalCalendarView.class);
+//        startActivity(intent1);
 
-        startService(intent1);
 
         if (firstLogin){
             Button loginButton = (Button)this.findViewById(R.id.loginButton);
@@ -60,8 +56,6 @@ public class MainActivity extends Activity {
         }else{
             setContentView(activity_personal_calendar);
         }
-
-
 
 
     }

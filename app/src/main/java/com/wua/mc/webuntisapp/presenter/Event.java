@@ -11,10 +11,10 @@ public class Event {
 	private Date endTime;
 	private EventType eventType;
 
-	public Event(String id, String details, String name, Date startTime, Date endTime, EventType eventType) {
+	public Event(String id, String name, String details, Date startTime, Date endTime, EventType eventType) {
 		this.id = id;
-		this.details = details;
 		this.name = name;
+		this.details = details;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.eventType = eventType;
@@ -24,12 +24,12 @@ public class Event {
 		return id;
 	}
 
-	public String getDetails() {
-		return details;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public String getDetails() {
+		return details;
 	}
 
 	public Date getStartTime() {
@@ -42,5 +42,10 @@ public class Event {
 
 	public EventType getEventType() {
 		return eventType;
+	}
+
+	@Override
+	public String toString(){
+		return this.name + " " + this.details;
 	}
 }
