@@ -12,16 +12,149 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:text="Event"/>
     <TextView
         android:id="@+id/textCourse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:layout_centerHorizontal="true"
         android:text="Course"/>
+
+    <Button
+        android:id="@+id/colorBlue"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/blue"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorPurple"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/purple"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorPink"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/pink"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorOrange"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/orange"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+
+    <Button
+        android:id="@+id/colorRed"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/red"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorYellow"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/yellow"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorLightgreen"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/lightgreen"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorGreen"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/green"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorAqua"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/aqua"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+    <Button
+        android:id="@+id/colorOcean"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/ocean"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_height="30dp"
+        tools:layout_width="30dp" />
+
+
+    <Button
+        android:id="@+id/buttonConfirmColor"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/button_color"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Add this color"
+        android:textColor="@android:color/background_light" />
 
     <Button
         android:id="@+id/buttonAddEvent"
@@ -30,7 +163,7 @@
         android:layout_marginTop="390dp"
         android:text="Add Event to my calendar"
         android:textColor="@android:color/background_light"
-        android:background="#424647"
+        android:background="@drawable/button_color"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -40,7 +173,7 @@
         android:layout_marginTop="450dp"
         android:text="Add Course to my calendar"
         android:textColor="@android:color/background_light"
-        android:background="#424647"
+        android:background="@drawable/button_color"
         android:layout_centerHorizontal="true" />
 
 
