@@ -36,6 +36,5 @@ public class SelectColorActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
