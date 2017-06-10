@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
-import com.wua.mc.webuntisapp.model.WebUntisChecker;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
