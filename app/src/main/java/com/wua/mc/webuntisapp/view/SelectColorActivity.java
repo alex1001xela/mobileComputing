@@ -21,7 +21,7 @@ public class SelectColorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_add_event_course);
 
         Intent intent1 = new Intent(this, CalendarPresenter.class);
         startService(intent1);
@@ -36,6 +36,5 @@ public class SelectColorActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
