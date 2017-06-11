@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
@@ -50,14 +51,14 @@ public class MainActivity extends Activity {
                         dbmgr.loginDB(username.getText().toString(), password.getText().toString());
 
                         Log.v("statusLogin","Login Successfull");
-                        setContentView(activity_choose_fieldofstudy);
+                        setContentView(activity_add_color);
 						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
                                 setContentView(activity_add_event_course);
 								
-                                event = (TextView) findViewById(R.id.textEvent);
+                                event = (TextView) findViewById(R.id.textCourse);
                                 event.setBackgroundResource(R.color.white);
                             }
                         });
