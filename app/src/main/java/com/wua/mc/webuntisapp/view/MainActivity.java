@@ -2,6 +2,7 @@ package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +22,7 @@ import static com.wua.mc.webuntisapp.R.layout.activity_add_event_course;
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     CalendarPresenter cp = new CalendarPresenter();
     static boolean firstLogin=true;
