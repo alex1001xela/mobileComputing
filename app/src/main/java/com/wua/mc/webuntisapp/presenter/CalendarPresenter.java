@@ -85,7 +85,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void login(String username, String password) {
 
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
-        JSONObject jsonObject = wuc.startSession();
+        JSONObject jsonObject = wuc.authenticate();
         Log.v("login", jsonObject.toString());
         try {
 
@@ -105,7 +105,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void logout() {
-        wuc.endSession(sessionID);
+
     }
 
     @Override

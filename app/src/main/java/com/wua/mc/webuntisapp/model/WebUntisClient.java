@@ -13,7 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.Date;
 
 public class WebUntisClient implements iWebUntisClient {
 
@@ -23,6 +22,7 @@ public class WebUntisClient implements iWebUntisClient {
 
 	private final String webPath = "https://poly.webuntis.com/WebUntis/jsonrpc.do";
 	private JSONObject standardJSONData;
+	private JSONObject emptyParamsJSON;
 
 	public WebUntisClient(String username, String password, String school) {
 		this.username = username;
@@ -31,81 +31,89 @@ public class WebUntisClient implements iWebUntisClient {
 
 		try {
 			standardJSONData = new JSONObject();
+			emptyParamsJSON = new JSONObject();
+
 			standardJSONData.put("id", "ID");
 			standardJSONData.put("jsonrpc", "2.0");
-			standardJSONData.put("params", new JSONObject());
 		} catch (JSONException error) {
 			Log.i("JSONException", error.toString());
 		}
 	}
 
 	@Override
-	public JSONObject startSession(){return getData("authenticate", null);}
-
-	@Override
-	public JSONObject endSession(String sessionID){
-		return null;
-	}
+	public JSONObject authenticate(){return getData("authenticate", emptyParamsJSON);}
 
 	@Override
 	public JSONObject getTeachers() {
-		return null;
+		return getData("getTeachers", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getClasses() {
-		return null;
+		return getData("getKlassen", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getCourses() {
-		return null;
+		return getData("getSubjects", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getRooms() {
-		return null;
+		return getData("getRooms", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getFilters() {
-		return null;
+		return getData("getDepartments", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getHolidays() {
-		return null;
+		return getData("getHolidays", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getTimegridUnits() {
-		return null;
+		return getData("getTimegridUnits", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getStatusInformation() {
-		return null;
+		return getData("getStatusData", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getCurrentSchoolYear() {
-		return getData("getCurrentSchoolyear", null);
+		return getData("getCurrentSchoolyear", emptyParamsJSON);
 	}
 
 	@Override
 	public JSONObject getLatestImportTime() {
-		return null;
+		return getData("getLatestImportTime", emptyParamsJSON);
 	}
 
 	@Override
-	public JSONObject getTimetableForElement(String id, int type, Date startDate, Date endDate) {
-		return null;
+	public JSONObject getTimetableForElement(String id, String type, String startDate, String endDate) {
+		JSONObject params = new JSONObject();
+
+		try {
+			params.put("id", id);
+			params.put("type", type);
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
+		}
+		catch (JSONException e){
+			Log.i("JSONException", e.toString());
+		}
+
+		return getData("getTimetable", params);
 	}
 
-	private JSONObject getData(String methodName, Object[] args){
+	private JSONObject getData(String methodName, JSONObject params){
 		JSONObject response = null;
 		try {
-			WebUntisTask wut = new WebUntisTask(this, methodName, args);
+			WebUntisTask wut = new WebUntisTask(this, methodName, params);
 			Thread t = new Thread(wut);
 			t.start();
 			t.join();
@@ -162,13 +170,13 @@ public class WebUntisClient implements iWebUntisClient {
 	private class WebUntisTask implements Runnable {
 
 		private String method = "";
-		private Object args;
+		private JSONObject params;
 		private JSONObject response;
 		private WebUntisClient wuc;
 
-		WebUntisTask(WebUntisClient wuc, String method, Object args){
+		WebUntisTask(WebUntisClient wuc, String method, JSONObject params){
 			this.method = method;
-			this.args = args;
+			this.params = params;
 			this.wuc = wuc;
 		}
 
@@ -179,7 +187,7 @@ public class WebUntisClient implements iWebUntisClient {
 			JSONObject jsonData;
 			String sessionId;
 			try {
-				session = wuc.getSession();
+				session = wuc.startSession();
 				sessionId = session.getJSONObject("result").getString("sessionId");
 
 				if(this.method.equals("authenticate")){
@@ -191,6 +199,7 @@ public class WebUntisClient implements iWebUntisClient {
 					response = new JSONObject();
 					jsonData = new JSONObject(standardJSONData.toString());
 					jsonData.put("method", this.method);
+					jsonData.put("params", params);
 
 					response.put("session", sessionId);
 					response.put("response", wuc.httpPostJSON(url, jsonData));
@@ -213,12 +222,12 @@ public class WebUntisClient implements iWebUntisClient {
 		}
 	}
 
-	private JSONObject getSession(){
+	private JSONObject startSession(){
 		URL url = null;
 		JSONObject authenticationData = null;
 		try {
 			authenticationData = new JSONObject(standardJSONData.toString());
-			JSONObject params = authenticationData.getJSONObject("params");
+			JSONObject params = new JSONObject();
 			params.put("user", username);
 			params.put("password", password);
 			params.put("client", "CLIENT");
@@ -235,5 +244,22 @@ public class WebUntisClient implements iWebUntisClient {
 			Log.i("JSONException", error.toString());
 		}
 		return httpPostJSON(url, authenticationData);
+	}
+
+	private JSONObject endSession(String sessionID){
+		JSONObject jsonData = null;
+		URL url = null;
+		try {
+			jsonData = new JSONObject(standardJSONData.toString());
+			jsonData.put("method", "logout");
+			url = new URL(webPath + ";jsessionid=" + sessionID + school);
+		}
+		catch (JSONException e){
+			Log.i("JSONException", e.toString());
+		}
+		catch (MalformedURLException e){
+			Log.i("MalformedURLException", e.toString());
+		}
+		return httpPostJSON(url, jsonData);
 	}
 }

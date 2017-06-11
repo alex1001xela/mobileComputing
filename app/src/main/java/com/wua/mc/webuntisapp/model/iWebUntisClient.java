@@ -1,13 +1,10 @@
 package com.wua.mc.webuntisapp.model;
-import org.json.JSONObject;
 
-import java.util.*;
+import org.json.JSONObject;
 
 interface iWebUntisClient {
 
-	JSONObject startSession();
-
-	JSONObject endSession(String sessionID);
+	JSONObject authenticate(); //todo classdiagram
 
 	JSONObject getTeachers();
 
@@ -29,6 +26,6 @@ interface iWebUntisClient {
 
 	JSONObject getLatestImportTime();
 
-	JSONObject getTimetableForElement(String id, int type, Date startDate, Date endDate);
+	JSONObject getTimetableForElement(String id, String type, String startDate, String endDate); //todo classdiagram
 
 }

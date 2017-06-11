@@ -1,15 +1,16 @@
 package com.wua.mc.webuntisapp;
 
-import android.util.Log;
-
 import com.wua.mc.webuntisapp.model.WebUntisClient;
-import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -46,7 +47,7 @@ public class ExampleUnitTest {
         String password = "konst6app6";//result.getString("password");
 
         WebUntisClient wuc = new WebUntisClient(username, password, "HS+Reutlingen");
-        JSONObject json= wuc.startSession();
+        JSONObject json= wuc.authenticate();
         System.out.println(json.toString());
         try {
 
@@ -57,6 +58,13 @@ public class ExampleUnitTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void gregorianCalendarTest(){
+        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"), Locale.GERMANY);
+        System.out.println("DAY_OF_WEEK: " + calendar.get(Calendar.DAY_OF_WEEK));
+        System.out.println("FIRST_DAY_OF_WEEK: " + calendar.getFirstDayOfWeek());
 
 
     }
