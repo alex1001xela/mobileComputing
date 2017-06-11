@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,9 +67,9 @@ public class MainActivity extends Activity {
         }else{
             setContentView(activity_personal_calendar);
         }
-        
-//        Intent intent1 = new Intent(this, GlobalCalendarView.class);
-//        startActivity(intent1);
+
+        Intent intent1 = new Intent(this, GlobalCalendarView.class);
+        startActivity(intent1);
 
     }
 

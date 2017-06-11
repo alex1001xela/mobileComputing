@@ -15,7 +15,7 @@ public class GlobalCalendarView extends CalendarView {
 
     @Override
     public void showEventsOnCalendar(Event[] events) {
-
+        showEventsOnDailyPlan(events);
     }
 
     @Override
