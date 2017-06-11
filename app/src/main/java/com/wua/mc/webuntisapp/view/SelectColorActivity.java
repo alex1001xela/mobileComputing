@@ -27,7 +27,7 @@ public class SelectColorActivity extends AppCompatActivity {
         startService(intent1);
 //        Intent intent2 = new Intent(this, GlobalCalendar.class);
 //        startActivity(intent2);
-
+        /*
         buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -35,6 +35,6 @@ public class SelectColorActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),SelectColorActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 }
