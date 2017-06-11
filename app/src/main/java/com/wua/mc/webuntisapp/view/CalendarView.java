@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 
@@ -41,7 +43,7 @@ abstract class CalendarView extends Activity implements iCalendarView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        gregCal = new GregorianCalendar(TimeZone.getTimeZone("Germany"));
+        gregCal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"), Locale.GERMANY);
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -73,6 +75,7 @@ abstract class CalendarView extends Activity implements iCalendarView{
                         new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
                         new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
                 };
+                updateCalendar();
                 showEventsOnWeekCalendar(events);
 
             }
@@ -84,6 +87,37 @@ abstract class CalendarView extends Activity implements iCalendarView{
 
     @Override
     abstract public void showToast(String text);
+
+    private void updateCalendar(){
+
+        Button[] dayButtons = {
+                (Button) findViewById(R.id.sunday_button),
+                (Button) findViewById(R.id.monday_button),
+                (Button) findViewById(R.id.tuesday_button),
+                (Button) findViewById(R.id.wednesday_button),
+                (Button) findViewById(R.id.thursday_button),
+                (Button) findViewById(R.id.friday_button),
+                (Button) findViewById(R.id.saturday_button)
+        };
+
+        int today = gregCal.get(Calendar.DAY_OF_WEEK) - 1;
+
+        // Log.i("TEST", "" + );
+        Log.i("TEST", "" + today);
+
+    }
+
+    private void showNextDay(){
+
+    }
+
+    private void showPreviousday(){
+
+    }
+
+    private void showDate(Date date){
+
+    }
 
 
     private void showEventsOnWeekCalendar(Event[] events){
@@ -187,9 +221,10 @@ abstract class CalendarView extends Activity implements iCalendarView{
     }
 
     private int convertDateToQuarter(Date date){
-        gregCal.setTime(date);
-        int hour = gregCal.get(Calendar.HOUR_OF_DAY);
-        int minute = gregCal.get(Calendar.MINUTE);
+        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"));
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
         return minuteToQuarter(minute + hourToMinute(hour));
 
     }
