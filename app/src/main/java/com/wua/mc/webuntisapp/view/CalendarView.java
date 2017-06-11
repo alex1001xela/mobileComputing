@@ -2,13 +2,14 @@ package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
@@ -38,6 +39,9 @@ abstract class CalendarView extends Activity implements iCalendarView{
     private int heightPerQuarter;
     private final int numberOfQuartersIn24Hours = 24 * 4;
 
+    private DayButton[] dayButtons = new DayButton[7];
+    private DayButton currentDayButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,8 @@ abstract class CalendarView extends Activity implements iCalendarView{
         scrollViewLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                getDayButtonsAndListen();
+
 
                 View firstLine = findViewById(R.id.hour00Line);
                 View lastLine = findViewById(R.id.hour24Line);
@@ -77,7 +83,6 @@ abstract class CalendarView extends Activity implements iCalendarView{
                 };
                 updateCalendar();
                 showEventsOnWeekCalendar(events);
-
             }
         });
     }
@@ -88,35 +93,126 @@ abstract class CalendarView extends Activity implements iCalendarView{
     @Override
     abstract public void showToast(String text);
 
+    private void getDayButtonsAndListen(){
+        dayButtons[0] = new DayButton((Button) findViewById(R.id.monday_button));
+        dayButtons[1] = new DayButton((Button) findViewById(R.id.tuesday_button));
+        dayButtons[2] = new DayButton((Button) findViewById(R.id.wednesday_button));
+        dayButtons[3] = new DayButton((Button) findViewById(R.id.thursday_button));
+        dayButtons[4] = new DayButton((Button) findViewById(R.id.friday_button));
+        dayButtons[5] = new DayButton((Button) findViewById(R.id.saturday_button));
+        dayButtons[6] = new DayButton((Button) findViewById(R.id.sunday_button));
+        for(final DayButton dayButton : dayButtons){
+            dayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDate(dayButton.getYear(), dayButton.getMonth(), dayButton.getDate());
+                }
+            });
+        }
+    }
+
     private void updateCalendar(){
+        TextView dateView = (TextView) findViewById(R.id.date);
 
-        Button[] dayButtons = {
-                (Button) findViewById(R.id.sunday_button),
-                (Button) findViewById(R.id.monday_button),
-                (Button) findViewById(R.id.tuesday_button),
-                (Button) findViewById(R.id.wednesday_button),
-                (Button) findViewById(R.id.thursday_button),
-                (Button) findViewById(R.id.friday_button),
-                (Button) findViewById(R.id.saturday_button)
-        };
+        int year = getYear(gregCal);
+        int month = getMonth(gregCal);
+        int date =  getDayOfMonth(gregCal);
+        int dayOfWeek = getDayOfWeek(gregCal);
 
-        int today = gregCal.get(Calendar.DAY_OF_WEEK) - 1;
+        GregorianCalendar temp = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"), Locale.GERMANY);
+        temp.set(year, month, date);
+        temp.add(Calendar.DAY_OF_MONTH, 1 - getDayOfWeek(temp));
 
-        // Log.i("TEST", "" + );
-        Log.i("TEST", "" + today);
+        for(int i = 1; i < 8; i++){
+            int tempDate = getDayOfMonth(temp);
+            String dateString = "" + tempDate;
+            DayButton dayButton = getDayButtonFromDayOfWeek(i);
 
+            dayButton.setDate(tempDate);
+            dayButton.setMonth(getMonth(temp));
+            dayButton.setYear(getYear(temp));
+
+            dayButton.getButton().setText(dateString);
+
+            temp.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        String dateString = weekdayNumberToWord(dayOfWeek) + ", " + date + "." + (month + 1) + "." + year;
+        dateView.setText(dateString);
+
+
+        if(currentDayButton != null){
+            currentDayButton.getButton().setBackgroundResource(R.drawable.rounded_button_white);
+            currentDayButton.getButton().setTextColor(Color.BLACK);
+        }
+        currentDayButton = getDayButtonFromDayOfWeek(dayOfWeek);
+        currentDayButton.getButton().setBackgroundResource(R.drawable.rounded_button_black);
+        currentDayButton.getButton().setTextColor(Color.WHITE);
+
+    }
+
+    private int getDayOfWeek(GregorianCalendar calendar){
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek == Calendar.SUNDAY ? 7 : dayOfWeek - 1;
+    }
+
+    private int getDayOfMonth(GregorianCalendar calendar){
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private int getMonth(GregorianCalendar calendar){
+        return calendar.get(Calendar.MONTH);
+    }
+
+    private int getYear(GregorianCalendar calendar){
+        return calendar.get(Calendar.YEAR);
+    }
+
+    private DayButton getDayButtonFromDayOfWeek(int dayOfWeek){
+        return dayButtons[dayOfWeek - 1];
     }
 
     private void showNextDay(){
-
+        gregCal.add(Calendar.DAY_OF_WEEK, 1);
+        updateCalendar();
     }
 
-    private void showPreviousday(){
-
+    private void showPreviousDay(){
+        gregCal.add(Calendar.DAY_OF_WEEK, -1);
+        updateCalendar();
     }
 
-    private void showDate(Date date){
+    private void showDate(int year, int month, int date){
+        gregCal.set(year, month, date);
+        updateCalendar();
+    }
 
+    private String weekdayNumberToWord(int number){
+        String day = "";
+        switch (number){
+            case 1:
+                day = "Monday";
+                break;
+            case 2:
+                day = "Tuesday";
+                break;
+            case 3:
+                day = "Wednesday";
+                break;
+            case 4:
+                day = "Thursday";
+                break;
+            case 5:
+                day = "Friday";
+                break;
+            case 6:
+                day = "Saturday";
+                break;
+            case 7:
+                day = "Sunday";
+                break;
+        }
+        return day;
     }
 
 
@@ -361,6 +457,53 @@ abstract class CalendarView extends Activity implements iCalendarView{
         @Override
         public boolean equals(Object o){
             return (o instanceof EventBoxView) && (event == ((EventBoxView)o).getEvent());
+        }
+    }
+
+    private class DayButton{
+        private Button button;
+        private int date;
+        private int month;
+        private int year;
+
+        DayButton(Button button){
+            this.button = button;
+        }
+
+        private void setOnClickListener(View.OnClickListener onClickListener){
+            this.button.setOnClickListener(onClickListener);
+        }
+
+        public Button getButton() {
+            return button;
+        }
+
+        public void setButton(Button button) {
+            this.button = button;
+        }
+
+        public int getDate() {
+            return date;
+        }
+
+        public void setDate(int date) {
+            this.date = date;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(int month) {
+            this.month = month;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
         }
     }
 }

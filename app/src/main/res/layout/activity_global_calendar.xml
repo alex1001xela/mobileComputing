@@ -126,7 +126,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/monday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
@@ -136,7 +136,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/tuesday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
@@ -146,7 +146,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/wednesday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             android:text="@string/thursday_button"
             style="?android:attr/borderlessButtonStyle"
             />
@@ -166,7 +166,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/friday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
@@ -178,7 +178,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/saturday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
@@ -189,7 +189,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/sunday_button"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/rounded_button_white"
             style="?android:attr/borderlessButtonStyle"
             />
 
