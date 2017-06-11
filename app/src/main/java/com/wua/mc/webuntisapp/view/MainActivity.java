@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
     CalendarPresenter cp = new CalendarPresenter();
     static boolean firstLogin=true;
     DatabaseManager dbmgr = new DatabaseManager();
+	TextView event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,14 @@ public class MainActivity extends Activity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
-                        Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
+						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
                             @Override
-                            public void onClick(View view){
+                            public void onClick(View view) {
                                 setContentView(activity_add_event_course);
+								
+                                event = (TextView) findViewById(R.id.textEvent);
+                                event.setBackgroundResource(R.color.white);
                             }
                         });
                         firstLogin=false;
@@ -96,6 +100,45 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+	
+	 public void clickColorAqua(View view) {
+        event.setBackgroundResource(R.color.aqua);
+    }
+
+    public void clickColorRed(View view) {
+        event.setBackgroundResource(R.color.red);
+    }
+    public void clickColorBlue(View view) {
+        event.setBackgroundResource(R.color.blue);
+    }
+    public void clickColorGreen(View view) {
+        event.setBackgroundResource(R.color.green);
+	}
+	public void clickColorLightgreen(View view) {
+        event.setBackgroundResource(R.color.lightgreen);
+    }
+    public void clickColorOcean(View view) {
+        event.setBackgroundResource(R.color.ocean);
+    }
+    public void clickColorYellow(View view) {
+        event.setBackgroundResource(R.color.yellow);
+    }
+    public void clickColorPurple(View view) {
+        event.setBackgroundResource(R.color.purple);
+    }
+    public void clickColorPink(View view) {
+        event.setBackgroundResource(R.color.pink);
+    }
+    public void clickColorOrange(View view) {
+        event.setBackgroundResource(R.color.orange);
+    }
+
+    public void clickAddEvent(View view) {
+
+    }
+
+    public void clickAddCourse(View view) {
     }
 
 
