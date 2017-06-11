@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
-						/*Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
+						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                                 event = (TextView) findViewById(R.id.textCourse);
                                 event.setBackgroundResource(R.color.white);
                             }
-                        });*/
+                        });
                         firstLogin=false;
                     }catch (Exception e){
                         Log.v("statusLogin","Login Failed");
