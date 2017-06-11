@@ -3,6 +3,9 @@ package com.wua.mc.webuntisapp.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_add_color;
 import static com.wua.mc.webuntisapp.R.layout.activity_add_event_course;
+import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
 public class MainActivity extends Activity {
@@ -45,7 +49,7 @@ public class MainActivity extends Activity {
                         dbmgr.loginDB(username.getText().toString(), password.getText().toString());
 
                         Log.v("statusLogin","Login Successfull");
-                        setContentView(activity_add_color);
+                        setContentView(activity_choose_fieldofstudy);
                         Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
                             @Override
@@ -70,6 +74,28 @@ public class MainActivity extends Activity {
 //        Intent intent1 = new Intent(this, GlobalCalendarView.class);
 //        startActivity(intent1);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.logout:
+                Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.export_calendar:
+                Toast.makeText(MainActivity.this, "Export Calendar", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
