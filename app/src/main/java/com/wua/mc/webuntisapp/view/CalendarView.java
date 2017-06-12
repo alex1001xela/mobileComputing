@@ -1,11 +1,13 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -42,6 +44,7 @@ abstract class CalendarView extends Activity implements iCalendarView{
 
     private DayButton[] dayButtons = new DayButton[7];
     private DayButton currentDayButton;
+    private final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -314,13 +317,24 @@ abstract class CalendarView extends Activity implements iCalendarView{
         eventBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalendarView.this.showToast(""+eventBox.getButton().getHeight());
+                onBackPressed();
             }
         });
 
         return eventBox;
     }
 
+
+    @Override
+    public void onBackPressed(){
+        LayoutInflater li = LayoutInflater.from(context);
+        View view = li.inflate(R.layout.activity_add_event_course, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        //ToDo Initialice buttons event menu
+        alertDialogBuilder.setView(view);
+        alertDialogBuilder.show();
+
+    }
 
     private int calculateEventHeight(EventBoxView eventBox){
         int bottom = calculateEventBottom(eventBox);
