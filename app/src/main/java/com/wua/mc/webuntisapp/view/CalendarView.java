@@ -328,9 +328,42 @@ abstract class CalendarView extends Activity implements iCalendarView{
     @Override
     public void onBackPressed(){
         LayoutInflater li = LayoutInflater.from(context);
-        View view = li.inflate(R.layout.activity_add_event_course, null);
+        View view = li.inflate(R.layout.activity_event_menu_alert, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        //ToDo Initialice buttons event menu
+
+        Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
+        Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
+        Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
+        Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+
+        buttonExportEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        buttonExportCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         alertDialogBuilder.setView(view);
         alertDialogBuilder.show();
 
