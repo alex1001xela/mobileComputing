@@ -14,8 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
+import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
+
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
@@ -24,13 +28,23 @@ public class MainActivity extends AppCompatActivity {
 
     CalendarPresenter cp = new CalendarPresenter();
     static boolean firstLogin=true;
-    DatabaseManager dbmgr = new DatabaseManager();
+    DatabaseManager dbmgr = new DatabaseManager(this);
 	TextView event;
+    public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DataBaseObject testMemo = new DataBaseObject("Bla","01", "red", "mobile", "prof",1, "001","mobileVeranstaltung","07", "002","990");
+        Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
+
+        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+        dbmgr.connectToDatabase();
+
+        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
+        dbmgr.disconnectFromDatabase();
 
 
         if (firstLogin){
@@ -51,6 +65,17 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
+                        setContentView(R.layout.activity_main);
+
+                        DataBaseObject testMemo = new DataBaseObject("Bla","01", "red", "mobile", "prof",1, "001","mobileVeranstaltung","07", "002","990");
+                        Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
+
+                        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+                        dbmgr.connectToDatabase();
+
+                        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
+                        dbmgr.disconnectFromDatabase();
+
                         /*
 						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
