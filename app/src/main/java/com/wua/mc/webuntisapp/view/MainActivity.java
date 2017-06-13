@@ -1,6 +1,5 @@
 package com.wua.mc.webuntisapp.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
-import static com.wua.mc.webuntisapp.R.layout.activity_add_event_course;
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
@@ -78,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
             setContentView(activity_personal_calendar);
         }
 
-        Intent intent1 = new Intent(this, GlobalCalendarView.class);
+          Intent intent1 = new Intent(this, GlobalCalendarView.class);
+       // Intent intent1 = new Intent(this, CalendarView.class);
         startActivity(intent1);
 
     }
