@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataBaseObject testMemo = new DataBaseObject("01","bla","kldkldk");
+        // Test Datenbank Verbindung
+        DataBaseObject testMemo = new DataBaseObject("01","Mobile-Computing","Prof. Martinez");
         Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
 
         Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
