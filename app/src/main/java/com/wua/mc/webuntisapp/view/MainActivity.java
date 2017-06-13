@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataBaseObject testMemo = new DataBaseObject("Bla","01", "red", "mobile", "prof",1, "001","mobileVeranstaltung","07", "002","990");
+        DataBaseObject testMemo = new DataBaseObject("01","bla","kldkldk");
         Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
 
         Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
@@ -65,18 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
-                        setContentView(R.layout.activity_main);
+             //           setContentView(R.layout.activity_main);
 
-                        DataBaseObject testMemo = new DataBaseObject("Bla","01", "red", "mobile", "prof",1, "001","mobileVeranstaltung","07", "002","990");
-                        Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
+                    /*
 
-                        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
-                        dbmgr.connectToDatabase();
-
-                        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
-                        dbmgr.disconnectFromDatabase();
-
-                        /*
 						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
                         buttonSelectColor.setOnClickListener(new View.OnClickListener(){
                             @Override
@@ -87,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                 event.setBackgroundResource(R.color.white);
                             }
                         });*/
+
                         firstLogin=false;
                     }catch (Exception e){
                         Log.v("statusLogin","Login Failed");

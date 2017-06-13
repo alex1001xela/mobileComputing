@@ -193,7 +193,7 @@ public class DataBaseObject {
 
     @Override
     public String toString() {
-        String output = id_course + room + course_color + name + lecturer_name + semester + id_private_calendar + course_name + room_course + id_lab + lab_room;
+        String output = id_course + name + lecturer_name ;
         return output;
     }
 
