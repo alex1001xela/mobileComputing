@@ -946,9 +946,17 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
-            // the color of the button should change to blue , when clicked
+
+
             String date_month_year = (String) view.getTag();
+            String[]stringdate = date_month_year.split("-");
+            int day = Integer.parseInt(stringdate[0]);
+            int year= Integer.parseInt(stringdate[2]);
+            int month = convertStringMonthToIntegerMonth(stringdate[1]);
             selectedDayMonthYearButton.setText("Selected :" + date_month_year);
+            // call the function re3sponsible for the view changing from monthly to weekly/dayly.
+
+            showDate(day,month,year);
             Log.e("Selected date:" , date_month_year);
             try{
                // Date parseDate = dateFormatter.parse(date_month_year);
@@ -988,6 +996,19 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         public int getCurrentWeekDay() {
             return currentWeekDay;
+        }
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public int convertStringMonthToIntegerMonth(String month){
+
+            Calendar cal = Calendar.getInstance();
+            try {
+                cal.setTime(new SimpleDateFormat("MMM").parse(month));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int monthInt = cal.get(Calendar.MONTH) + 1;
+
+            return monthInt;
         }
 
     }
