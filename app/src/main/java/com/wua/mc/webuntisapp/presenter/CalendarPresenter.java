@@ -3,10 +3,16 @@ package com.wua.mc.webuntisapp.presenter;
 import android.util.Log;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
+import com.wua.mc.webuntisapp.model.iWebUntisClient;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
@@ -19,6 +25,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private FieldOfStudy[] fieldsOfStudy;
 
     public CalendarPresenter() {
+
+        // Event()
     }
 
     @Override
@@ -42,9 +50,11 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void addEvent(String eventID) {
+    public void addEvent(String eventID){
 
+        
     }
+
 
     @Override
     public void createEvent(String name, String details, Date date, long startTime, long endTime) {
