@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
+import com.wua.mc.webuntisapp.model.iWebUntisClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ public class WebUntisAPI {
     @Test
     public void getCurrentSchoolYear() throws Exception{
         boolean throwedException = false;
-        WebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+        iWebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
 
         //String jsonSample = .toString();
         JSONObject jsonObject = wuc.getCurrentSchoolYear();

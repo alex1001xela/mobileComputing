@@ -2,7 +2,7 @@ package com.wua.mc.webuntisapp.model;
 
 import org.json.JSONObject;
 
-interface iWebUntisClient {
+public interface iWebUntisClient {
 
 	JSONObject authenticate(); //todo classdiagram
 
