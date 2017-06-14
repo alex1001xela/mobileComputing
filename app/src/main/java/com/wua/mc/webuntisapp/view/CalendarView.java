@@ -954,6 +954,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                // Date parseDate = dateFormatter.parse(date_month_year);
                 Date parseDate = dateFormatter.parse(date_month_year);
                 Log.d(tag,"Parse date" + parseDate.toString());
+                setContentView(R.layout.activity_calendar);
+                showDate(parseDate.getYear(), parseDate.getMonth(), parseDate.getDate());
 
 
             } catch (ParseException e) {

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(activity_personal_calendar);
         }
 
-          Intent intent1 = new Intent(this, GlobalCalendarView.class);
+          Intent intent1 = new Intent(this, PersonalCalendarView.class);
        // Intent intent1 = new Intent(this, CalendarView.class);
         startActivity(intent1);
 
