@@ -1,5 +1,7 @@
 package com.wua.mc.webuntisapp;
 
+import com.wua.mc.webuntisapp.model.WebUntisClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -12,18 +14,13 @@ public class WebUntisAPI {
     @Test
     public void getCurrentSchoolYear() throws Exception{
         boolean throwedException = false;
-        String jsonSample = "{\"result\":{\"id\": 7,\"name\": \"2016/2017\",\"startDate\": 20160829,\"endDate\": 20170731}}";
-        JSONObject jsonObject = null;
+        WebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
 
-        try{
-            jsonObject = new JSONObject(jsonSample);
-        }
-        catch(JSONException e){
-            e.printStackTrace();
-        }
-
+        //String jsonSample = .toString();
+        JSONObject jsonObject = wuc.getCurrentSchoolYear();
+        System.out.print(jsonObject.toString());
         try {
-            JSONObject result = jsonObject.getJSONObject("result");
+            JSONObject result = jsonObject.getJSONObject("response").getJSONObject("result");
             result.getInt("id");
             result.getString("name");
             result.getInt("startDate");

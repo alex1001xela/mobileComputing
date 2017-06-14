@@ -231,10 +231,10 @@ public class WebUntisClient implements iWebUntisClient {
 				}
 			}
 			catch (JSONException error){
-				Log.i("JSONException", error.toString());
+				//Log.i("JSONException", error.toString());
 			}
 			catch (MalformedURLException error){
-				Log.i("MalformedURLException", error.toString());
+				//Log.i("MalformedURLException", error.toString());
 			}
 			finally {
 				this.response = response;
