@@ -26,6 +26,6 @@ interface iWebUntisClient {
 
 	JSONObject getLatestImportTime();
 
-	JSONObject getTimetableForElement(String id, String type, String startDate, String endDate); //todo classdiagram
+	JSONObject getTimetableForElement(String id, ElementType type, String startDate, String endDate); //todo classdiagram
 
 }

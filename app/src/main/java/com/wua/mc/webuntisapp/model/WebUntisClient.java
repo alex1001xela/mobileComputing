@@ -40,6 +40,11 @@ public class WebUntisClient implements iWebUntisClient {
 		}
 	}
 
+	/*
+	Use this to authenticate your personal username and password. Only used to check after pressing
+	login. As soon as your data are authenticated, the internal login data are used, and you need
+	to do nothing with sessions.
+	 */
 	@Override
 	public JSONObject authenticate(){return getData("authenticate", emptyParamsJSON);}
 
@@ -48,6 +53,10 @@ public class WebUntisClient implements iWebUntisClient {
 		return getData("getTeachers", emptyParamsJSON);
 	}
 
+	/*
+	Use this to get all the 'Field of Study'-Semester combinations. In the website it is under the Semester
+	drop-down menu.
+	 */
 	@Override
 	public JSONObject getClasses() {
 		return getData("getKlassen", emptyParamsJSON);
@@ -63,6 +72,10 @@ public class WebUntisClient implements iWebUntisClient {
 		return getData("getRooms", emptyParamsJSON);
 	}
 
+	/*
+	Gets the Faculty, Exams, etc filters. In the website these are the results under
+	 the "Fakultät" dropdown.
+	 */
 	@Override
 	public JSONObject getFilters() {
 		return getData("getDepartments", emptyParamsJSON);
@@ -88,18 +101,29 @@ public class WebUntisClient implements iWebUntisClient {
 		return getData("getCurrentSchoolyear", emptyParamsJSON);
 	}
 
+	/*
+	Use this to get the latest time when something was written in the WebUntis DB.
+	 */
 	@Override
 	public JSONObject getLatestImportTime() {
 		return getData("getLatestImportTime", emptyParamsJSON);
 	}
 
+	/**
+	 * Use this to get the timetable for an element.
+	 * @param id		The id of the element
+	 * @param type 		The type of the element
+	 * @param startDate optional, default: actual date
+	 * @param endDate 	optional, default: actual date
+	 * @return
+	 */
 	@Override
-	public JSONObject getTimetableForElement(String id, String type, String startDate, String endDate) {
+	public JSONObject getTimetableForElement(String id, ElementType type, String startDate, String endDate) {
 		JSONObject params = new JSONObject();
 
 		try {
 			params.put("id", id);
-			params.put("type", type);
+			params.put("type", "" + (type.ordinal() + 1));
 			params.put("startDate", startDate);
 			params.put("endDate", endDate);
 		}
