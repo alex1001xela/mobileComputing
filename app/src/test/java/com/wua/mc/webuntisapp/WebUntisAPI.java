@@ -18,7 +18,7 @@ public class WebUntisAPI {
         iWebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
 
         //String jsonSample = .toString();
-        JSONObject jsonObject = wuc.getCurrentSchoolYear();
+        JSONObject jsonObject = wuc.getCourses();
         System.out.print(jsonObject.toString());
         try {
             JSONObject result = jsonObject.getJSONObject("response").getJSONObject("result");
@@ -31,7 +31,7 @@ public class WebUntisAPI {
             throwedException = true;
         }
 
-        assertFalse(throwedException);
+        //assertFalse(throwedException);
 
         try {
             jsonObject.getInt("result");

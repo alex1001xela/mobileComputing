@@ -382,46 +382,75 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     @Override
     public void onBackPressed(){
-        LayoutInflater li = LayoutInflater.from(context);
-        View view = li.inflate(R.layout.activity_event_menu_alert, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-        Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
-        Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
-        Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
-        Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+        boolean add = true;
 
-        buttonExportEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            LayoutInflater li = LayoutInflater.from(context);
+        if(add == false) {
+            View view = li.inflate(R.layout.activity_event_menu_alert, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-            }
-        });
+            Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
+            Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
+            Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
+            Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
 
-        buttonExportCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            buttonExportEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
 
-        buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            buttonExportCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
 
-        buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
 
-        alertDialogBuilder.setView(view);
-        alertDialogBuilder.show();
+            buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
+
+            alertDialogBuilder.setView(view);
+            alertDialogBuilder.show();
+        }
+
+        //um alertDialog für add_event_course anzuzeigen
+        else{
+            View view = li.inflate(R.layout.activity_add_event_course, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            Button buttonAddEvent = (Button) view.findViewById(R.id.buttonAddEvent);
+            Button buttonAddCourse = (Button) view.findViewById(R.id.buttonAddCourse);
+
+            buttonAddEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            buttonAddCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            alertDialogBuilder.setView(view);
+            alertDialogBuilder.show();
+        }
     }
 
     private int calculateEventHeight(EventBoxView eventBox){
