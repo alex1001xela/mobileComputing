@@ -97,7 +97,7 @@ public class ExampleUnitTest {
             jsonObject = new JSONObject(jsonSample);
         }
         catch(JSONException e){
-            System.out.println("Invalid string");
+            e.printStackTrace();
         }
 
         try {
@@ -112,7 +112,7 @@ public class ExampleUnitTest {
         }
 
         assertFalse(throwedException);
-        
+
         try {
             jsonObject.getInt("result");
         }

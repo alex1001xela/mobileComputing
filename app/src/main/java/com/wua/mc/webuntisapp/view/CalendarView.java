@@ -81,9 +81,30 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
 
         gregCal = new GregorianCalendar(Locale.GERMANY);
+
+
+        // EXAMPLE
+        String[] profs = {"Prof. John", "Prof. Jane"};
+        String[] rooms = {"9-101"};
+        Event[] events = {
+                new Event("0", "Event 0", "Bloooooo", new Date(0), new Date(900000), EventType.DEADLINE),
+                new Event("1", "Event 1", "Blaaaaaaa", new Date(0), new Date(9000000), EventType.DEADLINE),
+                new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
+                new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
+        };
+        buildWeeklyCalendar(events);
+    }
+
+    @Override
+    abstract public void showEventsOnCalendar(Event[] events);
+
+    @Override
+    abstract public void showToast(String text);
+
+    private void buildWeeklyCalendar(final Event[] events){
+        setContentView(R.layout.activity_calendar);
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -105,42 +126,32 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 eventFieldXEnd = eventFieldXStart + eventFieldWidth;
 
                 heightPerQuarter = eventFieldHeight / numberOfQuartersIn24Hours;
-                //---------------------------------------setting the onclicklistener on the monthly button
-                openMonthlyCalendar = (Button) findViewById(R.id.open_month_calendar_button);
-                openMonthlyCalendar.setOnClickListener(new OnClickListener(){
 
-                    @Override
-                    public void onClick(View v) {
-                        schowMonthlyViewCalenar();
-
-                    }
-                });
 
                 scrollViewLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-
-                // EXAMPLE
-                String[] profs = {"Prof. John", "Prof. Jane"};
-                String[] rooms = {"9-101"};
-                Event[] events = {
-                        new Event("0", "Event 0", "Bloooooo", new Date(0), new Date(900000), EventType.DEADLINE),
-                        new Event("1", "Event 1", "Blaaaaaaa", new Date(0), new Date(9000000), EventType.DEADLINE),
-                        new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
-                        new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
-                };
                 updateCalendar();
-                showEventsOnDailyPlan(events);
+                if(events != null){
+                    showEventsOnDailyPlan(events);
+                }
+
+            }
+        });
+
+        //---------------------------------------setting the onclicklistener on the monthly button
+        openMonthlyCalendar = (Button) findViewById(R.id.open_month_calendar_button);
+        openMonthlyCalendar.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                schowMonthlyViewCalenar();
+
             }
         });
     }
 
-    @Override
-    abstract public void showEventsOnCalendar(Event[] events);
-
-    @Override
-    abstract public void showToast(String text);
-
     void showEventsOnDailyPlan(Event[] events){
+
         EventBoxView[] eventBoxes = new EventBoxView[events.length];
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -215,6 +226,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         currentDayButton.getButton().setBackgroundResource(R.drawable.rounded_button_black);
         currentDayButton.getButton().setTextColor(Color.WHITE);
 
+
+
     }
 
     private int getDayOfWeek(GregorianCalendar calendar){
@@ -252,7 +265,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     private void showDate(int year, int month, int date){
         gregCal.set(year, month, date);
-        updateCalendar();
+        buildWeeklyCalendar(null);
     }
 
     private String weekdayNumberToWord(int number){
@@ -955,15 +968,14 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             int month = convertStringMonthToIntegerMonth(stringdate[1]);
             selectedDayMonthYearButton.setText("Selected :" + date_month_year);
             // call the function re3sponsible for the view changing from monthly to weekly/dayly.
-
-            showDate(day,month,year);
+            setContentView(R.layout.activity_calendar);
+            showDate(year,month - 1,day);
             Log.e("Selected date:" , date_month_year);
             try{
                // Date parseDate = dateFormatter.parse(date_month_year);
                 Date parseDate = dateFormatter.parse(date_month_year);
                 Log.d(tag,"Parse date" + parseDate.toString());
-                setContentView(R.layout.activity_calendar);
-                showDate(parseDate.getYear(), parseDate.getMonth(), parseDate.getDate());
+
 
 
             } catch (ParseException e) {
