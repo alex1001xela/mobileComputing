@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string-array name="semseters_array">
+            <item name="s1">semester 1</item>
+            <item name="s2">semester 2</item>
+            <item name="s3">semester 3</item>
+            <item name ="s4">semester 4</item>
+            <item name="s5">semester 5</item>
+            <item name="s6">semester 6</item>
+            <item name="s7">semester 7</item>
+        </string-array>
+</resources>

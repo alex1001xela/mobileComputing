@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources >
+    <string-array name="field_of_study_array">
+        <item name="ACB">ANGEWANDTE CHEMIE</item>
+        <item name="ACB-BA">BIOANALYTIK</item>
+        <item name="HSV">HOCHSHULE VERWALTUNG</item>
+        <item name ="BMSM">BIOMEDICAL SCIENCE M.SC</item>
+        <item name="IMW">BIOMEDIZINISCHE MATERIALWISSENSCHAFTEN</item>
+        <item name="PATM">PROCESS ANALYSIS TECHNOLOGY MANAGEMENT MASTER</item>
+        <item name="VAC">VERANSTALTUNGEN</item>
+        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+    </string-array>
+
+</resources>

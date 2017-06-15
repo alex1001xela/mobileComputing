@@ -1,6 +1,5 @@
 package com.wua.mc.webuntisapp.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,8 +7,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,6 @@ import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
@@ -66,6 +64,28 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
+                         /* some changes on your fronend codes were required :)
+                        by ray :
+                        adding some code here to :
+                        a-populate the Spinner dropdown menu with predefined options to chose from.
+                        b-get the user's choice.
+                         */
+                         // -----------------fieldOfStudy spinner_fieldOfStudy
+                        Spinner spinner_fieldOfStudy = (Spinner) findViewById(R.id.fieldOfStudySpinner);
+                        // this could lead to an error this was replaced with getApplicationContext.
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.field_of_study_array, android.R.layout.simple_dropdown_item_1line);
+                        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        spinner_fieldOfStudy.setAdapter(adapter);
+
+                        //---------------------semester spinner
+                        Spinner spinner_semester = (Spinner) findViewById(R.id.semesterSpinner);
+                        ArrayAdapter<CharSequence> adpater2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.semseters_array,android.R.layout.simple_dropdown_item_1line);
+                        spinner_semester.setAdapter(adpater2);
+
+
+
+
+
              //           setContentView(R.layout.activity_main);
 
                     /*
@@ -95,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
             setContentView(activity_personal_calendar);
         }
 
-          Intent intent1 = new Intent(this, PersonalCalendarView.class);
-       // Intent intent1 = new Intent(this, CalendarView.class);
-        startActivity(intent1);
+         // Intent intent1 = new Intent(this, PersonalCalendarView.class);
+        //Intent intent1 = new Intent(this, CalendarView.class);
+       // startActivity(intent1);
 
     }
 
