@@ -18,9 +18,6 @@ import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
@@ -94,9 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             setContentView(activity_personal_calendar);
         }
-
-          Intent intent1 = new Intent(this, PersonalCalendarView.class);
-       // Intent intent1 = new Intent(this, CalendarView.class);
+        Intent intent1 = new Intent(this, PersonalCalendarView.class);
         startActivity(intent1);
 
     }

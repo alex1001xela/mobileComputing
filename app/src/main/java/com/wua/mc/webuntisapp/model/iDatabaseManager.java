@@ -1,9 +1,10 @@
 package com.wua.mc.webuntisapp.model;
 
 import android.database.Cursor;
+
 import com.wua.mc.webuntisapp.presenter.Event;
 
-interface iDatabaseManager {
+public interface iDatabaseManager {
 
 	Cursor getAllEventsDB();
 

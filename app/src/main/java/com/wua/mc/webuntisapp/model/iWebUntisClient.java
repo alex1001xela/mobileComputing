@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public interface iWebUntisClient {
 
-	JSONObject authenticate(); //todo classdiagram
+	JSONObject authenticate();
 
 	JSONObject getTeachers();
 
@@ -26,6 +26,6 @@ public interface iWebUntisClient {
 
 	JSONObject getLatestImportTime();
 
-	JSONObject getTimetableForElement(String id, ElementType type, String startDate, String endDate); //todo classdiagram
+	JSONObject getTimetableForElement(String id, ElementType type, String startDate, String endDate);
 
 }
