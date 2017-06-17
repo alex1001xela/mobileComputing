@@ -18,6 +18,8 @@ import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
+import java.util.List;
+
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
@@ -35,14 +37,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Test Datenbank Verbindung
-        DataBaseObject testMemo = new DataBaseObject("01","Mobile-Computing","Prof. Martinez");
-        Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
+        //  DataBaseObject testMemo = new DataBaseObject("Mobile-Computing","Prof. Martinez", "red", 2);
+        //  Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
+        // dbmgr.deleteDatabase();
+
 
         Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
         dbmgr.connectToDatabase();
 
+        //---------------------------------------------------
+        //Daten in Tabellen einfügen Tests
+        DataBaseObject dbData = dbmgr.createCourse("mobile", "martinez", "red", 2);
+        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
+        Log.d(LOG_TAG, "ID: " + dbData.getCourse_id() + ", Inhalt course: " + dbData.toString());
+
+        DataBaseObject dbData2 = dbmgr.createEvent("12", 2,2, "BWL", "LAB", 2,"green");
+        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
+        Log.d(LOG_TAG, "ID: " + dbData2.getEvent_id() + ", Inhalt event: " + dbData2.toString());
+
+        DataBaseObject dbData3 = dbmgr.createPersonalInformation(3);
+        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
+        Log.d(LOG_TAG, "ID: " + dbData3.getAuthenticated() + ", Inhalt personal: " + dbData3.toString());
+        //----------------------------------------------------------------------
+
+        Log.d(LOG_TAG, "Folgende Einträge sind in der Datenbank vorhanden:");
+        showAllListEntries();
+
         Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
         dbmgr.disconnectFromDatabase();
+        Log.d(LOG_TAG, "Die Datenquelle wurde erfolgreich geschlossen.");
+
+
+        //--------------------------------------------------
 
 
         if (firstLogin){
@@ -155,6 +181,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickAddCourse(View view) {
+    }
+
+    private void showAllListEntries () {
+        List<DataBaseObject> dbDataList = dbmgr.getAlldatabaseObjects();
+        Log.d(LOG_TAG, "Unsere Liste "+ dbDataList);
+
+        // ArrayAdapter<DataBaseObject> dbDataArrayAdapter = new ArrayAdapter<> (
+        //      this,
+        //    android.R.layout.simple_list_item_multiple_choice,
+        //  dbDataList);
+
+        //ListView dbDatasListView = (ListView) findViewById(R.id.listview_shopping_memos);
+        //dbDatasListView.setAdapter(dbDataArrayAdapter);
     }
 
 
