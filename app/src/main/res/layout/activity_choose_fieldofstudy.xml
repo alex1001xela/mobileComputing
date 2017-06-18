@@ -8,13 +8,13 @@
         android:id="@+id/fieldOfStudyText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/semesterSpinner"
-        android:layout_alignStart="@+id/fieldOfStudySpinner"
-        android:layout_marginBottom="43dp"
+        android:layout_marginBottom="25dp"
         android:text="Please choose your Field of Study"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="#373D40"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_above="@+id/fieldOfStudySpinner"
+        android:layout_alignStart="@+id/fieldOfStudySpinner" />
 
     <Spinner
         android:id="@+id/fieldOfStudySpinner"
@@ -28,9 +28,9 @@
         android:id="@+id/semesterSpinner"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
         android:layout_alignTop="@+id/semesterText"
-        android:layout_alignStart="@+id/semesterText"
-        android:layout_marginTop="28dp" />
+        android:layout_alignStart="@+id/semesterText" />
 
     <TextView
         android:id="@+id/semesterText"

@@ -22,7 +22,7 @@ public class DataBaseObject {
     private String event_color;
     private String event_type;
 
-    private int authenticated;
+    private long authenticated;
 
     public DataBaseObject(){}
 
@@ -47,7 +47,7 @@ public class DataBaseObject {
         //this.setCourse_id(course_id);
     }
 
-    public DataBaseObject(int authenticated){
+    public DataBaseObject(long authenticated){
 
         this.setAuthenticated(authenticated);
 
@@ -101,7 +101,7 @@ public class DataBaseObject {
         this.event_type = event_type;
     }
 
-    public void setAuthenticated(int authenticated) {
+    public void setAuthenticated(long authenticated) {
         this.authenticated = authenticated;
     }
 
@@ -154,7 +154,7 @@ public class DataBaseObject {
         return event_type;
     }
 
-    public int getAuthenticated() {
+    public long getAuthenticated() {
         return authenticated;
     }
 
