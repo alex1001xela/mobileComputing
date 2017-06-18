@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_PERSONAL_INFORMATION =
             " CREATE TABLE " + TABLE_PERSONAL_INFORMATION  +
-                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER NOT NULL" + ");";
+                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER NOT NULL AUTOINCREMENT" + ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
