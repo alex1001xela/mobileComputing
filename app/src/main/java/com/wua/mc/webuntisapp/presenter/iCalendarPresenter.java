@@ -2,16 +2,15 @@ package com.wua.mc.webuntisapp.presenter;
 
 import com.wua.mc.webuntisapp.view.iCalendarView;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 public interface iCalendarPresenter {
 
     interface iCalendarDataManagement {
 
+        Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
 
-        Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, Date date);
-
-        Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, Date date);
+        Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
 
         void getEventInformation(String eventID);
 
@@ -19,7 +18,7 @@ public interface iCalendarPresenter {
 
         void addEvent(String eventID);
 
-        void createEvent(String name, String details, Date date, long startTime, long endTime);
+        void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime);//todo class diagram
 
         void deleteEvent(String eventID);
 
@@ -33,7 +32,7 @@ public interface iCalendarPresenter {
 
         void exportEventICS(String path, String eventID);
 
-        void login(String username, String password);
+        boolean login(String username, String password);
 
         void logout();
 
@@ -42,9 +41,9 @@ public interface iCalendarPresenter {
     interface iCalendarWebUntis {
 
 
-        Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy);
+        Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
 
-        Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy);
+        Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
 
         FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
 

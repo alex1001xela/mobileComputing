@@ -13,8 +13,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 
 public class DatabaseManager implements iDatabaseManager {
 
@@ -237,52 +235,52 @@ public class DatabaseManager implements iDatabaseManager {
 
 
 	@Override
-	public Cursor getAllEventsDB() {
+	public List<DataBaseObject> getAllEventsDB() {
 		return null;
 	}
 
 	@Override
-	public Cursor getCourseDB(String courseID) {
+	public DataBaseObject getCourseDB(String courseID) {
 		return null;
 	}
 
 	@Override
-	public Cursor getEventDB(String eventID) {
+	public DataBaseObject getEventDB(String eventID) {
 		return null;
 	}
 
 	@Override
-	public Cursor saveEventDB(Event event) {
+	public DataBaseObject saveEventDB(Event event) {
 		return null;
 	}
 
 	@Override
-	public Cursor setEventColorDB(String eventID, String color) {
+	public DataBaseObject setEventColorDB(String eventID, String color) {
 		return null;
 	}
 
 	@Override
-	public int deleteCourseDB(String courseID) {
-		return 0;
+	public void deleteCourseDB(String courseID) {
+
 	}
 
 	@Override
-	public int deleteEventDB(String eventID) {
-		return 0;
+	public void deleteEventDB(String eventID) {
+
 	}
 
 	@Override
-	public Cursor loginDB(String username, String password) {
-		return null;
+	public boolean loginDB() {
+		return true;
 	}
 
 	@Override
-	public int logoutDB() {
-		return 0;
+	public void logoutDB() {
+
 	}
 
 	@Override
-	public Cursor getUserDataDB() {
+	public List<DataBaseObject> getUserDataDB() {
 		return null;
 	}
 

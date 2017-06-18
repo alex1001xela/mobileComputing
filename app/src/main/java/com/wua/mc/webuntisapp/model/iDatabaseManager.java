@@ -1,29 +1,29 @@
 package com.wua.mc.webuntisapp.model;
 
-import android.database.Cursor;
-
 import com.wua.mc.webuntisapp.presenter.Event;
+
+import java.util.List;
 
 public interface iDatabaseManager {
 
-	Cursor getAllEventsDB();
+	List<DataBaseObject> getAllEventsDB();
 
-	Cursor getCourseDB(String courseID);
+	DataBaseObject getCourseDB(String courseID);
 
-	Cursor getEventDB(String eventID);
+	DataBaseObject getEventDB(String eventID);
 
-	Cursor saveEventDB(Event event);
+	DataBaseObject saveEventDB(Event event);
 
-	Cursor setEventColorDB(String eventID, String color);
+	DataBaseObject setEventColorDB(String eventID, String color);
 
-	int deleteCourseDB(String courseID);
+	void deleteCourseDB(String courseID);
 
-	int deleteEventDB(String eventID);
+	void deleteEventDB(String eventID);
 
-	Cursor loginDB(String username, String password);
+	boolean loginDB();
 
-	int logoutDB();
+	void logoutDB();
 
-	Cursor getUserDataDB();
+	List<DataBaseObject> getUserDataDB();
 
 }

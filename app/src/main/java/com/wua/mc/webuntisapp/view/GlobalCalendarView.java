@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
+
+import java.util.GregorianCalendar;
 
 public class GlobalCalendarView extends CalendarView {
 
@@ -23,4 +26,10 @@ public class GlobalCalendarView extends CalendarView {
         Context context = getApplicationContext();
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void getWeeklyCalendar(GregorianCalendar calendar, FieldOfStudy fieldOfStudy) {
+        getCalendarWebUntis().getWeeklyCalendarGlobal(this, calendar, fieldOfStudy);
+    }
+
 }

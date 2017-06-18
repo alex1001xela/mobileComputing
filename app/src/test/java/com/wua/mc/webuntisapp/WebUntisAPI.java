@@ -13,10 +13,12 @@ import static org.junit.Assert.assertTrue;
 
 public class WebUntisAPI {
 
+    private iWebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+
     @Test
     public void getCurrentSchoolYear() throws Exception{
         boolean throwedException = false;
-        iWebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+
 
         //String jsonSample = .toString();
         JSONObject jsonObject = wuc.getCurrentSchoolYear();

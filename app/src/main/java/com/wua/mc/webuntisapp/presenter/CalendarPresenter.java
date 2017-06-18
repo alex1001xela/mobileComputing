@@ -1,81 +1,170 @@
 package com.wua.mc.webuntisapp.presenter;
 
+import android.app.Activity;
 import android.util.Log;
 
+import com.wua.mc.webuntisapp.model.DataBaseObject;
+import com.wua.mc.webuntisapp.model.DatabaseManager;
+import com.wua.mc.webuntisapp.model.ElementType;
 import com.wua.mc.webuntisapp.model.WebUntisClient;
-import com.wua.mc.webuntisapp.model.iDatabaseManager;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
 import com.wua.mc.webuntisapp.view.iCalendarView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     iWebUntisClient wuc;
-    iDatabaseManager dbManager;
+    DatabaseManager dbManager;
     static String sessionID;
-    private Event[] currentShownEvents;
+    String[] profs = {"Prof. John", "Prof. Jane"};
+    String[] rooms = {"9-101"};
+    private Event[] currentShownPersonalEvents =  {new Event("0", "Event 0", "Bloooooo", new Date(1497672000000L), new Date(1497693600000L), EventType.DEADLINE),
+                    new UniversityEvent("1", "Event 1", "Blaaaaaaa", new Date(1497672000000L), new Date(1497700800000L), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5")};
+
+    private Event[] currentShownGlobalEvents =  {new Event("2", "Event 2", "Bleeeeee", new Date(1497672000000L), new Date(1497693600000L), EventType.DEADLINE),
+            new UniversityEvent("3", "Event 3", "Bluuuuuu", new Date(1497672000000L), new Date(1497700800000L), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5")};
 
     private Filter[] filters;
 
     private FieldOfStudy[] fieldsOfStudy;
 
     public CalendarPresenter() {
-
+        wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
     }
 
+    private ArrayList<Event> getAlreadySavedWeekEvents(GregorianCalendar gc, Event[] savedEvents){
+        ArrayList<Event> weekEvents = new ArrayList<>();
+        GregorianCalendar[] startAndEndOfWeek = GregorianCalendarFactory.getStartAndEndOfWeek(gc);
+        for(Event event : savedEvents){
 
-    @Override
-    public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, Date date){
-        wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
-        /*if(isDateInCurrentEvents(date)){
+            GregorianCalendar eventGregorianStart = GregorianCalendarFactory.getGregorianCalendar();
+            eventGregorianStart.setTime(event.getStartTime());
+            GregorianCalendar eventGregorianEnd = GregorianCalendarFactory.getGregorianCalendar();
+            eventGregorianEnd.setTime(event.getEndTime());
+            int startDayOfYear = startAndEndOfWeek[0].get(Calendar.DAY_OF_YEAR);
+            int endDayOfYear = startAndEndOfWeek[1].get(Calendar.DAY_OF_YEAR);
 
+            if(startDayOfYear <= eventGregorianStart.get(Calendar.DAY_OF_YEAR) &&
+                    endDayOfYear >= eventGregorianEnd.get(Calendar.DAY_OF_YEAR)){
+                weekEvents.add(event);
+            }
         }
-        else{
-            dbManager.getAllEventsDB();
-        }*/
-
-        // EXAMPLE
-        String[] profs = {"Prof. John", "Prof. Jane"};
-        String[] rooms = {"9-101"};
-        Event[] weekEvents = {
-                new Event("0", "Event 0", "Bloooooo", new Date(0), new Date(900000), EventType.DEADLINE),
-                new Event("1", "Event 1", "Blaaaaaaa", new Date(0), new Date(9000000), EventType.DEADLINE),
-                new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
-                new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
-        };
-
-        calendarView.showEventsOnCalendar(weekEvents);
-
         return weekEvents;
     }
 
     @Override
-    public Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, Date date) {
-        return new Event[0];
-    }
+    public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc){
 
-    private boolean isDateInCurrentEvents(Date date){
-        int i = 0;
-        boolean dateFound = false;
-        while(i < currentShownEvents.length && !dateFound){
-            Event event = currentShownEvents[i];
-            dateFound = event.getStartTime().getDate() == date.getDate();
-            i++;
+        dbManager = new DatabaseManager((Activity)calendarView);
+
+        ArrayList<Event> weekEvents = getAlreadySavedWeekEvents(gc, currentShownPersonalEvents);
+        Event[] weekEventsArray = {};
+        if(weekEvents.size() > 0){
+            weekEventsArray = weekEvents.toArray(new Event[weekEvents.size()]);
+
         }
-        return dateFound;
+        else{
+            dbManager.connectToDatabase();
+            List<DataBaseObject> allDatabaseObjects =  dbManager.getAlldatabaseObjects();
+            Log.i("DB_STUFF", allDatabaseObjects.toString());
+        }
+        calendarView.showEventsOnCalendar(weekEventsArray);
+        return weekEventsArray;
+    }
+
+
+    @Override
+    public Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
+        ArrayList<Event> weekEvents = new ArrayList<>();//getAlreadySavedWeekEvents(gc, currentShownGlobalEvents);
+        Event[] weekEventsArray = {};
+        if(weekEvents.size() > 0){
+            weekEventsArray = weekEvents.toArray(new Event[weekEvents.size()]);
+        }
+        else{
+            weekEventsArray = getWeeklyEventsFromWebUntis(gc, fieldOfStudy);
+        }
+        calendarView.showEventsOnCalendar(weekEventsArray);
+        return weekEventsArray;
+    }
+
+    private Event[] getWeeklyEventsFromWebUntis(GregorianCalendar gc, FieldOfStudy fieldOfStudy){
+        // todo remove example
+        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+
+        Event[] events = {};
+
+        GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
+        GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
+
+        String weekStartString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekStart);
+        String weekEndString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekEnd);
+        try{
+            HashMap<String, Course> allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result")); //todo public static, also teachers
+
+            JSONObject timetable = wuc.getTimetableForElement(fieldOfStudy.getUntisID(), ElementType.CLASS, weekStartString, weekEndString);
+
+            events = convertTimetableToEvents(allCourses, timetable);
+        }
+        catch (JSONException e){
+            Log.i("JSONException", e.toString());
+        }
+        return events;
+    }
+
+    private Event[] convertTimetableToEvents(HashMap<String, Course> allCourses, JSONObject timetable) throws JSONException{
+        ArrayList<Event> events = new ArrayList<>();
+        JSONObject response = timetable.getJSONObject("response");
+        JSONArray result = response.getJSONArray("result");
+
+        for(int i = 0; i < result.length(); i++){
+            JSONObject eventJSON = result.getJSONObject(i);
+            String courseID = eventJSON.getJSONArray("su").getJSONObject(0).getString("id");
+            events.add(new UniversityEvent(eventJSON, allCourses.get(courseID).getLongName()));
+        }
+
+        return events.toArray(new Event[]{});
+    }
+
+    private HashMap<String, Course> convertCoursesJSONToCourses(JSONArray jsonArray) throws JSONException{
+        HashMap<String, Course> allCourses = new HashMap<>();
+
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            Course course = new Course(jsonObject);
+            allCourses.put(course.getUntisID(), course);
+        }
+
+        return allCourses;
+    }
+
+    private FieldOfStudy[] convertClassesJSONToFieldsOfStudy(JSONArray jsonArray) throws JSONException{
+        FieldOfStudy[] allFieldsOfStudy = new FieldOfStudy[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            allFieldsOfStudy[i] = new FieldOfStudy(jsonObject);
+        }
+
+        return allFieldsOfStudy;
     }
 
     @Override
-    public Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy) {
-
+    public Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc) {
         return new Event[0];
     }
 
     @Override
-    public Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy) {
+    public Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         return new Event[0];
     }
 
@@ -97,7 +186,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
 
     @Override
-    public void createEvent(String name, String details, Date date, long startTime, long endTime) {
+    public void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime) {
 
     }
 
@@ -132,20 +221,23 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void login(String username, String password) {
+    public boolean login(String username, String password) {
 
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject jsonObject = wuc.authenticate();
+        boolean dataValid = false;
         Log.v("login", jsonObject.toString());
         try {
 
             sessionID = jsonObject.getJSONObject("result").getString("sessionId");
+            dbManager.loginDB();
+            dataValid = true;
 
         }catch (Exception e){
             Log.e("sessionID", e.toString());
         }
 
-
+        return dataValid;
     }
 
     @Override

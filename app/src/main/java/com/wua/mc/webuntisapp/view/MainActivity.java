@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // dbmgr.deleteDatabase();
 
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+        /*Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
         dbmgr.connectToDatabase();
 
         //---------------------------------------------------
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //--------------------------------------------------
-
+*/
 
         if (firstLogin){
             Button loginButton = (Button)this.findViewById(R.id.loginButton);
@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.v(u,p );
 
                         cp.login(username.getText().toString(), password.getText().toString());
-                        dbmgr.loginDB(username.getText().toString(), password.getText().toString());
-
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
              //           setContentView(R.layout.activity_main);
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             setContentView(activity_personal_calendar);
         }
-        Intent intent1 = new Intent(this, PersonalCalendarView.class);
+        Intent intent1 = new Intent(this, GlobalCalendarView.class);
         startActivity(intent1);
 
     }

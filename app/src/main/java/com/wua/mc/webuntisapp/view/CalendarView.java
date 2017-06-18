@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
+import com.wua.mc.webuntisapp.presenter.GregorianCalendarFactory;
 import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.text.ParseException;
@@ -38,7 +40,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 @TargetApi(3)
 // modifications by ray : added to the implememted interfaces the OnclickListener
@@ -94,6 +95,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     @Override
     abstract public void showToast(String text);
 
+    abstract protected void getWeeklyCalendar(GregorianCalendar calendar, FieldOfStudy fieldOfStudy);
+
     private void buildWeeklyCalendar(){
         setContentView(R.layout.activity_calendar);
 
@@ -122,7 +125,9 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 scrollViewLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 updateCalendar();
-                calendarDataManagement.getWeeklyCalendarPersonal(CalendarView.this, new Date(gregCal.getTimeInMillis()));
+
+                getWeeklyCalendar(gregCal, null);
+
 
             }
         });
@@ -140,18 +145,21 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     void showEventsOnDailyPlan(Event[] events){
-        EventBoxView[] eventBoxes = new EventBoxView[events.length];
+        ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
-        for(int i = 0; i < events.length; i++){
-            eventBoxes[i] = createEventBoxView(events[i]);
+        for(Event event: events){
+            if(event.isEventOnThisDay(gregCal)){
+                eventBoxes.add(createEventBoxView(event));
+            }
         }
 
-        calculateHorizontalNeighbours(eventBoxes);
+        EventBoxView[] eventBoxesArray = eventBoxes.toArray(new EventBoxView[eventBoxes.size()]);
+        calculateHorizontalNeighbours(eventBoxesArray);
 
-        adjustEventsWidths(eventBoxes);
+        adjustEventsWidths(eventBoxesArray);
 
-        calculateHorizontalPositions(eventBoxes);
+        calculateHorizontalPositions(eventBoxesArray);
 
         for(EventBoxView eventBox: eventBoxes){
             scrollViewLayout.addView(eventBox.getButton());
@@ -179,23 +187,22 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private void updateCalendar(){
         TextView dateView = (TextView) findViewById(R.id.date);
 
-        int year = getYear(gregCal);
-        int month = getMonth(gregCal);
-        int date =  getDayOfMonth(gregCal);
-        int dayOfWeek = getDayOfWeek(gregCal);
+        int year = gregCal.get(Calendar.YEAR);
+        int month = gregCal.get(Calendar.MONTH);
+        int date =  gregCal.get(Calendar.DAY_OF_MONTH);
+        int dayOfWeek = GregorianCalendarFactory.getDayOfWeek(gregCal);
 
-        GregorianCalendar temp = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"), Locale.GERMANY);
-        temp.set(year, month, date);
-        temp.add(Calendar.DAY_OF_MONTH, 1 - getDayOfWeek(temp));
+        GregorianCalendar temp = GregorianCalendarFactory.createGregorianCalendarCopy(gregCal);
+        temp.add(Calendar.DAY_OF_MONTH, 1 - GregorianCalendarFactory.getDayOfWeek(temp));
 
         for(int i = 1; i < 8; i++){
-            int tempDate = getDayOfMonth(temp);
+            int tempDate = temp.get(Calendar.DAY_OF_MONTH);
             String dateString = "" + tempDate;
             DayButton dayButton = getDayButtonFromDayOfWeek(i);
 
             dayButton.setDate(tempDate);
-            dayButton.setMonth(getMonth(temp));
-            dayButton.setYear(getYear(temp));
+            dayButton.setMonth(temp.get(Calendar.MONTH));
+            dayButton.setYear(temp.get(Calendar.YEAR));
 
             dayButton.getButton().setText(dateString);
 
@@ -218,28 +225,9 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     }
 
-    private int getDayOfWeek(GregorianCalendar calendar){
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        return dayOfWeek == Calendar.SUNDAY ? 7 : dayOfWeek - 1;
-    }
-
-    private int getDayOfMonth(GregorianCalendar calendar){
-        return calendar.get(Calendar.DAY_OF_MONTH);
-    }
-
-    private int getMonth(GregorianCalendar calendar){
-        return calendar.get(Calendar.MONTH);
-    }
-
-    private int getYear(GregorianCalendar calendar){
-        return calendar.get(Calendar.YEAR);
-    }
-
     private DayButton getDayButtonFromDayOfWeek(int dayOfWeek){
         return dayButtons[dayOfWeek - 1];
     }
-
-
 
     private void showNextDay(){
         gregCal.add(Calendar.DAY_OF_WEEK, 1);
@@ -292,7 +280,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     private void detectNeighboursInQuarter(int quarter, EventBoxView[] eventBoxes){
         ArrayList<EventBoxView> eventsOnThisQuarter = new ArrayList<>();
-
         for (EventBoxView eventBox : eventBoxes){
             if(eventBox.isOnQuarter(quarter)){
                 eventsOnThisQuarter.add(eventBox);
@@ -1038,5 +1025,13 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             return monthInt;
         }
 
+    }
+
+    public iCalendarPresenter.iCalendarDataManagement getCalendarDataManagement() {
+        return calendarDataManagement;
+    }
+
+    public iCalendarPresenter.iCalendarWebUntis getCalendarWebUntis() {
+        return calendarWebUntis;
     }
 }
