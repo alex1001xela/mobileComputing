@@ -28,8 +28,7 @@ import android.widget.TextView;
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Event;
-import com.wua.mc.webuntisapp.presenter.EventType;
-import com.wua.mc.webuntisapp.presenter.UniversityEvent;
+import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -45,7 +44,8 @@ import java.util.TimeZone;
 // modifications by ray : added to the implememted interfaces the OnclickListener
 abstract class CalendarView extends Activity implements iCalendarView ,OnClickListener{
 
-    private CalendarPresenter cp;
+    private iCalendarPresenter.iCalendarDataManagement calendarDataManagement;
+    private iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
     private GregorianCalendar gregCal;
 
     private int eventFieldHeight;
@@ -83,18 +83,9 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         super.onCreate(savedInstanceState);
 
         gregCal = new GregorianCalendar(Locale.GERMANY);
-
-
-        // EXAMPLE
-        String[] profs = {"Prof. John", "Prof. Jane"};
-        String[] rooms = {"9-101"};
-        Event[] events = {
-                new Event("0", "Event 0", "Bloooooo", new Date(0), new Date(900000), EventType.DEADLINE),
-                new Event("1", "Event 1", "Blaaaaaaa", new Date(0), new Date(9000000), EventType.DEADLINE),
-                new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
-                new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
-        };
-        buildWeeklyCalendar(events);
+        calendarDataManagement = new CalendarPresenter();
+        calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
+        buildWeeklyCalendar();
     }
 
     @Override
@@ -103,7 +94,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     @Override
     abstract public void showToast(String text);
 
-    private void buildWeeklyCalendar(final Event[] events){
+    private void buildWeeklyCalendar(){
         setContentView(R.layout.activity_calendar);
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
@@ -131,9 +122,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 scrollViewLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 updateCalendar();
-                if(events != null){
-                    showEventsOnDailyPlan(events);
-                }
+                calendarDataManagement.getWeeklyCalendarPersonal(CalendarView.this, new Date(gregCal.getTimeInMillis()));
 
             }
         });
@@ -151,7 +140,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     void showEventsOnDailyPlan(Event[] events){
-
         EventBoxView[] eventBoxes = new EventBoxView[events.length];
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -265,7 +253,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     private void showDate(int year, int month, int date){
         gregCal.set(year, month, date);
-        buildWeeklyCalendar(null);
+        buildWeeklyCalendar();
     }
 
     private String weekdayNumberToWord(int number){
@@ -317,7 +305,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     private void adjustEventsWidths(EventBoxView[] eventBoxes){
-
         for(EventBoxView eventBox: eventBoxes){
             eventBox.setWidth(eventFieldWidth / eventBox.getMaxHorizontalNeighbours());
         }
@@ -337,7 +324,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 eventsOnThisQuarter.add(eventBox);
             }
         }
-        Log.i("EIN", eventsOnThisQuarter.toString());
 
         int positionCounter = 0;
         for (int i = 0; i < eventsOnThisQuarter.size(); i++){

@@ -1,15 +1,17 @@
 package com.wua.mc.webuntisapp.presenter;
 
+import com.wua.mc.webuntisapp.view.iCalendarView;
+
 import java.util.Date;
 
-interface iCalendarPresenter {
+public interface iCalendarPresenter {
 
     interface iCalendarDataManagement {
 
 
-        Event[] getWeeklyCalendar(Date date, FieldOfStudy fieldOfStudy);
+        Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, Date date);
 
-        Event[] getMonthlyCalendar(Date date, FieldOfStudy fieldOfStudy);
+        Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, Date date);
 
         void getEventInformation(String eventID);
 
@@ -40,9 +42,9 @@ interface iCalendarPresenter {
     interface iCalendarWebUntis {
 
 
-        Event[] getWeeklyCalendar(Date date, FieldOfStudy fieldOfStudy);
+        Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy);
 
-        Event[] getMonthlyCalendar(Date date, FieldOfStudy fieldOfStudy);
+        Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy);
 
         FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
 

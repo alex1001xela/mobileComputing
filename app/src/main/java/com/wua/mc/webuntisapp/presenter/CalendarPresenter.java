@@ -3,20 +3,18 @@ package com.wua.mc.webuntisapp.presenter;
 import android.util.Log;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
+import com.wua.mc.webuntisapp.model.iDatabaseManager;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
+import com.wua.mc.webuntisapp.view.iCalendarView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
-    WebUntisClient wuc;
+    iWebUntisClient wuc;
+    iDatabaseManager dbManager;
     static String sessionID;
     private Event[] currentShownEvents;
 
@@ -26,16 +24,58 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     public CalendarPresenter() {
 
-        // Event()
+    }
+
+
+    @Override
+    public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, Date date){
+        wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+        /*if(isDateInCurrentEvents(date)){
+
+        }
+        else{
+            dbManager.getAllEventsDB();
+        }*/
+
+        // EXAMPLE
+        String[] profs = {"Prof. John", "Prof. Jane"};
+        String[] rooms = {"9-101"};
+        Event[] weekEvents = {
+                new Event("0", "Event 0", "Bloooooo", new Date(0), new Date(900000), EventType.DEADLINE),
+                new Event("1", "Event 1", "Blaaaaaaa", new Date(0), new Date(9000000), EventType.DEADLINE),
+                new Event("2", "Event 2", "Bluuuuuuu", new Date(8900000), new Date(26900000), EventType.DEADLINE),
+                new UniversityEvent("3", "Event 3", "Bleeeeeee", new Date(8900000), new Date(26900000), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5" )
+        };
+
+        calendarView.showEventsOnCalendar(weekEvents);
+
+        return weekEvents;
     }
 
     @Override
-    public Event[] getWeeklyCalendar(Date date, FieldOfStudy fieldOfStudy) {
+    public Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, Date date) {
+        return new Event[0];
+    }
+
+    private boolean isDateInCurrentEvents(Date date){
+        int i = 0;
+        boolean dateFound = false;
+        while(i < currentShownEvents.length && !dateFound){
+            Event event = currentShownEvents[i];
+            dateFound = event.getStartTime().getDate() == date.getDate();
+            i++;
+        }
+        return dateFound;
+    }
+
+    @Override
+    public Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy) {
+
         return new Event[0];
     }
 
     @Override
-    public Event[] getMonthlyCalendar(Date date, FieldOfStudy fieldOfStudy) {
+    public Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, Date date, FieldOfStudy fieldOfStudy) {
         return new Event[0];
     }
 
@@ -129,7 +169,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     private Event[] getCalendar(Date[] dateRange, FieldOfStudy fieldOfStudy) {
-        // TODO implement here
         return null;
     }
 
