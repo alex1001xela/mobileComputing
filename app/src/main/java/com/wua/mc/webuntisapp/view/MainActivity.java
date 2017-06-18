@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // Test Datenbank Verbindung
         //  DataBaseObject testMemo = new DataBaseObject("Mobile-Computing","Prof. Martinez", "red", 2);
         //  Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
-        // dbmgr.deleteDatabase();
+        //dbmgr.deleteDatabase();
 
 
         Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
         Log.d(LOG_TAG, "ID: " + dbData2.getEvent_id() + ", Inhalt event: " + dbData2.toString());
 
-        DataBaseObject dbData3 = dbmgr.createPersonalInformation(3);
+        DataBaseObject dbData3 = dbmgr.createPersonalInformation();
         Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
         Log.d(LOG_TAG, "ID: " + dbData3.getAuthenticated() + ", Inhalt personal: " + dbData3.toString());
         //----------------------------------------------------------------------
