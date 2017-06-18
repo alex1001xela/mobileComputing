@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,7 +91,22 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
-             //           setContentView(R.layout.activity_main);
+
+                        //by ray : to show the fileds of studies in a dropdown on the UI.
+                        Spinner spinner_courseOfStudy = (Spinner)findViewById(R.id.fieldOfStudySpinner);
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.field_of_study_array,android.R.layout.simple_spinner_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        spinner_courseOfStudy.setAdapter(adapter);
+                        // to show the semester as dropdown
+                        Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
+                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.field_of_study_array,android.R.layout.simple_spinner_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        spinner_semester.setAdapter(adapter2);
+
+
+
+
+                        //setContentView(R.layout.activity_main);
 
                     /*
 
