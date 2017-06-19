@@ -65,7 +65,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc){
 
-        dbManager = new DatabaseManager((Activity)calendarView);
+
 
         ArrayList<Event> weekEvents = getAlreadySavedWeekEvents(gc, currentShownPersonalEvents);
         Event[] weekEventsArray = {};
@@ -74,9 +74,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         }
         else{
-            dbManager.connectToDatabase();
-            List<DataBaseObject> allDatabaseObjects =  dbManager.getAlldatabaseObjects();
-            Log.i("DB_STUFF", allDatabaseObjects.toString());
+            dbManager = new DatabaseManager((Activity)calendarView);
+            weekEventsArray = getPersonalCalendar("startDate", "endDate");
         }
         calendarView.showEventsOnCalendar(weekEventsArray);
         return weekEventsArray;
@@ -85,21 +84,30 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
-        ArrayList<Event> weekEvents = new ArrayList<>();//getAlreadySavedWeekEvents(gc, currentShownGlobalEvents);
+        // todo remove example
+        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+
+
+        ArrayList<Event> weekEvents = new ArrayList<>();//getAlreadySavedWeekEvents(gc, currentShownGlobalEvents); //todo already saved
         Event[] weekEventsArray = {};
         if(weekEvents.size() > 0){
             weekEventsArray = weekEvents.toArray(new Event[weekEvents.size()]);
         }
         else{
-            weekEventsArray = getWeeklyEventsFromWebUntis(gc, fieldOfStudy);
+            GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
+            GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
+
+            String weekStartString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekStart);
+            String weekEndString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekEnd);
+
+            weekEventsArray = getGlobalCalendar(weekStartString, weekEndString, fieldOfStudy);
         }
         calendarView.showEventsOnCalendar(weekEventsArray);
         return weekEventsArray;
     }
 
-    private Event[] getWeeklyEventsFromWebUntis(GregorianCalendar gc, FieldOfStudy fieldOfStudy){
-        // todo remove example
-        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+    /*private Event[] getWeeklyEventsFromWebUntis(GregorianCalendar gc, FieldOfStudy fieldOfStudy){
+
 
         Event[] events = {};
 
@@ -119,7 +127,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             Log.i("JSONException", e.toString());
         }
         return events;
-    }
+    }*/
 
     private Event[] convertTimetableToEvents(HashMap<String, Course> allCourses, JSONObject timetable) throws JSONException{
         ArrayList<Event> events = new ArrayList<>();
@@ -260,8 +268,28 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return new Filter[0];
     }
 
-    private Event[] getCalendar(Date[] dateRange, FieldOfStudy fieldOfStudy) {
+    private Event[] getPersonalCalendar(String startDate, String endDate) {
+        dbManager.connectToDatabase();
+        List<DataBaseObject> allDatabaseObjects =  dbManager.getAlldatabaseObjects();
+        Log.i("DB_STUFF", allDatabaseObjects.toString());
+
+
         return null;
+    }
+
+    private Event[] getGlobalCalendar(String startDate, String endDate, FieldOfStudy fieldOfStudy) {
+        Event[] events = {};
+        try{
+            HashMap<String, Course> allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result")); //todo public static, also teachers
+
+            JSONObject timetable = wuc.getTimetableForElement(fieldOfStudy.getUntisID(), ElementType.CLASS, startDate, endDate);
+
+            events = convertTimetableToEvents(allCourses, timetable);
+        }
+        catch (JSONException e){
+            Log.i("JSONException", e.toString());
+        }
+        return events;
     }
 
 }
