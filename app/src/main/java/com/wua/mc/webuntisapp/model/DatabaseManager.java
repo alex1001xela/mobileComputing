@@ -110,16 +110,16 @@ public class DatabaseManager implements iDatabaseManager {
 
 	}
 
-	public DataBaseObject createPersonalInformation() {
+	public DataBaseObject createPersonalInformation(int authenticate) {
 
 		//Tabelle Personal_Information
 		ContentValues values = new ContentValues();
-		//values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
+		values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
 
 		//Personal information Tabelle
-	//	long insertId = database.insert(DatabaseHelper.TABLE_PERSONAL_INFORMATION, null, values);
+		long insertId = database.insert(DatabaseHelper.TABLE_PERSONAL_INFORMATION, null, values);
 
-		Cursor cursor = database.query(DatabaseHelper.TABLE_PERSONAL_INFORMATION, columns3, DatabaseHelper.COLUMNN_AUTHENTICATE , null, null, null, null);
+		Cursor cursor = database.query(DatabaseHelper.TABLE_PERSONAL_INFORMATION, columns3, DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + insertId , null, null, null, null);
 
 		cursor.moveToFirst();
 		DataBaseObject databaseObject = cursorTodatabaseObject3(cursor);

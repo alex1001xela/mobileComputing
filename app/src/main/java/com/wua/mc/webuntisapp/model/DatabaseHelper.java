@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_PERSONAL_INFORMATION =
             " CREATE TABLE " + TABLE_PERSONAL_INFORMATION  +
-                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER PRIMARY KEY" + ");";
+                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER DEFAULT 0" + ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
