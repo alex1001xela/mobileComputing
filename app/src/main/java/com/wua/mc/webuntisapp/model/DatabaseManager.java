@@ -232,12 +232,51 @@ public class DatabaseManager implements iDatabaseManager {
 
 		return dataBaseObjectList;
 	}
+	public DataBaseObject updateCourse(long id, String new_course_name, String new_course_lecturer, String new_course_color, int new_course_untis_id) {
+		ContentValues values = new ContentValues();
+		values.put(DatabaseHelper.COLUMN_COURSE_NAME, new_course_name);
+		values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, new_course_lecturer);
+		values.put(DatabaseHelper.COLUMN_COURSE_COLOR, new_course_color);
+		values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID, new_course_untis_id);
 
+		database.update(DatabaseHelper.TABLE_COURSE,
+				values,
+				DatabaseHelper.COLUMN_COURSE_ID + "=" + id,
+				null);
+
+		Cursor cursor = database.query(DatabaseHelper.TABLE_COURSE,
+				columns, DatabaseHelper.COLUMN_COURSE_ID + "=" + id,
+				null, null, null, null);
+
+		cursor.moveToFirst();
+		DataBaseObject dataBaseObject = cursorTodatabaseObject(cursor);
+		cursor.close();
+
+		return dataBaseObject;
+	}
 
 	@Override
 	public List<DataBaseObject> getAllEventsDB() {
-		return null;
+
+		List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
+
+		Cursor cursor2 = database.query(dbHelper.TABLE_EVENT,
+				columns2, null, null, null, null, null);
+
+		cursor2.moveToFirst();
+		DataBaseObject dataBaseObject2;
+
+		while(!cursor2.isAfterLast()) {
+			dataBaseObject2 = cursorTodatabaseObject2(cursor2);
+			dataBaseObjectList.add(dataBaseObject2);
+			Log.d(LOG_TAG, "ID: " + dataBaseObject2.getEvent_id() + ", Inhalt: " + dataBaseObject2.toString());
+			cursor2.moveToNext();
+		}
+		cursor2.close();
+
+		return dataBaseObjectList;
 	}
+
 
 	@Override
 	public DataBaseObject getCourseDB(String courseID) {
@@ -255,18 +294,34 @@ public class DatabaseManager implements iDatabaseManager {
 	}
 
 	@Override
-	public DataBaseObject setEventColorDB(String eventID, String color) {
-		return null;
+	public DataBaseObject setEventColorDB(long eventID, String color) {
+		ContentValues values = new ContentValues();
+		values.put(DatabaseHelper.COLUMN_EVENT_COLOR, color);
+
+		database.update(DatabaseHelper.TABLE_EVENT,
+				values,
+				DatabaseHelper.COLUMN_EVENT_ID + "=" + eventID,
+				null);
+
+		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT,
+				columns2, DatabaseHelper.COLUMN_EVENT_ID + "=" + eventID,
+				null, null, null, null);
+
+		cursor.moveToFirst();
+		DataBaseObject dataBaseObject = cursorTodatabaseObject2(cursor);
+		cursor.close();
+
+		return dataBaseObject;
 	}
 
 	@Override
-	public void deleteCourseDB(String courseID) {
-
+	public int deleteCourseDB(long course_id) {
+		return database.delete(DatabaseHelper.TABLE_COURSE, DatabaseHelper.COLUMN_COURSE_ID + "=" + course_id, null);
 	}
 
 	@Override
-	public void deleteEventDB(String eventID) {
-
+	public int deleteEventDB (long event_id){
+		return database.delete(DatabaseHelper.TABLE_EVENT, DatabaseHelper.COLUMN_EVENT_ID + "=" + event_id, null);
 	}
 
 	@Override

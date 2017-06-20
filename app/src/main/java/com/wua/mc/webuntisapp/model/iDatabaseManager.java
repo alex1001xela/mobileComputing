@@ -14,11 +14,11 @@ public interface iDatabaseManager {
 
 	DataBaseObject saveEventDB(Event event);
 
-	DataBaseObject setEventColorDB(String eventID, String color);
+	DataBaseObject setEventColorDB(long eventID, String color);
 
-	void deleteCourseDB(String courseID);
+	int deleteCourseDB(long course_id);
 
-	void deleteEventDB(String eventID);
+	int deleteEventDB(long event_id);
 
 	boolean loginDB();
 

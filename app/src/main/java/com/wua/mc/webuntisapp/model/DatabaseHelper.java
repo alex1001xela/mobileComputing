@@ -10,7 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
     public static final String DB_NAME = "StudentCalendarDB";
-    public static final int DB_VERSION = 9;
+    public static final int DB_VERSION = 11;
     public final Context myContext;
 
     public static final String TABLE_COURSE= "course";
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String TABLE_PERSONAL_INFORMATION= "personal_information";
 
-    public static final String COLUMNN_AUTHENTICATE = "authenticate";
+    public static final String COLUMNN_AUTHENTICATE = "authenticated";
 
     private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_PERSONAL_INFORMATION =
             " CREATE TABLE " + TABLE_PERSONAL_INFORMATION  +
-                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER NOT NULL AUTOINCREMENT" + ");";
+                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER PRIMARY KEY" + ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
