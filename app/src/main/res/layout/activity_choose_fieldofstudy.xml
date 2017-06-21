@@ -9,7 +9,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:text="Please choose your Field of Study"
+        android:text="Please choose your Faculty"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="#373D40"
         android:textSize="18sp"
@@ -39,7 +39,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/fieldOfStudySpinner"
         android:layout_marginBottom="262dp"
-        android:text="Please choose your Semester"
+        android:text="Please choose your Field of Study"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="#373D40"
         android:textSize="18sp" />
