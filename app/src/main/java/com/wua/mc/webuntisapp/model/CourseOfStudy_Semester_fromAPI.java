@@ -17,12 +17,14 @@ public class CourseOfStudy_Semester_fromAPI {
 
     JSONObject jsonObject = wuc.getFilters();
     //JSONArray jsonObject = wuc.getFilters();
+   // FieldOfStudy fos = new FieldOfStudy()
 
 
 
     public ArrayList Get_string_COS() throws JSONException{
 
         JSONArray result = jsonObject.getJSONObject("response").getJSONArray("result");
+
 
         System.out.print("getting the list of all names in from the result object");
         ArrayList<String> All_course_of_study = new ArrayList<>();
