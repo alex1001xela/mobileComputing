@@ -55,5 +55,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="34dp" />
 
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="confirm"
+        android:background="#424647"
+        android:textColor="@android:color/background_light"
+        android:layout_below="@+id/semesterSpinner"
+        android:layout_alignStart="@+id/semesterSpinner"
+        android:layout_marginTop="71dp" />
+
 
 </RelativeLayout>

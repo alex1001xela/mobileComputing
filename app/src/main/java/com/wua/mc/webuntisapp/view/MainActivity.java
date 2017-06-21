@@ -61,11 +61,12 @@ public class MainActivity extends AppCompatActivity {
         //dbmgr.deleteEventDB(3);
         //dbmgr.getAllEventsDB();
 
+/*
 
-
-        DataBaseObject dbData3 = dbmgr.createPersonalInformation(1);
+        DataBaseObject dbData3 = dbmgr.createPersonalInformation(3);
         Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
         Log.d(LOG_TAG, "ID: " + dbData3.getAuthenticated() + ", Inhalt personal: " + dbData3.toString());
+        */
 
 
         //----------------------------------------------------------------------
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         spinner_courseOfStudy.setAdapter(adapter);
                         // to show the semester as dropdown
                         Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
-                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.field_of_study_array,android.R.layout.simple_spinner_item);
+                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.semseters_array,android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                         spinner_semester.setAdapter(adapter2);
 
@@ -141,9 +142,10 @@ public class MainActivity extends AppCompatActivity {
         }else{
             setContentView(activity_personal_calendar);
         }
-        Intent intent1 = new Intent(this, GlobalCalendarView.class);
+        /*Intent intent1 = new Intent(this, GlobalCalendarView.class);
         startActivity(intent1);
 
+*/
     }
 
     @Override
