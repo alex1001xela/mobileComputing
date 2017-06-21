@@ -326,12 +326,44 @@ public class DatabaseManager implements iDatabaseManager {
 
 	@Override
 	public boolean loginDB() {
-		return true;
+
+        boolean isLoggedIn = true;
+        long authenticate = 1;
+
+        if(isLoggedIn){
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
+
+            database.update(DatabaseHelper.TABLE_PERSONAL_INFORMATION,
+                    values,
+                    DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + authenticate,
+                    null);
+        } else{
+            isLoggedIn = false;
+        }
+
+        return isLoggedIn;
 	}
 
 	@Override
-	public void logoutDB() {
+	public boolean logoutDB() {
 
+        boolean isLoggedIn = false;
+        long authenticate = 0;
+
+        if(!isLoggedIn){
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
+
+            database.update(DatabaseHelper.TABLE_PERSONAL_INFORMATION,
+                    values,
+                    DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + authenticate,
+                    null);
+        } else{
+            isLoggedIn = true;
+        }
+
+        return isLoggedIn;
 	}
 
 	@Override

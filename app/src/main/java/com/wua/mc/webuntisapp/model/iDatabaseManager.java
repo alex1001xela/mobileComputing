@@ -22,7 +22,7 @@ public interface iDatabaseManager {
 
 	boolean loginDB();
 
-	void logoutDB();
+	boolean logoutDB();
 
 	List<DataBaseObject> getUserDataDB();
 
