@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         spinner_courseOfStudy.setAdapter(adapter);
                         // to show the semester as dropdown
                         Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
-                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.semseters_array,android.R.layout.simple_spinner_item);
+                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.semesters_array,android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                         spinner_semester.setAdapter(adapter2);
 
