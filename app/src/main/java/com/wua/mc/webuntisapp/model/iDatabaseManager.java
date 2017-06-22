@@ -24,6 +24,6 @@ public interface iDatabaseManager {
 
 	boolean logoutDB();
 
-	List<DataBaseObject> getUserDataDB();
+	boolean isLoggedIn();
 
 }

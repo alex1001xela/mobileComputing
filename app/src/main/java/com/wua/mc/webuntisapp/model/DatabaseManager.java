@@ -21,11 +21,11 @@ public class DatabaseManager implements iDatabaseManager {
 	private static final String LOG_TAG = DatabaseManager.class.getSimpleName();
 
 	private String[] columns = {
-			dbHelper.COLUMN_COURSE_ID,
-			dbHelper.COLUMN_COURSE_NAME,
-			dbHelper.COLUMN_COURSE_LECTURER,
-			dbHelper.COLUMN_COURSE_COLOR,
-			dbHelper.COLUMN_COURSE_UNTIS_ID,
+			DatabaseHelper.COLUMN_COURSE_ID,
+			DatabaseHelper.COLUMN_COURSE_NAME,
+			DatabaseHelper.COLUMN_COURSE_LECTURER,
+			DatabaseHelper.COLUMN_COURSE_COLOR,
+			DatabaseHelper.COLUMN_COURSE_UNTIS_ID,
 	};
 
 	private String[] columns2 = {
@@ -189,11 +189,11 @@ public class DatabaseManager implements iDatabaseManager {
 		Log.d(LOG_TAG, "methode liste drin");
 		List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
 
-		Cursor cursor = database.query(dbHelper.TABLE_COURSE,
+		Cursor cursor = database.query(DatabaseHelper.TABLE_COURSE,
 				columns, null, null, null, null, null);
-		Cursor cursor2 = database.query(dbHelper.TABLE_EVENT,
+		Cursor cursor2 = database.query(DatabaseHelper.TABLE_EVENT,
 				columns2, null, null, null, null, null);
-		Cursor cursor3 = database.query(dbHelper.TABLE_PERSONAL_INFORMATION,
+		Cursor cursor3 = database.query(DatabaseHelper.TABLE_PERSONAL_INFORMATION,
 				columns3, null, null, null, null, null);
 
 
@@ -260,7 +260,7 @@ public class DatabaseManager implements iDatabaseManager {
 
 		List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
 
-		Cursor cursor2 = database.query(dbHelper.TABLE_EVENT,
+		Cursor cursor2 = database.query(DatabaseHelper.TABLE_EVENT,
 				columns2, null, null, null, null, null);
 
 		cursor2.moveToFirst();
@@ -336,8 +336,9 @@ public class DatabaseManager implements iDatabaseManager {
 
             database.update(DatabaseHelper.TABLE_PERSONAL_INFORMATION,
                     values,
-                    DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + authenticate,
+                    null,
                     null);
+
         } else{
             isLoggedIn = false;
         }
@@ -367,15 +368,34 @@ public class DatabaseManager implements iDatabaseManager {
 	}
 
 	@Override
-	public List<DataBaseObject> getUserDataDB() {
-		return null;
+	public boolean isLoggedIn() {
+		Cursor cursor = database.query(DatabaseHelper.TABLE_PERSONAL_INFORMATION,
+				columns3, null, null, null, null, null);
+
+		List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
+		cursor.moveToFirst();
+
+		if(cursor.isAfterLast()){
+			ContentValues values = new ContentValues();
+			values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, 0);
+			database.insert(DatabaseHelper.TABLE_PERSONAL_INFORMATION, null, values);
+		}
+		DataBaseObject dataBaseObject3;
+		while(!cursor.isAfterLast()) {
+			dataBaseObject3 = cursorTodatabaseObject3(cursor);
+			dataBaseObjectList.add(dataBaseObject3);
+			cursor.moveToNext();
+		}
+		cursor.close();
+
+		return dataBaseObjectList.size() > 0 && dataBaseObjectList.get(0).getAuthenticated() == 1L;
 	}
 
 
     @SuppressLint("NewApi")
     public void deleteDatabase(){
         try{
-            File outFile =dbHelper.myContext.getDatabasePath(dbHelper.DB_NAME);
+            File outFile =dbHelper.myContext.getDatabasePath(DatabaseHelper.DB_NAME);
             database.deleteDatabase(outFile);
             Log.d(LOG_TAG, "Datenbank wurde erfolgreich geloescht!");
             database.close();

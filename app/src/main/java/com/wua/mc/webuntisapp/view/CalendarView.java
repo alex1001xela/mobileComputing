@@ -84,7 +84,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         super.onCreate(savedInstanceState);
 
         gregCal = new GregorianCalendar(Locale.GERMANY);
-        calendarDataManagement = new CalendarPresenter();
+        calendarDataManagement = new CalendarPresenter(this);
         calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
         buildWeeklyCalendar();
     }

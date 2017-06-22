@@ -52,6 +52,8 @@ public interface iCalendarPresenter {
         Filter[] getFilters();
 
         boolean areLoginDataValid(String username, String password);
+
+        boolean isAlreadyLoggedIn();
     }
 
 

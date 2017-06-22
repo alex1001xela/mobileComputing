@@ -3,7 +3,6 @@ package com.wua.mc.webuntisapp.presenter;
 import android.app.Activity;
 import android.util.Log;
 
-import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.model.ElementType;
 import com.wua.mc.webuntisapp.model.WebUntisClient;
@@ -16,29 +15,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
-    iWebUntisClient wuc;
-    DatabaseManager dbManager;
-    static String sessionID;
-    String[] profs = {"Prof. John", "Prof. Jane"};
-    String[] rooms = {"9-101"};
-    private Event[] currentShownPersonalEvents =  {new Event("0", "Event 0", "Bloooooo", new Date(1497672000000L), new Date(1497693600000L), EventType.DEADLINE),
-                    new UniversityEvent("1", "Event 1", "Blaaaaaaa", new Date(1497672000000L), new Date(1497700800000L), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5")};
+    private iWebUntisClient wuc;
+    private DatabaseManager dbManager;
 
-    private Event[] currentShownGlobalEvents =  {new Event("2", "Event 2", "Bleeeeee", new Date(1497672000000L), new Date(1497693600000L), EventType.DEADLINE),
-            new UniversityEvent("3", "Event 3", "Bluuuuuu", new Date(1497672000000L), new Date(1497700800000L), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5")};
+    private Event[] currentShownPersonalEvents =  {};
+    private Event[] currentShownGlobalEvents =  {};
 
     private Filter[] filters;
 
     private FieldOfStudy[] fieldsOfStudy;
 
-    public CalendarPresenter() {
+    public CalendarPresenter(Activity calendarView) {
+        dbManager = new DatabaseManager(calendarView);
         wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
     }
 
@@ -65,8 +58,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc){
 
-
-
         ArrayList<Event> weekEvents = getAlreadySavedWeekEvents(gc, currentShownPersonalEvents);
         Event[] weekEventsArray = {};
         if(weekEvents.size() > 0){
@@ -74,7 +65,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         }
         else{
-            dbManager = new DatabaseManager((Activity)calendarView);
             weekEventsArray = getPersonalCalendar("startDate", "endDate");
         }
         calendarView.showEventsOnCalendar(weekEventsArray);
@@ -105,29 +95,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         calendarView.showEventsOnCalendar(weekEventsArray);
         return weekEventsArray;
     }
-
-    /*private Event[] getWeeklyEventsFromWebUntis(GregorianCalendar gc, FieldOfStudy fieldOfStudy){
-
-
-        Event[] events = {};
-
-        GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
-        GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
-
-        String weekStartString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekStart);
-        String weekEndString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekEnd);
-        try{
-            HashMap<String, Course> allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result")); //todo public static, also teachers
-
-            JSONObject timetable = wuc.getTimetableForElement(fieldOfStudy.getUntisID(), ElementType.CLASS, weekStartString, weekEndString);
-
-            events = convertTimetableToEvents(allCourses, timetable);
-        }
-        catch (JSONException e){
-            Log.i("JSONException", e.toString());
-        }
-        return events;
-    }*/
 
     private Event[] convertTimetableToEvents(HashMap<String, Course> allCourses, JSONObject timetable) throws JSONException{
         ArrayList<Event> events = new ArrayList<>();
@@ -178,39 +145,46 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void getEventInformation(String eventID) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
     public void addCourse(String courseID) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
     public void addEvent(String eventID){
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
         
     }
 
 
     @Override
     public void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
     public void deleteEvent(String eventID) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
     public void deleteCourse(String courseID) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
     public void setEventColor(String color, String eventID) {
-
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
@@ -234,15 +208,16 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         wuc = new WebUntisClient(username, password, "HS+Reutlingen");
         JSONObject jsonObject = wuc.authenticate();
         boolean dataValid = false;
-        Log.v("login", jsonObject.toString());
         try {
 
-            sessionID = jsonObject.getJSONObject("result").getString("sessionId");
+            jsonObject.getJSONObject("result").getString("sessionId");
+            dbManager.connectToDatabase();
             dbManager.loginDB();
             dataValid = true;
+            dbManager.disconnectFromDatabase();
 
         }catch (Exception e){
-            Log.e("sessionID", e.toString());
+            Log.e("no sessionID", e.toString());
         }
 
         return dataValid;
@@ -250,12 +225,23 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public boolean areLoginDataValid(String username, String password){
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
         return true;
     }
 
     @Override
-    public void logout() {
+    public boolean isAlreadyLoggedIn(){
+        dbManager.connectToDatabase();
+        boolean isLoggedIn = dbManager.isLoggedIn();
+        dbManager.disconnectFromDatabase();
+        return isLoggedIn;
+    }
 
+    @Override
+    public void logout() {
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
@@ -269,10 +255,11 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     private Event[] getPersonalCalendar(String startDate, String endDate) {
-        dbManager.connectToDatabase();
+        /*dbManager.connectToDatabase();
         List<DataBaseObject> allDatabaseObjects =  dbManager.getAlldatabaseObjects();
-        Log.i("DB_STUFF", allDatabaseObjects.toString());
-
+        Log.i("DB_STUFF", allDatabaseObjects.toString());*/
+        dbManager.connectToDatabase();
+        dbManager.disconnectFromDatabase();
 
         return null;
     }

@@ -9,10 +9,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class WebUntisClient implements iWebUntisClient {
 
@@ -149,13 +150,13 @@ public class WebUntisClient implements iWebUntisClient {
 		return response;
 	}
 
-	private JSONObject httpPostJSON(URL url, JSONObject jsonData){
-		HttpURLConnection connection = null;
+	private JSONObject httpsPostJSON(URL url, JSONObject jsonData){
+		HttpsURLConnection connection = null;
 		String line;
 		String jsonString = "";
 		JSONObject response = null;
 		try {
-			connection = (HttpURLConnection) url.openConnection();
+			connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -207,7 +208,7 @@ public class WebUntisClient implements iWebUntisClient {
 		@Override
 		public void run() {
 			JSONObject response = null;
-			JSONObject session;
+			JSONObject session = null;
 			JSONObject jsonData;
 			String sessionId;
 			try {
@@ -226,12 +227,12 @@ public class WebUntisClient implements iWebUntisClient {
 					jsonData.put("params", params);
 
 					response.put("session", sessionId);
-					response.put("response", wuc.httpPostJSON(url, jsonData));
+					response.put("response", wuc.httpsPostJSON(url, jsonData));
 					wuc.endSession(sessionId);
 				}
 			}
 			catch (JSONException error){
-				//Log.i("JSONException", error.toString());
+				this.response = session;
 			}
 			catch (MalformedURLException error){
 				//Log.i("MalformedURLException", error.toString());
@@ -267,7 +268,7 @@ public class WebUntisClient implements iWebUntisClient {
 		catch (JSONException error){
 			Log.i("JSONException", error.toString());
 		}
-		return httpPostJSON(url, authenticationData);
+		return httpsPostJSON(url, authenticationData);
 	}
 
 	private JSONObject endSession(String sessionID){
@@ -284,6 +285,6 @@ public class WebUntisClient implements iWebUntisClient {
 		catch (MalformedURLException e){
 			Log.i("MalformedURLException", e.toString());
 		}
-		return httpPostJSON(url, jsonData);
+		return httpsPostJSON(url, jsonData);
 	}
 }
