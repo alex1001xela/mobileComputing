@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.model;
 
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface iDatabaseManager {
 	DataBaseObject saveEventDB(Event event);
 
 	DataBaseObject setEventColorDB(long eventID, String color);
+
+	DataBaseObject saveCourseDB(UniversityEvent event);
 
 	int deleteCourseDB(long course_id);
 

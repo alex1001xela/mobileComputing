@@ -32,4 +32,8 @@ public class GlobalCalendarView extends CalendarView {
         getCalendarWebUntis().getWeeklyCalendarGlobal(this, calendar, fieldOfStudy);
     }
 
+    @Override
+    protected String getEventInformation(String eventID) {
+        return getCalendarWebUntis().getEventInformationGlobal(eventID);
+    }
 }

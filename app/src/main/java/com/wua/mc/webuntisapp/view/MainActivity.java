@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     CalendarPresenter cp = new CalendarPresenter(this);
 	TextView event;
-    public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else{
-            Intent intent1 = new Intent(this, GlobalCalendarView.class);
+            Intent intent1 = new Intent(this, PersonalCalendarView.class);
             startActivity(intent1);
         }
     }
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.logout:
+                cp.logout();
                 Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
                 return true;
 

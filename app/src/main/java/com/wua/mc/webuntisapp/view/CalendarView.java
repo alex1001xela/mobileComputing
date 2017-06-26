@@ -97,6 +97,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     abstract protected void getWeeklyCalendar(GregorianCalendar calendar, FieldOfStudy fieldOfStudy);
 
+    abstract protected String getEventInformation(String eventID);
+
     private void buildWeeklyCalendar(){
         setContentView(R.layout.activity_calendar);
 
@@ -138,7 +140,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
             @Override
             public void onClick(View v) {
-                schowMonthlyViewCalenar();
+                showMonthlyViewCalendar();
 
             }
         });
@@ -354,7 +356,9 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed(){ //todo why overriding that function?
+
+        getEventInformation("1");
 
         boolean add = true;
 
@@ -363,6 +367,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             View view = li.inflate(R.layout.activity_event_menu_alert, null);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
+            TextView courseInformation = (TextView) view.findViewById(R.id.textCourse);
             Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
             Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
             Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
@@ -644,7 +649,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     // meine methods come bellow here.-----------------------------------------------------------
 
 
-    public void schowMonthlyViewCalenar()
+    public void showMonthlyViewCalendar()
     {
         setContentView(R.layout.monthly_calendar_view);
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,56 +60,9 @@ public class DatabaseManager implements iDatabaseManager {
 		Log.d(LOG_TAG, "Datenbank mit Hilfe des DbHelpers geschlossen.");
 	}
 
-	public DataBaseObject createCourse(String course_name, String course_lecturer, String course_color, int course_untis_id) {
-		//Tabelle Course
-		ContentValues values = new ContentValues();
-		//values.put(DatabaseHelper.COLUMN_COURSE_ID, course_id);
-		values.put(DatabaseHelper.COLUMN_COURSE_NAME, course_name);
-		values.put(DatabaseHelper.COLUMN_COURSE_LECTURER,course_lecturer);
-		values.put(DatabaseHelper.COLUMN_COURSE_COLOR, course_color);
-		values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID,course_untis_id);
-
-		//Course Tabelle
-		long insertId = database.insert(DatabaseHelper.TABLE_COURSE, null, values);
-		DataBaseObject databaseObject;
-		Cursor cursor = null;
-		cursor = database.query(DatabaseHelper.TABLE_COURSE, columns, DatabaseHelper.COLUMN_COURSE_ID + "=" + insertId, null, null, null, null);
-		cursor.moveToFirst();
-		databaseObject = cursorTodatabaseObject(cursor);
-		cursor.close();
-
-		return databaseObject;
-
-	}
-
-	public DataBaseObject createEvent(String event_room, int event_timestamp_start, int event_timestamp_end, String event_name, String event_type, int course_id,
-									  String event_color) {
-
-		//Tabelle Event
-		ContentValues values = new ContentValues();
-		//values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
-		values.put(DatabaseHelper.COLUMN_EVENT_ROOM, event_room);
-		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START,event_timestamp_start);
-		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, event_timestamp_end);
-		values.put(DatabaseHelper.COLUMN_EVENT_NAME, event_name);
-		values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event_type);
-		values.put(DatabaseHelper.COLUMN_COURSE_ID, course_id);
-		values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event_color);
 
 
-		//Event
 
-		long insertId = database.insert(DatabaseHelper.TABLE_EVENT, null, values);
-
-		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT, columns2, DatabaseHelper.COLUMN_EVENT_ID + "=" + insertId, null, null, null, null);
-
-		cursor.moveToFirst();
-		DataBaseObject databaseObject = cursorTodatabaseObject2(cursor);
-		cursor.close();
-
-		return databaseObject;
-
-	}
 
 	public DataBaseObject createPersonalInformation(int authenticate) {
 
@@ -122,14 +76,14 @@ public class DatabaseManager implements iDatabaseManager {
 		Cursor cursor = database.query(DatabaseHelper.TABLE_PERSONAL_INFORMATION, columns3, DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + insertId , null, null, null, null);
 
 		cursor.moveToFirst();
-		DataBaseObject databaseObject = cursorTodatabaseObject3(cursor);
+		DataBaseObject databaseObject = cursorToPersonalDatabaseObject(cursor);
 		cursor.close();
 
 		return databaseObject;
 
 	}
 
-	private DataBaseObject cursorTodatabaseObject(Cursor cursor) {
+	private DataBaseObject cursorToCourseDatabaseObject(Cursor cursor) {
 
 			int idIndex_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_COURSE_ID);
 			int courseName_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_COURSE_NAME);
@@ -150,7 +104,7 @@ public class DatabaseManager implements iDatabaseManager {
 		return databaseObject;
 	}
 
-	private DataBaseObject cursorTodatabaseObject2(Cursor cursor) {
+	private DataBaseObject cursorToEventDatabaseObject(Cursor cursor) {
 		int eventId_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_ID);
 		int eventRoom_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_ROOM);
 		int eventTimestampStart_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START);
@@ -175,7 +129,7 @@ public class DatabaseManager implements iDatabaseManager {
 		return databaseObject;
 	}
 
-	private DataBaseObject cursorTodatabaseObject3(Cursor cursor) {
+	private DataBaseObject cursorToPersonalDatabaseObject(Cursor cursor) {
 		int authenticated_ = cursor.getColumnIndex(DatabaseHelper.COLUMNN_AUTHENTICATE);
 
 		long authenticated = cursor.getInt(authenticated_);
@@ -207,7 +161,7 @@ public class DatabaseManager implements iDatabaseManager {
 		DataBaseObject dataBaseObject3;
 
 		while(!cursor.isAfterLast()) {
-			dataBaseObject = cursorTodatabaseObject(cursor);
+			dataBaseObject = cursorToCourseDatabaseObject(cursor);
 			dataBaseObjectList.add(dataBaseObject);
 			Log.d(LOG_TAG, "ID: " + dataBaseObject.getCourse_id() + ", Inhalt: " + dataBaseObject.toString());
 			cursor.moveToNext();
@@ -215,7 +169,7 @@ public class DatabaseManager implements iDatabaseManager {
 		cursor.close();
 
 		while(!cursor2.isAfterLast()) {
-			dataBaseObject2 = cursorTodatabaseObject2(cursor2);
+			dataBaseObject2 = cursorToEventDatabaseObject(cursor2);
 			dataBaseObjectList.add(dataBaseObject2);
 			Log.d(LOG_TAG, "ID: " + dataBaseObject2.getEvent_id() + ", Inhalt: " + dataBaseObject2.toString());
 			cursor2.moveToNext();
@@ -223,7 +177,7 @@ public class DatabaseManager implements iDatabaseManager {
 		cursor2.close();
 
 		while(!cursor3.isAfterLast()) {
-			dataBaseObject3 = cursorTodatabaseObject3(cursor3);
+			dataBaseObject3 = cursorToPersonalDatabaseObject(cursor3);
 			dataBaseObjectList.add(dataBaseObject3);
 			Log.d(LOG_TAG, "ID: " + dataBaseObject3.getAuthenticated() + ", Inhalt: " + dataBaseObject3.toString());
 			cursor3.moveToNext();
@@ -249,7 +203,7 @@ public class DatabaseManager implements iDatabaseManager {
 				null, null, null, null);
 
 		cursor.moveToFirst();
-		DataBaseObject dataBaseObject = cursorTodatabaseObject(cursor);
+		DataBaseObject dataBaseObject = cursorToCourseDatabaseObject(cursor);
 		cursor.close();
 
 		return dataBaseObject;
@@ -260,19 +214,18 @@ public class DatabaseManager implements iDatabaseManager {
 
 		List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
 
-		Cursor cursor2 = database.query(DatabaseHelper.TABLE_EVENT,
+		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT,
 				columns2, null, null, null, null, null);
 
-		cursor2.moveToFirst();
+		cursor.moveToFirst();
 		DataBaseObject dataBaseObject2;
 
-		while(!cursor2.isAfterLast()) {
-			dataBaseObject2 = cursorTodatabaseObject2(cursor2);
+		while(!cursor.isAfterLast()) {
+			dataBaseObject2 = cursorToEventDatabaseObject(cursor);
 			dataBaseObjectList.add(dataBaseObject2);
-			Log.d(LOG_TAG, "ID: " + dataBaseObject2.getEvent_id() + ", Inhalt: " + dataBaseObject2.toString());
-			cursor2.moveToNext();
+			cursor.moveToNext();
 		}
-		cursor2.close();
+		cursor.close();
 
 		return dataBaseObjectList;
 	}
@@ -280,17 +233,110 @@ public class DatabaseManager implements iDatabaseManager {
 
 	@Override
 	public DataBaseObject getCourseDB(String courseID) {
-		return null;
+		DataBaseObject dataBaseObject = null;
+		boolean courseFound = false;
+		long courseIDLong = Long.parseLong(courseID);
+		Cursor cursor = database.query(DatabaseHelper.TABLE_COURSE,
+				columns2, null, null, null, null, null);
+
+		cursor.moveToFirst();
+
+		while(!cursor.isAfterLast() && !courseFound) {
+			dataBaseObject = cursorToCourseDatabaseObject(cursor);
+			if(dataBaseObject.getCourse_id() == courseIDLong){
+				courseFound = true;
+			}
+			cursor.moveToNext();
+		}
+		cursor.close();
+
+		return dataBaseObject;
 	}
 
 	@Override
 	public DataBaseObject getEventDB(String eventID) {
-		return null;
+		DataBaseObject dataBaseObject = null;
+		boolean eventFound = false;
+		long eventIDLong = Long.parseLong(eventID);
+		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT,
+				columns2, null, null, null, null, null);
+
+		cursor.moveToFirst();
+
+		while(!cursor.isAfterLast() && !eventFound) {
+			dataBaseObject = cursorToEventDatabaseObject(cursor);
+			if(dataBaseObject.getEvent_id() == eventIDLong){
+				eventFound = true;
+			}
+			cursor.moveToNext();
+		}
+		cursor.close();
+
+		return dataBaseObject;
+	}
+
+	public DataBaseObject createEvent(String event_room, int event_timestamp_start, int event_timestamp_end, String event_name, String event_type, int course_id,
+									  String event_color) {
+
+		//Tabelle Event
+		ContentValues values = new ContentValues();
+		//values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
+		values.put(DatabaseHelper.COLUMN_EVENT_ROOM, event_room);
+		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START,event_timestamp_start);
+		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, event_timestamp_end);
+		values.put(DatabaseHelper.COLUMN_EVENT_NAME, event_name);
+		values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event_type);
+		values.put(DatabaseHelper.COLUMN_COURSE_ID, course_id);
+		values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event_color);
+
+
+		//Event
+
+		long insertId = database.insert(DatabaseHelper.TABLE_EVENT, null, values);
+
+		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT, columns2, DatabaseHelper.COLUMN_EVENT_ID + "=" + insertId, null, null, null, null);
+
+		cursor.moveToFirst();
+		DataBaseObject databaseObject = cursorToEventDatabaseObject(cursor);
+		cursor.close();
+
+		return databaseObject;
+
 	}
 
 	@Override
 	public DataBaseObject saveEventDB(Event event) {
-		return null;
+		//Tabelle Event
+		ContentValues values = new ContentValues();
+		String room = "";
+		String untisID = "";
+
+		//values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
+
+		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, event.getStartTime().getTime());
+		values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, event.getEndTime().getTime());
+		values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
+		values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event.getEventType().toString());
+		values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());
+		if(event instanceof UniversityEvent){
+			room = ((UniversityEvent)event).getRooms()[0];
+			untisID = ((UniversityEvent)event).getUntisID();
+		}
+		values.put(DatabaseHelper.COLUMN_EVENT_ROOM, room);
+		values.put(DatabaseHelper.COLUMN_COURSE_ID, untisID); //todo could be null
+
+
+
+		//Event
+
+		long insertId = database.insert(DatabaseHelper.TABLE_EVENT, null, values);
+
+		Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT, columns2, DatabaseHelper.COLUMN_EVENT_ID + "=" + insertId, null, null, null, null);
+
+		cursor.moveToFirst();
+		DataBaseObject databaseObject = cursorToEventDatabaseObject(cursor);
+		cursor.close();
+		return databaseObject;
 	}
 
 	@Override
@@ -308,10 +354,54 @@ public class DatabaseManager implements iDatabaseManager {
 				null, null, null, null);
 
 		cursor.moveToFirst();
-		DataBaseObject dataBaseObject = cursorTodatabaseObject2(cursor);
+		DataBaseObject dataBaseObject = cursorToEventDatabaseObject(cursor);
 		cursor.close();
 
 		return dataBaseObject;
+	}
+
+	public DataBaseObject createCourse(String course_name, String course_lecturer, String course_color, int course_untis_id) {
+		//Tabelle Course
+		ContentValues values = new ContentValues();
+		//values.put(DatabaseHelper.COLUMN_COURSE_ID, course_id);
+		values.put(DatabaseHelper.COLUMN_COURSE_NAME, course_name);
+		values.put(DatabaseHelper.COLUMN_COURSE_LECTURER,course_lecturer);
+		values.put(DatabaseHelper.COLUMN_COURSE_COLOR, course_color);
+		values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID,course_untis_id);
+
+		//Course Tabelle
+		long insertId = database.insert(DatabaseHelper.TABLE_COURSE, null, values);
+		DataBaseObject databaseObject;
+		Cursor cursor = null;
+		cursor = database.query(DatabaseHelper.TABLE_COURSE, columns, DatabaseHelper.COLUMN_COURSE_ID + "=" + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		databaseObject = cursorToCourseDatabaseObject(cursor);
+		cursor.close();
+
+		return databaseObject;
+
+	}
+
+	@Override
+	public DataBaseObject saveCourseDB(UniversityEvent event) {
+		//Tabelle Course
+		ContentValues values = new ContentValues();
+		//values.put(DatabaseHelper.COLUMN_COURSE_ID, course_id);
+		values.put(DatabaseHelper.COLUMN_COURSE_NAME, event.getName());
+		values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, event.getLecturers()[0]);
+		values.put(DatabaseHelper.COLUMN_COURSE_COLOR, event.getColor());
+		values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID, event.getCourseID());
+
+		//Course Tabelle
+		long insertId = database.insert(DatabaseHelper.TABLE_COURSE, null, values);
+		DataBaseObject databaseObject;
+		Cursor cursor = null;
+		cursor = database.query(DatabaseHelper.TABLE_COURSE, columns, DatabaseHelper.COLUMN_COURSE_ID + "=" + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		databaseObject = cursorToCourseDatabaseObject(cursor);
+		cursor.close();
+
+		return databaseObject;
 	}
 
 	@Override
@@ -382,7 +472,7 @@ public class DatabaseManager implements iDatabaseManager {
 		}
 		DataBaseObject dataBaseObject3;
 		while(!cursor.isAfterLast()) {
-			dataBaseObject3 = cursorTodatabaseObject3(cursor);
+			dataBaseObject3 = cursorToPersonalDatabaseObject(cursor);
 			dataBaseObjectList.add(dataBaseObject3);
 			cursor.moveToNext();
 		}

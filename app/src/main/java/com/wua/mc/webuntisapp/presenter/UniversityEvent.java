@@ -2,6 +2,8 @@ package com.wua.mc.webuntisapp.presenter;
 
 import android.util.Log;
 
+import com.wua.mc.webuntisapp.model.DataBaseObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +44,12 @@ public class UniversityEvent extends Event {
 		}
 	}
 
+	public UniversityEvent(DataBaseObject dbObject){
+		super(dbObject);
+		this.untisID = "" + dbObject.getCourse_untis_id();
+		this.courseID = "" + dbObject.getCourse_id();
+	}
+
 	private String[] convertRoomsJSONToRooms(JSONArray jsonArray) throws JSONException{
 		String[] rooms = new String[jsonArray.length()];
 		for(int i = 0; i < jsonArray.length(); i++){
@@ -58,6 +66,26 @@ public class UniversityEvent extends Event {
 			lecturers[i] = lecturer.getString("id");
 		}
 		return lecturers;
+	}
+
+	public String getUntisID() {
+		return untisID;
+	}
+
+	public String getCourseID() {
+		return courseID;
+	}
+
+	public String[] getLecturers() {
+		return lecturers;
+	}
+
+	public String[] getRooms() {
+		return rooms;
+	}
+
+	public String getSemester() {
+		return semester;
 	}
 
 	@Override

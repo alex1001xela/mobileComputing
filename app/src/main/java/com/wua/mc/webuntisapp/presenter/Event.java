@@ -2,6 +2,8 @@ package com.wua.mc.webuntisapp.presenter;
 
 import android.util.Log;
 
+import com.wua.mc.webuntisapp.model.DataBaseObject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +19,7 @@ public class Event {
 	private Date startTime;
 	private Date endTime;
 	private EventType eventType;
+	private String color = "";
 
 	public Event(String id, String name, String details, Date startTime, Date endTime, EventType eventType) {
 		this.id = id;
@@ -37,6 +40,15 @@ public class Event {
 		catch (JSONException e){
 			Log.i("JSONException", e.toString());
 		}
+	}
+
+	public Event(DataBaseObject dbObject){
+		this.id = "" + dbObject.getEvent_id();
+		this.name = dbObject.getEvent_name();
+		this.startTime = new Date(dbObject.getEvent_timestamp_start());
+		this.endTime = new Date(dbObject.getEvent_timestamp_end());
+		this.eventType = EventType.valueOf(dbObject.getEvent_type());
+		this.color = dbObject.getEvent_color();
 	}
 
 	private Date[] webUntisDateToDates(JSONObject jsonObject) throws JSONException {
@@ -92,6 +104,10 @@ public class Event {
 
 	public EventType getEventType() {
 		return eventType;
+	}
+
+	public String getColor() {
+		return color;
 	}
 
 	public boolean isEventOnThisDay (GregorianCalendar calendar){

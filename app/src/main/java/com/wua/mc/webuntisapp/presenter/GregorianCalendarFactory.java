@@ -33,14 +33,38 @@ public abstract class GregorianCalendarFactory { //todo class diagram
     public static GregorianCalendar getStartOfWeek(GregorianCalendar gc){
         GregorianCalendar temp = createGregorianCalendarCopy(gc);
         temp.add(Calendar.DAY_OF_MONTH, 1 - getDayOfWeek(temp));
-        return createGregorianCalendarCopy(temp);
+        return temp;
     }
 
     public static GregorianCalendar getEndOfWeek(GregorianCalendar gc){
         GregorianCalendar temp = createGregorianCalendarCopy(gc);
         temp.add(Calendar.DAY_OF_MONTH, 1 - getDayOfWeek(temp));
         temp.add(Calendar.DAY_OF_MONTH, 6);
-        return createGregorianCalendarCopy(temp);
+        return temp;
+    }
+
+    public static GregorianCalendar[] getStartAndEndOfMonth(GregorianCalendar gc){
+        GregorianCalendar[] startAndEnd = new GregorianCalendar[2];
+        startAndEnd[0] = getStartOfMonth(gc);
+        startAndEnd[1] = getEndOfMonth(gc);
+        return startAndEnd;
+    }
+
+    public static GregorianCalendar getStartOfMonth(GregorianCalendar gc){
+        GregorianCalendar temp = createGregorianCalendarCopy(gc);
+        int month = gc.get(Calendar.MONTH);
+        int year = gc.get(Calendar.YEAR);
+        temp.set(year, month, 1);
+        return temp;
+    }
+
+    public static GregorianCalendar getEndOfMonth(GregorianCalendar gc){
+        GregorianCalendar temp = createGregorianCalendarCopy(gc);
+        int month = gc.get(Calendar.MONTH);
+        int year = gc.get(Calendar.YEAR);
+        int date = gc.getActualMaximum(Calendar.DAY_OF_MONTH);
+        temp.set(year, month, date);
+        return temp;
     }
 
     public static String gregorianCalendarToWebUntisDate(GregorianCalendar gc){
@@ -48,6 +72,11 @@ public abstract class GregorianCalendarFactory { //todo class diagram
         dateFormat.setTimeZone(gc.getTimeZone());
         String date = dateFormat.format(gc.getTime());
         return date;
+    }
+
+    public static String gregorianCalendarToMilliseconds(GregorianCalendar gc){
+
+        return "" + gc.getTime();
     }
 
 

@@ -31,4 +31,9 @@ public class PersonalCalendarView extends CalendarView {
 	protected void getWeeklyCalendar(GregorianCalendar calendar, FieldOfStudy fieldOfStudy) {
 		getCalendarDataManagement().getWeeklyCalendarPersonal(this, calendar);
 	}
+
+	@Override
+	protected String getEventInformation(String eventID) {
+		return getCalendarDataManagement().getEventInformationPersonal(eventID);
+	}
 }
