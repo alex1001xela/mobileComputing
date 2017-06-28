@@ -9,11 +9,11 @@ public interface iCalendarPresenter {
 
     interface iCalendarDataManagement {
 
-        Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
+        ArrayList<Event> getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
 
-        Event[] getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
+        ArrayList<Event> getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
 
-        void getEventInformation(String eventID);
+        String getEventInformationPersonal(String eventID); //todo class diagram
 
         void addCourse(String courseID);
 
@@ -42,20 +42,22 @@ public interface iCalendarPresenter {
     interface iCalendarWebUntis {
 
 
-        Event[] getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
+        ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
 
-        Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
+        ArrayList<Event> getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
 
        // FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
         ArrayList<FieldOfStudy>getFieldsOfStudy(Filter filter);
 
 
-        void getEventInformation(String eventID);
+        String getEventInformationGlobal(String eventID);  //todo class diagram
 
        // Filter[] getFilters();
         ArrayList<Filter> getFilters();
 
         boolean areLoginDataValid(String username, String password);
+
+        boolean isAlreadyLoggedIn();
     }
 
 

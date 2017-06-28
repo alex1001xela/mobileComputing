@@ -1,5 +1,6 @@
 package com.wua.mc.webuntisapp.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,20 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
-import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Filter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
-import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
 public class MainActivity extends AppCompatActivity  {
 
-   final  CalendarPresenter cp = new CalendarPresenter();
+   final  CalendarPresenter cp = new CalendarPresenter(this);
     static boolean firstLogin=true;
     DatabaseManager dbmgr = new DatabaseManager(this);
 	TextView event;
@@ -44,66 +42,17 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Test Datenbank Verbindung
-        //  DataBaseObject testMemo = new DataBaseObject("Mobile-Computing","Prof. Martinez", "red", 2);
-        //  Log.d(LOG_TAG, "Inhalt der Testmemo: " + testMemo.toString());
-      // dbmgr.deleteDatabase();
-
-
-        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
-        dbmgr.connectToDatabase();
-
-        //---------------------------------------------------
-        //Daten in Tabellen einfügen Tests
-        DataBaseObject dbData = dbmgr.createCourse("mobile", "martinez", "red", 2);
-        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
-        Log.d(LOG_TAG, "ID: " + dbData.getCourse_id() + ", Inhalt course: " + dbData.toString());
-
-        DataBaseObject dbData2 = dbmgr.createEvent("12", 2,2, "BWL", "LAB", 2,"green");
-        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
-        Log.d(LOG_TAG, "ID: " + dbData2.getEvent_id() + ", Inhalt event: " + dbData2.toString());
-
-
-        //dbmgr.deleteEventDB(3);
-        //dbmgr.getAllEventsDB();
-
-
-
-        DataBaseObject dbData3 = dbmgr.createPersonalInformation(1);
-        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
-        Log.d(LOG_TAG, "ID: " + dbData3.getAuthenticated() + ", Inhalt personal: " + dbData3.toString());
-
-
-        //----------------------------------------------------------------------
-
-        //dbmgr.updateCourse(1, "Cloud", "Schöller", "blue", 2);
-        //dbmgr.setEventColorDB(1, "red");
-        Log.d(LOG_TAG, "Folgende Einträge sind in der Datenbank vorhanden:");
-        showAllListEntries();
-
-        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
-        dbmgr.disconnectFromDatabase();
-        Log.d(LOG_TAG, "Die Datenquelle wurde erfolgreich geschlossen.");
-
-
-        //--------------------------------------------------
-
+        boolean firstLogin = !cp.isAlreadyLoggedIn();
         if (firstLogin){
+
             Button loginButton = (Button)this.findViewById(R.id.loginButton);
             loginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    try {
-                        EditText username   = (EditText)findViewById(R.id.usernameField);
-                        EditText password   = (EditText)findViewById(R.id.passwordField);
+                    EditText username   = (EditText)findViewById(R.id.usernameField);
+                    EditText password   = (EditText)findViewById(R.id.passwordField);
 
-                        String u= username.getText().toString();
-                        String p = password.getText().toString();
-                        Log.v(u,p );
-
-                      //  cp.login(username.getText().toString(), password.getText().toString());
-                        cp.login("Usercampusap2", "konst6app6");
-                        Log.v("statusLogin","Login Successfull");
+                    if(cp.login(username.getText().toString(), password.getText().toString())){
                         setContentView(activity_choose_fieldofstudy);
 
                         //by ray : to show the faculties in a dropdown on the UI.
@@ -173,32 +122,22 @@ public class MainActivity extends AppCompatActivity  {
                             }
                         });*/
 
-                        firstLogin=false;
-                    }catch (Exception e){
+
+                    }else{
                         Log.v("statusLogin","Login Failed");
                         Toast errorToast = Toast.makeText(getApplication() , "Login failed", Toast.LENGTH_SHORT);
                         errorToast.show();
-
                     }
                 }
 
             });
 
 
-        }else{
-            setContentView(activity_personal_calendar);
         }
-       // Intent intent1 = new Intent(this, GlobalCalendarView.class);
-      // startActivity(intent1);
-
-        //-------------------------------getting thge list of filters.
-
-
-
-
-
-
-
+        else{
+            Intent intent1 = new Intent(this, PersonalCalendarView.class);
+            startActivity(intent1);
+        }
     }
 
     @Override
@@ -212,6 +151,7 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.logout:
+                cp.logout();
                 Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
                 return true;
 
@@ -261,20 +201,4 @@ public class MainActivity extends AppCompatActivity  {
 
     public void clickAddCourse(View view) {
     }
-
-    private void showAllListEntries () {
-        List<DataBaseObject> dbDataList = dbmgr.getAlldatabaseObjects();
-        Log.d(LOG_TAG, "Unsere Liste "+ dbDataList);
-
-        // ArrayAdapter<DataBaseObject> dbDataArrayAdapter = new ArrayAdapter<> (
-        //      this,
-        //    android.R.layout.simple_list_item_multiple_choice,
-        //  dbDataList);
-
-        //ListView dbDatasListView = (ListView) findViewById(R.id.listview_shopping_memos);
-        //dbDatasListView.setAdapter(dbDataArrayAdapter);
-    }
-
-
-
 }

@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.model;
 
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface iDatabaseManager {
 
 	DataBaseObject setEventColorDB(long eventID, String color);
 
+	DataBaseObject saveCourseDB(UniversityEvent event);
+
 	int deleteCourseDB(long course_id);
 
 	int deleteEventDB(long event_id);
@@ -24,6 +27,6 @@ public interface iDatabaseManager {
 
 	boolean logoutDB();
 
-	List<DataBaseObject> getUserDataDB();
+	boolean isLoggedIn();
 
 }

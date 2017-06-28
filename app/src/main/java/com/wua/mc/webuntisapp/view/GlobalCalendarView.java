@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class GlobalCalendarView extends CalendarView {
@@ -17,7 +18,7 @@ public class GlobalCalendarView extends CalendarView {
     }
 
     @Override
-    public void showEventsOnCalendar(Event[] events) {
+    public void showEventsOnCalendar(ArrayList<Event> events) {
         showEventsOnDailyPlan(events);
     }
 
@@ -32,4 +33,8 @@ public class GlobalCalendarView extends CalendarView {
         getCalendarWebUntis().getWeeklyCalendarGlobal(this, calendar, fieldOfStudy);
     }
 
+    @Override
+    protected String getEventInformation(String eventID) {
+        return getCalendarWebUntis().getEventInformationGlobal(eventID);
+    }
 }
