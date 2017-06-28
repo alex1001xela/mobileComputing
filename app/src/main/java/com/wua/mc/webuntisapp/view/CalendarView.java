@@ -90,7 +90,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     @Override
-    abstract public void showEventsOnCalendar(Event[] events);
+    abstract public void showEventsOnCalendar(ArrayList<Event>  events);
 
     @Override
     abstract public void showToast(String text);
@@ -146,7 +146,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         });
     }
 
-    void showEventsOnDailyPlan(Event[] events){
+    void showEventsOnDailyPlan(ArrayList<Event>  events){
         ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
