@@ -21,6 +21,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     iWebUntisClient wuc;
@@ -34,9 +36,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private Event[] currentShownGlobalEvents =  {new Event("2", "Event 2", "Bleeeeee", new Date(1497672000000L), new Date(1497693600000L), EventType.DEADLINE),
             new UniversityEvent("3", "Event 3", "Bluuuuuu", new Date(1497672000000L), new Date(1497700800000L), EventType.DEADLINE, "5", "10", profs, rooms, "MKI5")};
 
-    private Filter[] filters;
+    private ArrayList<Filter> filters; // Ray from Array to Array list
 
     private FieldOfStudy[] fieldsOfStudy;
+    private String Filter_id;
 
     public CalendarPresenter() {
         wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
@@ -61,6 +64,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         }
         return weekEvents;
     }
+
 
     @Override
     public Event[] getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc){
@@ -257,15 +261,63 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void logout() {
 
     }
-
+// ray ------------
     @Override
-    public FieldOfStudy[] getFieldsOfStudy(Filter[] filter) {
-        return new FieldOfStudy[0];
+    public ArrayList<FieldOfStudy> getFieldsOfStudy(Filter filter) {
+        JSONArray FOS =null;
+      ArrayList < FieldOfStudy> fields_Of_study_list= new ArrayList<>();
+
+        try {
+            FOS = wuc.getClasses().getJSONObject("response").getJSONArray("result");
+            FieldOfStudy []fos =convertClassesJSONToFieldsOfStudy(FOS);
+            for(int i=0;i<fos.length;i++){
+               if(fos[i].getFilterID()==parseInt(filter.getId())){
+                   FieldOfStudy f = fos[i];
+                   fields_Of_study_list.add(f);
+                  // FieldOfStudy []fos =convertClassesJSONToFieldsOfStudy(FOS.getJSONArray(i));
+
+                  // fields_Of_study_list
+
+
+               }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+       // return new FieldOfStudy[0]
+        return fields_Of_study_list;
     }
-
+// ray ...........No param............. This method returns an Arraylist of Filters , created with the name ,id,LongName from filters from the API.
     @Override
-    public Filter[] getFilters() {
-        return new Filter[0];
+    public ArrayList<Filter> getFilters() {
+
+        Filter myfilters;
+        ArrayList<Filter> FilterFactory =new ArrayList<>();
+        String fil_name =null;
+        String fil_id=null;
+        String fil_longName=null;
+        JSONArray myFilterList = null;
+        try {
+            myFilterList = wuc.getFilters().getJSONObject("response").getJSONArray("result");
+
+            for (int i =0;i<myFilterList.length();i++ ){
+
+               fil_id =Integer.toString(myFilterList.getJSONObject(i).getInt("id")); /// parse the int id to string ..
+                fil_name =myFilterList.getJSONObject(i).getString("name");
+                fil_longName = myFilterList.getJSONObject(i).getString("longName");
+                myfilters= new Filter(fil_id,fil_name,fil_longName);
+                FilterFactory.add(myfilters);
+
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+       // return new Filter[0];
+        return FilterFactory;
     }
 
     private Event[] getPersonalCalendar(String startDate, String endDate) {
@@ -282,7 +334,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         try{
             HashMap<String, Course> allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result")); //todo public static, also teachers
 
-            JSONObject timetable = wuc.getTimetableForElement(fieldOfStudy.getUntisID(), ElementType.CLASS, startDate, endDate);
+            JSONObject timetable = wuc.getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
 
             events = convertTimetableToEvents(allCourses, timetable);
         }
@@ -291,5 +343,80 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         }
         return events;
     }
+
+    //Ray--------------------------------------------------------------------------------------
+    // create field od study object ,whose name/longNames will be shown at the choose filed of study dropdown.
+    // the id to the the longname selected by the user as being his faculty.
+    //TODO refactor the name : getSelected_filterID ----> getSelected_filter_longName;
+    public String getSelecter_filterId(){
+       return this.Filter_id;
+    }
+    public void setSelected_filterId(String id){
+        this.Filter_id =id ;
+    }
+    public Filter findFilter(){
+        Filter fil =null;
+        String longName_filter=null;
+        longName_filter= getSelecter_filterId();
+        ArrayList<Filter> All_filters = getFilters();
+        for( int i = 0;i<All_filters.size();i++){
+            if(All_filters.get(i).getLongName()==longName_filter){
+                fil=All_filters.get(i);
+            }
+        }
+        return fil;
+    }
+
+    public ArrayList<String> longName_FOS(FieldOfStudy[] list){
+        ArrayList<String> result = new ArrayList<>();
+
+        for(int i= 0;i < list.length;i++){
+            if(list[i]!=null && list[i].getLongName()!=null){
+                result.add(list[i].getLongName());
+            }
+        }
+
+        return  result;
+    }
+
+    public ArrayList<String> longName_default(String Filter_longName){
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<FieldOfStudy>list=null;
+        ArrayList<Filter> list_filter = this.getFilters();
+
+
+        Filter default_filter = null;
+
+        for(int i =0;i<list_filter.size();i++){
+            // compare the toString of ..
+            if(list_filter.get(i).getLongName().equals(Filter_longName)){  //TODO jsut for testing purposes. later the id of the chosen filter
+               list= this.getFieldsOfStudy(list_filter.get(i));
+                break;
+
+            }
+
+        }
+        for(int j= 0;j < list.size();j++){
+            if(list.get(j)!=null){
+                String name = list.get(j).toString();
+                result.add(name);
+            }
+        }
+
+
+
+
+        return  result;
+    }
+    public ArrayList<String> testcp(){
+        ArrayList<String> l = new ArrayList<>();
+    for(int i= 0;i<200;i++){
+        l.add("belmo"+i);
+    }
+    return l ;
+    }
+
+
+
 
 }

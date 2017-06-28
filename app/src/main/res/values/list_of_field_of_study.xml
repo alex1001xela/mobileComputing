@@ -9,10 +9,8 @@
         <item name="PATM">PROCESS ANALYSIS TECHNOLOGY MANAGEMENT MASTER</item>
         <item name="VAC">VERANSTALTUNGEN</item>
         <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
-        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
-        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
-        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
-        <item name="BWB">BIOMEDIZINISCHE WISSENSCHAFTEN</item>
+        <item name="MKI">MKI</item>
+
     </string-array>
 
 </resources>

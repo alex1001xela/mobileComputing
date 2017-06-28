@@ -2,6 +2,7 @@ package com.wua.mc.webuntisapp.presenter;
 
 import com.wua.mc.webuntisapp.view.iCalendarView;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public interface iCalendarPresenter {
@@ -45,11 +46,14 @@ public interface iCalendarPresenter {
 
         Event[] getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
 
-        FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
+       // FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
+        ArrayList<FieldOfStudy>getFieldsOfStudy(Filter filter);
+
 
         void getEventInformation(String eventID);
 
-        Filter[] getFilters();
+       // Filter[] getFilters();
+        ArrayList<Filter> getFilters();
 
         boolean areLoginDataValid(String username, String password);
     }

@@ -1,6 +1,5 @@
 package com.wua.mc.webuntisapp.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,19 +19,25 @@ import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
+import com.wua.mc.webuntisapp.presenter.Filter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 import static com.wua.mc.webuntisapp.R.layout.activity_personal_calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
-    CalendarPresenter cp = new CalendarPresenter();
+   final  CalendarPresenter cp = new CalendarPresenter();
     static boolean firstLogin=true;
     DatabaseManager dbmgr = new DatabaseManager(this);
 	TextView event;
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private  String temp="not yet set"; // for test TODO delete this variable afterwards---
+    private int firste_spinner=0;
+    private int first_spinner_counter=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,23 +101,62 @@ public class MainActivity extends AppCompatActivity {
                         String p = password.getText().toString();
                         Log.v(u,p );
 
-                        cp.login(username.getText().toString(), password.getText().toString());
+                      //  cp.login(username.getText().toString(), password.getText().toString());
+                        cp.login("Usercampusap2", "konst6app6");
                         Log.v("statusLogin","Login Successfull");
                         setContentView(activity_choose_fieldofstudy);
 
-                        //by ray : to show the fileds of studies in a dropdown on the UI.
-                        Spinner spinner_courseOfStudy = (Spinner)findViewById(R.id.fieldOfStudySpinner);
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.field_of_study_array,android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                        spinner_courseOfStudy.setAdapter(adapter);
-                        // to show the semester as dropdown
-                        Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
-                        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getApplicationContext(),R.array.semseters_array,android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                        spinner_semester.setAdapter(adapter2);
+                        //by ray : to show the faculties in a dropdown on the UI.
+                        Spinner spinner_faculty = (Spinner)findViewById(R.id.fieldOfStudySpinner);
+                        ArrayList<String>Faculties = new ArrayList<String>();
+                        ArrayList<Filter> output_filter_list = cp.getFilters();
+                         // looping over the list to collect the name ofd each filter
+                        for(int i=0;i<output_filter_list.size();i++){
+                            String name =   output_filter_list.get(i).getLongName(); // use the toString to print both the Field of study longNAme and it's name+semester
+                            Faculties.add(name);
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,Faculties);
+                        spinner_faculty.setAdapter(adapter);
+                        spinner_faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                                if(first_spinner_counter<firste_spinner){ // called when the view is initialised
+
+                                    String default_selected= (String)parent.getItemAtPosition(0); // default field of study.
+                                    ArrayList<String> b = cp.longName_default(default_selected);
+                                    Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
+
+                                    ArrayAdapter<String> adapter2 =new  ArrayAdapter<>(MainActivity.this,android.R.layout.simple_spinner_item,b);
+                                    spinner_semester.setAdapter(adapter2);
+
+                                    first_spinner_counter++;
+
+                                }else{ // called when an Item is selected.
+                                    String selectedItem= (String)parent.getItemAtPosition(position);
+
+                                    ArrayList<String> b = cp.longName_default(selectedItem);
 
 
 
+                                    Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
+
+                                    ArrayAdapter<String> adapter2 =new  ArrayAdapter<>(MainActivity.this,android.R.layout.simple_spinner_item,b);
+                                    spinner_semester.setAdapter(adapter2);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                             return;
+                            }
+                        });
+
+
+
+                       // adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
                         //setContentView(R.layout.activity_main);
 
@@ -136,13 +181,23 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
+
             });
+
 
         }else{
             setContentView(activity_personal_calendar);
         }
-        Intent intent1 = new Intent(this, GlobalCalendarView.class);
-        startActivity(intent1);
+       // Intent intent1 = new Intent(this, GlobalCalendarView.class);
+      // startActivity(intent1);
+
+        //-------------------------------getting thge list of filters.
+
+
+
+
+
+
 
     }
 
@@ -219,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         //ListView dbDatasListView = (ListView) findViewById(R.id.listview_shopping_memos);
         //dbDatasListView.setAdapter(dbDataArrayAdapter);
     }
+
 
 
 }
