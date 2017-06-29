@@ -3,10 +3,12 @@ package com.wua.mc.webuntisapp.presenter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static java.lang.Integer.parseInt;
+
 public class Course {
 
     private String id;
-    private String untisID;
+    private int untisID; // the untis id is an Integer...
     private String name;
     private String longName;
     private String alternateName;
@@ -15,7 +17,7 @@ public class Course {
 
     public Course(String id, String untisID, String name, String longName, String alternateName, boolean active){
         this.id = id;
-        this.untisID = untisID;
+        this.untisID = parseInt(untisID);
         this.name = name;
         this.longName = longName;
         this.alternateName = alternateName;
@@ -24,7 +26,7 @@ public class Course {
 
     public Course(JSONObject jsonObject){
         try {
-            this.untisID = jsonObject.getString("id");
+            this.untisID = jsonObject.getInt("id"); // not sure about this Integer??
             this.name = jsonObject.getString("name");
             this.longName = jsonObject.getString("longName");
             this.active = jsonObject.getBoolean("active");
@@ -39,7 +41,7 @@ public class Course {
         return id;
     }
 
-    public String getUntisID() {
+    public int getUntisID() {
         return untisID;
     }
 

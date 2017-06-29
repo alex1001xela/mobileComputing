@@ -4,6 +4,7 @@ import com.wua.mc.webuntisapp.view.iCalendarView;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public interface iCalendarPresenter {
 
@@ -54,6 +55,7 @@ public interface iCalendarPresenter {
 
        // Filter[] getFilters();
         ArrayList<Filter> getFilters();
+        HashMap<String, Course> getCourses();
 
         boolean areLoginDataValid(String username, String password);
 

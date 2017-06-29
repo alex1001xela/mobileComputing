@@ -2,9 +2,6 @@ package com.wua.mc.webuntisapp;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
-import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
-import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
-import com.wua.mc.webuntisapp.presenter.Filter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,13 +66,13 @@ public class WebUntisAPI {
     public void Test_filter_classes() throws Exception{
          // this is the filter for INF .......
         boolean throwedException = false;
-        JSONObject jsonObject = wuc.getClasses();
-        CalendarPresenter cp = new CalendarPresenter();
+        JSONObject jsonObject = wuc.getCourses();
         //JSONObject jsonObject = wuc.getFilters();
         //JSONArray jsonObject = wuc.getClasses();
         //System.out.print(jsonObject.toString());
         //-----------------------------
         try {
+
 
             /**
              by -ray :
@@ -112,62 +109,27 @@ public class WebUntisAPI {
 
 
 
-   ArrayList<String> namestest=new ArrayList<>();
 
-            //JSONArray result = jsonObject.getJSONObject("response").getJSONArray("result"); // for classes
+
+
+
             JSONArray result = jsonObject.getJSONObject("response").getJSONArray("result");
-
-            String name = "AC  Angewandte Chemie-AC";
-            Filter filter=null;
-            ArrayList<Filter> filters_container= cp.getFilters();
-            ArrayList<FieldOfStudy>fieldOFstudy_container=null;
-
-
-            for(int i =0;i<filters_container.size();i++){
-                if(filters_container.get(i).toString().equals(name)){
-                    filter=filters_container.get(i);// with equal not with == .
-                    System.out.print("-++++---->"+filter.toString()+"<----++-----");
-                    fieldOFstudy_container=cp.getFieldsOfStudy(filter);
-                                  break;
-
-                }
-
-
-
-            }
-            if(fieldOFstudy_container!=null  ){
-                for(int a =0;a<fieldOFstudy_container.size();a++){
-                    FieldOfStudy fos =fieldOFstudy_container.get(a);
-                    // if(fos!=null){
-                    System.out.print("-++++---->"+fos.toString()+"<----++-----");
-                    // }
-
-                }
-            }
-
-
-
-
-
-
-
 
             // for filter .
            // result.getInt("id");
            // result.getString("name");
            // result.getInt("startDate");
             //result.getInt("endDate");
-            String testFilterId="3";
-            ArrayList<String> list_FOS = new ArrayList<>();
+            String FOS_name = "3MKIB1"; // with this we can figure out the courses
+            // for MKI in first semester
+
+            ArrayList<String> list_course = new ArrayList<>();
             // get the courses of a specific field of study
             for (int i = 0; i< result.length();i++){
-             //   if( result.getJSONObject(i).getInt("id")==1748){
-                   // String fildsName = result.getJSONObject(i).getString("longName");
-                   // System.out.print(fildsName);
-                   // list_FOS.add(fildsName);
-                   // System.out.print("yes");
-                   //   System.out.print("|"+result.getJSONObject(i).getString("longName")+"|");
-             //  }
+                if( result.getJSONObject(i).getString("name").contains(FOS_name)){
+                    // priintout the course of thge field of study : 3MKIB1
+                      System.out.print("|"+result.getJSONObject(i)+"|");
+               }
 
             }
         }
