@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.UniversityEvent;
@@ -80,12 +81,15 @@ public class DatabaseManager implements iDatabaseManager {
         int eventType_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_TYPE);
 
         String eventRoom = cursor.getString(eventRoom_);
-        int eventTimestampStart = cursor.getInt(eventTimestampStart_);
-        int eventTimestampEnd = cursor.getInt(eventTimestampEnd_);
+
+        long eventTimestampStart = (long) cursor.getInt(eventTimestampStart_) * 1000;
+        long eventTimestampEnd = (long) cursor.getInt(eventTimestampEnd_) * 1000;
         String eventName = cursor.getString(eventName_);
         String eventColor = cursor.getString(eventColor_);
         String eventType = cursor.getString(eventType_);
         long eventId = cursor.getLong(eventId_);
+
+        Log.i("TIMEDB", ""+eventTimestampStart + " / " + eventTimestampEnd);
 
         return new DataBaseObject(eventRoom, eventTimestampStart, eventTimestampEnd, eventName, eventColor, eventType, eventId);
     }
@@ -172,8 +176,8 @@ public class DatabaseManager implements iDatabaseManager {
 
         //values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
 
-        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, event.getStartTime().getTime());
-        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, event.getEndTime().getTime());
+        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTime() / 1000));
+        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTime() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
         values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event.getEventType().toString());
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());

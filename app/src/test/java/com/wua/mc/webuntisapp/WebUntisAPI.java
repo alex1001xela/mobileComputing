@@ -70,7 +70,7 @@ public class WebUntisAPI {
          // this is the filter for INF .......
         boolean throwedException = false;
         JSONObject jsonObject = wuc.getClasses();
-        CalendarPresenter cp = new CalendarPresenter();
+        CalendarPresenter cp = new CalendarPresenter(null);
         //JSONObject jsonObject = wuc.getFilters();
         //JSONArray jsonObject = wuc.getClasses();
         //System.out.print(jsonObject.toString());

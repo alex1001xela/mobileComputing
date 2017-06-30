@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity  {
 
         }
         else{
-            Intent intent1 = new Intent(this, GlobalCalendarView.class);
+            Intent intent1 = new Intent(this, PersonalCalendarView.class);
             startActivity(intent1);
         }
     }

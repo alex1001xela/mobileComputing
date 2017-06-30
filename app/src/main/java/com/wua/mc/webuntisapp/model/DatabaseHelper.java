@@ -58,8 +58,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             " CREATE TABLE " + TABLE_EVENT  +
                     "(" + COLUMN_EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_EVENT_ROOM + " TEXT NOT NULL, " +
-                    COLUMN_EVENT_TIMESTAMP_START + " INTEGER NOT NULL, " +
-                    COLUMN_EVENT_TIMESTAMP_END + " INTEGER NOT NULL, " +
+                    COLUMN_EVENT_TIMESTAMP_START + " UNSIGNED INTEGER NOT NULL, " +
+                    COLUMN_EVENT_TIMESTAMP_END + " UNSIGNED INTEGER NOT NULL, " +
                     COLUMN_EVENT_NAME + " TEXT NOT NULL, " +
                     COLUMN_EVENT_TYPE + " TEXT CHECK ("+COLUMN_EVENT_TYPE+"='LAB' or ("+COLUMN_EVENT_TYPE+"='EXAM' or ("+COLUMN_EVENT_TYPE+"='DEADLINE' or ("+COLUMN_EVENT_TYPE+"='LECTURE' or ("+COLUMN_EVENT_TYPE+"='PERSONAL'))))), " +
                     COLUMN_COURSE_ID + " INTEGER NOT NULL, " +

@@ -18,8 +18,8 @@ public class Event {
 	private String details = "";
 	private Date startTime;
 	private Date endTime;
-	private EventType eventType;
-	private String color = "";
+	private EventType eventType = EventType.LECTURE;
+	private String color = "FFFFFF";
 
 	public Event(String id, String name, String details, Date startTime, Date endTime, EventType eventType) {
 		this.id = id;
