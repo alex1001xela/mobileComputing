@@ -83,7 +83,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         // todo remove example
-        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "9999");
 
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents); //todo already saved
@@ -224,8 +224,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public boolean login(String username, String password) {
 
-        wuc = new WebUntisClient(username, password, "HS+Reutlingen");
-        JSONObject jsonObject = wuc.authenticate();
+        WebUntisClient tempWuc = new WebUntisClient(username, password, "HS+Reutlingen");
+        JSONObject jsonObject = tempWuc.authenticate();
         boolean dataValid = false;
         try {
 

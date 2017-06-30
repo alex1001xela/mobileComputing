@@ -25,6 +25,13 @@ public class WebUntisClient implements iWebUntisClient {
 	private JSONObject standardJSONData;
 	private JSONObject emptyParamsJSON;
 
+	/**
+	 * The only valid constructor.
+	 *
+	 * @param username The username of a user
+	 * @param password The password of a user
+	 * @param school The school. Perhaps could it be used for extending the app to other Unis.
+	 */
 	public WebUntisClient(String username, String password, String school) {
 		this.username = username;
 		this.password = password;
@@ -41,69 +48,117 @@ public class WebUntisClient implements iWebUntisClient {
 		}
 	}
 
-	/*
-	Use this to authenticate your personal username and password. Only used to check after pressing
-	login. As soon as your data are authenticated, the internal login data are used, and you need
-	to do nothing with sessions.
+	/**
+	 * The default constructor made private to avoid its usage.
+	 */
+	private WebUntisClient(){}
+
+	/**
+	 * Use this to authenticate your personal username and password. Only used to check after pressing
+	 * login. As soon as your data are authenticated, the internal login data are used, and you need
+	 * to do nothing with sessions.
+	 *
+	 * @return The server response as JSONObject, depending on the validity of the data
 	 */
 	@Override
 	public JSONObject authenticate(){return getData("authenticate", emptyParamsJSON);}
 
+	/**
+	 * Gets the teacher data.
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getTeachers() {
 		return getData("getTeachers", emptyParamsJSON);
 	}
 
-	/*
-	Use this to get all the 'Field of Study'-Semester combinations. In the website it is under the Semester
-	drop-down menu.
+	/**
+	 * Gets all the 'Field of Study'-Semester combinations. In the website it is under the Semester
+	 * drop-down menu, and in the WebUntis API it is called getKlassen.
+	 *
+	 * @return The server response as a JSONObject.
 	 */
 	@Override
 	public JSONObject getClasses() {
 		return getData("getKlassen", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets the Courses (aka Subjects in the WebUntis API).
+	 *
+	 * @return  The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getCourses() {
 		return getData("getSubjects", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets the room data.
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getRooms() {
 		return getData("getRooms", emptyParamsJSON);
 	}
 
-	/*
-	Gets the Faculty, Exams, etc filters. In the website these are the results under
-	 the "Fakultät" dropdown.
+	/**
+	 * Gets the Faculty, Exams, etc filters. In the website these are the results under
+	 * the "Fakultät" dropdown, and in the WebUntis API known as getDepartments.
+	 *
+	 * @return The server response as a JSONObject.
 	 */
 	@Override
 	public JSONObject getFilters() {
 		return getData("getDepartments", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets the holidays.
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getHolidays() {
 		return getData("getHolidays", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets the time-blocks used. In RT -> 8:00 - 9:30 / 9:45 - 11:15 etc
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getTimegridUnits() {
 		return getData("getTimegridUnits", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets color-code information about types of lessons. Known as getStatusData in the WebUntis API.
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getStatusInformation() {
 		return getData("getStatusData", emptyParamsJSON);
 	}
 
+	/**
+	 * Gets the current school year
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	@Override
 	public JSONObject getCurrentSchoolYear() {
 		return getData("getCurrentSchoolyear", emptyParamsJSON);
 	}
 
-	/*
-	Use this to get the latest time when something was written in the WebUntis DB.
+	/**
+	 * Gets the latest time something was written in the WebUntis database.
+	 *
+	 * @return The server response as a JSONObject.
 	 */
 	@Override
 	public JSONObject getLatestImportTime() {
@@ -111,12 +166,15 @@ public class WebUntisClient implements iWebUntisClient {
 	}
 
 	/**
-	 * Use this to get the timetable for an element.
+	 * Gets the timetable for an element.
+	 *
 	 * @param id		The id of the element
-	 * @param type 		The type of the element
+	 * @param type 		The type of the element. Please insert one of the following numbers as a
+	 *                  String  1 = Class | 2 = Teacher | 3 = Course | 4 = Room | 5 = Student
 	 * @param startDate optional, default: actual date
 	 * @param endDate 	optional, default: actual date
-	 * @return
+	 *
+	 * @return The server response as a JSONObject.
 	 */
 	@Override
 	public JSONObject getTimetableForElement(String id, ElementType type, String startDate, String endDate) {
@@ -135,6 +193,14 @@ public class WebUntisClient implements iWebUntisClient {
 		return getData("getTimetable", params);
 	}
 
+	/**
+	 * Gets data from the WebUntis database depending on methodName and the params given.
+	 *
+	 * @param methodName The name of the WebUntis API method
+	 * @param params Parameters depending on the WebUntis API method
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	private JSONObject getData(String methodName, JSONObject params){
 		JSONObject response = null;
 		try {
@@ -150,6 +216,14 @@ public class WebUntisClient implements iWebUntisClient {
 		return response;
 	}
 
+	/**
+	 * Makes an https POST-request sending JSON data in the process.
+	 *
+	 * @param url The target url
+	 * @param jsonData The json parameter to be sent
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	private JSONObject httpsPostJSON(URL url, JSONObject jsonData){
 		HttpsURLConnection connection = null;
 		String line;
@@ -192,6 +266,10 @@ public class WebUntisClient implements iWebUntisClient {
 		return response;
 	}
 
+	/**
+	 * This private class is responsible for creating a session with the WebUntis server, using
+	 * the requested method, and then ending the session. It runs in a separate thread.
+	 */
 	private class WebUntisTask implements Runnable {
 
 		private String method = "";
@@ -247,6 +325,11 @@ public class WebUntisClient implements iWebUntisClient {
 		}
 	}
 
+	/**
+	 * Starts a session with the WebUntis server.
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	private JSONObject startSession(){
 		URL url = null;
 		JSONObject authenticationData = null;
@@ -271,6 +354,13 @@ public class WebUntisClient implements iWebUntisClient {
 		return httpsPostJSON(url, authenticationData);
 	}
 
+	/**
+	 * Ends a session with the WebUntis server.
+	 *
+	 * @param sessionID The id of the session to be ended
+	 *
+	 * @return The server response as a JSONObject.
+	 */
 	private JSONObject endSession(String sessionID){
 		JSONObject jsonData = null;
 		URL url = null;

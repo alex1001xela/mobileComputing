@@ -19,6 +19,7 @@
     <string name="saturday_button">6</string>
     <string name="sunday_button">7</string>
     <string name="date">Tuesday, 06.06.2017</string>
+    <string name="filter_and_field_of_study">Text</string>
     <string name="hour00">00:00</string>
     <string name="hour01">01:00</string>
     <string name="hour02">02:00</string>

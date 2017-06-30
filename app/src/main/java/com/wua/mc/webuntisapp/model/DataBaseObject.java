@@ -1,11 +1,5 @@
 package com.wua.mc.webuntisapp.model;
 
-import android.content.ContentValues;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-
-
 public class DataBaseObject {
 
     private long course_id;
@@ -44,7 +38,6 @@ public class DataBaseObject {
         this.setEvent_name(event_name);
         this.setEvent_color(event_color);
         this.setEvent_type(event_type);
-        //this.setCourse_id(course_id);
     }
 
     public DataBaseObject(long authenticated){

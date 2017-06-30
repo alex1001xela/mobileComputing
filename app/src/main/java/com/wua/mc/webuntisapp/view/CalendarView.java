@@ -52,7 +52,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private int eventFieldHeight;
     private int eventFieldWidth;
     private int eventFieldXStart;
-    private int eventFieldXEnd;
     private int eventFieldYStart;
     private int eventFieldYEnd;
     private int heightPerQuarter;
@@ -99,8 +98,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     abstract protected String getEventInformation(String eventID);
 
+    abstract protected void setCalendarContentView();
+
     private void buildWeeklyCalendar(){
-        setContentView(R.layout.activity_calendar);
+        setCalendarContentView();
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -119,7 +120,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
                 eventFieldWidth = firstLine.getWidth();
                 eventFieldXStart = (int) firstLine.getX();
-                eventFieldXEnd = eventFieldXStart + eventFieldWidth;
 
                 heightPerQuarter = eventFieldHeight / numberOfQuartersIn24Hours;
 
@@ -474,6 +474,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int height;
         private int maxHorizontalNeighbours;
         private int position = -1;
+        private String color = "FFFFFF";
 
         private LinearLayout.LayoutParams layoutParams;
 
@@ -586,6 +587,14 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         public void setPosition(int position) {
             this.position = position;
+        }
+
+        public String getColor(){
+            return this.color;
+        }
+
+        public void setColor(String color){
+            this.color = color;
         }
 
         @Override
@@ -975,7 +984,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             int month = convertStringMonthToIntegerMonth(stringdate[1]);
             selectedDayMonthYearButton.setText("Selected :" + date_month_year);
             // call the function re3sponsible for the view changing from monthly to weekly/dayly.
-            setContentView(R.layout.activity_calendar);
+            setCalendarContentView();
             showDate(year,month - 1,day);
             Log.e("Selected date:" , date_month_year);
             try{
