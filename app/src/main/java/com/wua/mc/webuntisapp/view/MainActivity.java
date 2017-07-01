@@ -61,7 +61,10 @@ public class MainActivity extends AppCompatActivity  {
                             public void onClick(View v) {
                                // String SelectdFieldOdStudy = Long.toString(spinner_semester.getSelectedItemId());
                                 String SelectdFieldOdStudy = ((Spinner)findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
-                                cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // pared the name , so we can find the Object field of study.
+                               // cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // parsed the name , so we can find the Object field of study.
+                                Intent i = new Intent(MainActivity.this, GlobalCalendarView.class);
+                                i.putExtra("SelectedFIeldOfStudy", SelectdFieldOdStudy);
+
                                /*
                                 Toast.makeText(MainActivity.this, SelectdFieldOdStudy,
                                         Toast.LENGTH_LONG).show();
