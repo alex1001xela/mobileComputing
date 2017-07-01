@@ -86,7 +86,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         // todo remove example
-        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "9999");
 
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents); //todo already saved
@@ -169,15 +169,37 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void addCourse(String courseID) {
-        dbManager.connectToDatabase();
-        dbManager.disconnectFromDatabase();
+
+        int i = 0;
+        boolean found = false;
+
+        while(i < currentShownGlobalEvents.size() && !found){
+            UniversityEvent ue = (UniversityEvent) currentShownGlobalEvents.get(i);
+            if(ue.getCourseID().equals(courseID)){
+                found = true;
+                dbManager.connectToDatabase();
+                dbManager.saveCourseDB(ue);
+                dbManager.disconnectFromDatabase();
+            }
+            i++;
+        }
     }
 
     @Override
     public void addEvent(String eventID){
-        dbManager.connectToDatabase();
-        dbManager.disconnectFromDatabase();
-        
+        int i = 0;
+        boolean found = false;
+
+        while(i < currentShownGlobalEvents.size() && !found){
+            UniversityEvent ue = (UniversityEvent) currentShownGlobalEvents.get(i);
+            if(ue.getUntisID().equals(eventID)){
+                found = true;
+                dbManager.connectToDatabase();
+                dbManager.saveEventDB(ue);
+                dbManager.disconnectFromDatabase();
+            }
+            i++;
+        }
     }
 
 
@@ -192,6 +214,15 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void deleteEvent(String eventID) {
+        int i = 0;
+        boolean found = false;
+        while(i < currentShownPersonalEvents.size() && !found){
+            if(currentShownPersonalEvents.get(i).getId().equals(eventID)){
+                found = true;
+                currentShownPersonalEvents.remove(i);
+            }
+        }
+
         dbManager.connectToDatabase();
         dbManager.deleteEventDB(Long.parseLong(eventID));
         dbManager.disconnectFromDatabase();
@@ -229,8 +260,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public boolean login(String username, String password) {
 
-        wuc = new WebUntisClient(username, password, "HS+Reutlingen");
-        JSONObject jsonObject = wuc.authenticate();
+        WebUntisClient tempWuc = new WebUntisClient(username, password, "HS+Reutlingen");
+        JSONObject jsonObject = tempWuc.authenticate();
         boolean dataValid = false;
         try {
 
@@ -352,8 +383,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         dbManager.disconnectFromDatabase();
         int allEventsCount = allEventsDB.size();
 
+        Log.i("START", ""+startDate);
+        Log.i("END", ""+endDate);
+
         for(int i = 0; i < allEventsCount; i++){
             DataBaseObject eventDB = allEventsDB.get(i);
+            Log.i("EVENT_START", ""+eventDB.getEvent_timestamp_start());
+            Log.i("EVENT_END", ""+eventDB.getEvent_timestamp_end());
             if(eventDB.getEvent_timestamp_start() >= startDate && eventDB.getEvent_timestamp_end() <= endDate){
                 if(eventDB.getCourse_untis_id() != 0){
                     events.add(new UniversityEvent(eventDB));

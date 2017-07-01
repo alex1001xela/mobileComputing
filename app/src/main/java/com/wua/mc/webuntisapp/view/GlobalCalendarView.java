@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 
@@ -36,5 +37,14 @@ public class GlobalCalendarView extends CalendarView {
     @Override
     protected String getEventInformation(String eventID) {
         return getCalendarWebUntis().getEventInformationGlobal(eventID);
+    }
+
+    @Override
+    protected void setCalendarContentView() {
+        setContentView(R.layout.activity_global_calendar);
+    }
+
+    public void showFilterAndFieldOfStudyPicker(){
+
     }
 }

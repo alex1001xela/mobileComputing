@@ -19,6 +19,7 @@
     <string name="saturday_button">6</string>
     <string name="sunday_button">7</string>
     <string name="date">Tuesday, 06.06.2017</string>
+    <string name="filter_and_field_of_study">Text</string>
     <string name="hour00">00:00</string>
     <string name="hour01">01:00</string>
     <string name="hour02">02:00</string>
@@ -44,4 +45,8 @@
     <string name="hour22">22:00</string>
     <string name="hour23">23:00</string>
     <string name="hour24">00:00</string>
+    <string-array name="menu_items">
+        <item name="menu_global_calendar">Global Calendar</item>
+        <item name="menu_personal_calendar">Personal Calendar</item>
+    </string-array>
 </resources>

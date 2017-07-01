@@ -23,9 +23,9 @@ public interface iDatabaseManager {
 
 	int deleteEventDB(long event_id);
 
-	boolean loginDB();
+	void loginDB();
 
-	boolean logoutDB();
+	void logoutDB();
 
 	boolean isLoggedIn();
 

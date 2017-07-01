@@ -5,24 +5,30 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wua.mc.webuntisapp.R;
@@ -52,7 +58,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private int eventFieldHeight;
     private int eventFieldWidth;
     private int eventFieldXStart;
-    private int eventFieldXEnd;
     private int eventFieldYStart;
     private int eventFieldYEnd;
     private int heightPerQuarter;
@@ -61,6 +66,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private DayButton[] dayButtons = new DayButton[7];
     private DayButton currentDayButton;
     private final Context context = this;
+
+    private DrawerLayout mDrawerLayout;
+    private String[] menuItems;
+
     //-------------------------my variables
     private static final String tag = "calendarView";
     private TextView currentMonth;
@@ -87,7 +96,49 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         calendarDataManagement = new CalendarPresenter(this);
         calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
         buildWeeklyCalendar();
+
+        menuItems = getResources().getStringArray(R.array.menu_items);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ListView drawerList = (ListView) findViewById(R.id.left_drawer);
+
+        drawerList.setAdapter(new ArrayAdapter<>(this,
+                R.layout.simple_list_item_1, menuItems));
+
+        /*if(this instanceof GlobalCalendarView){
+            getViewByPosition(0, drawerList).setBackgroundColor(Color.RED);
+        }
+        else{
+            getViewByPosition(1, drawerList).setBackgroundColor(Color.RED);
+        }*/
+
+        drawerList.setOnItemClickListener(new ListView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent global = new Intent(CalendarView.this, GlobalCalendarView.class);
+                        startActivity(global);
+                        break;
+                    case 1:
+                        Intent personal = new Intent(CalendarView.this, PersonalCalendarView.class);
+                        startActivity(personal);
+                        break;
+                }
+            }
+        });
     }
+
+    /*public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }*/
 
     @Override
     abstract public void showEventsOnCalendar(ArrayList<Event>  events);
@@ -99,8 +150,16 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     abstract protected String getEventInformation(String eventID);
 
+    abstract protected void setCalendarContentView();
+
+    public void showMenuDrawer(View v){
+        mDrawerLayout.openDrawer(Gravity.START);
+    }
+
+
+
     private void buildWeeklyCalendar(){
-        setContentView(R.layout.activity_calendar);
+        setCalendarContentView();
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
@@ -119,7 +178,6 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
                 eventFieldWidth = firstLine.getWidth();
                 eventFieldXStart = (int) firstLine.getX();
-                eventFieldXEnd = eventFieldXStart + eventFieldWidth;
 
                 heightPerQuarter = eventFieldHeight / numberOfQuartersIn24Hours;
 
@@ -474,6 +532,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int height;
         private int maxHorizontalNeighbours;
         private int position = -1;
+        private String color = "FFFFFF";
 
         private LinearLayout.LayoutParams layoutParams;
 
@@ -586,6 +645,18 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         public void setPosition(int position) {
             this.position = position;
+        }
+
+        public String getColor(){
+            return this.color;
+        }
+
+        public void setColor(String color){
+            this.color = color;
+        }
+
+        public void removeFromView(){
+            ((ViewGroup) this.button.getParent()).removeView(this.button);
         }
 
         @Override
@@ -975,7 +1046,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             int month = convertStringMonthToIntegerMonth(stringdate[1]);
             selectedDayMonthYearButton.setText("Selected :" + date_month_year);
             // call the function re3sponsible for the view changing from monthly to weekly/dayly.
-            setContentView(R.layout.activity_calendar);
+            setCalendarContentView();
             showDate(year,month - 1,day);
             Log.e("Selected date:" , date_month_year);
             try{

@@ -1,11 +1,5 @@
 package com.wua.mc.webuntisapp.model;
 
-import android.content.ContentValues;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-
-
 public class DataBaseObject {
 
     private long course_id;
@@ -16,8 +10,8 @@ public class DataBaseObject {
 
     private long event_id;
     private String event_room;
-    private int event_timestamp_start;
-    private int event_timestamp_end;
+    private long event_timestamp_start;
+    private long event_timestamp_end;
     private String event_name;
     private String event_color;
     private String event_type;
@@ -35,7 +29,7 @@ public class DataBaseObject {
 
     }
 
-    public DataBaseObject(String event_room, int event_timestamp_start, int event_timestamp_end, String event_name, String event_color, String event_type, long event_id){
+    public DataBaseObject(String event_room, long event_timestamp_start, long event_timestamp_end, String event_name, String event_color, String event_type, long event_id){
 
         this.setEvent_id(event_id);
         this.setEvent_room(event_room);
@@ -44,7 +38,6 @@ public class DataBaseObject {
         this.setEvent_name(event_name);
         this.setEvent_color(event_color);
         this.setEvent_type(event_type);
-        //this.setCourse_id(course_id);
     }
 
     public DataBaseObject(long authenticated){
@@ -81,11 +74,11 @@ public class DataBaseObject {
         this.event_room = event_room;
     }
 
-    public void setEvent_timestamp_start(int event_timestamp_start) {
+    public void setEvent_timestamp_start(long event_timestamp_start) {
         this.event_timestamp_start = event_timestamp_start;
     }
 
-    public void setEvent_timestamp_end(int event_timestamp_end) {
+    public void setEvent_timestamp_end(long event_timestamp_end) {
         this.event_timestamp_end = event_timestamp_end;
     }
 
@@ -134,11 +127,11 @@ public class DataBaseObject {
         return event_room;
     }
 
-    public int getEvent_timestamp_start() {
+    public long getEvent_timestamp_start() {
         return event_timestamp_start;
     }
 
-    public int getEvent_timestamp_end() {
+    public long getEvent_timestamp_end() {
         return event_timestamp_end;
     }
 

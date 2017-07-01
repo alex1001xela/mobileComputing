@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
-import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Filter;
 
@@ -28,10 +27,7 @@ import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 public class MainActivity extends AppCompatActivity  {
 
    final  CalendarPresenter cp = new CalendarPresenter(this);
-    static boolean firstLogin=true;
-    DatabaseManager dbmgr = new DatabaseManager(this);
 	TextView event;
-    public static final String LOG_TAG = MainActivity.class.getSimpleName();
     private  String temp="not yet set"; // for test TODO delete this variable afterwards---
     private int firste_spinner=0;
     private int first_spinner_counter=0;
@@ -43,11 +39,11 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
 
         boolean firstLogin = !cp.isAlreadyLoggedIn();
         if (firstLogin){
-
+            setContentView(R.layout.activity_main);
             Button loginButton = (Button)this.findViewById(R.id.loginButton);
             loginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
