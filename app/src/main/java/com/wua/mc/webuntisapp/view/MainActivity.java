@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity  {
     private  String temp="not yet set"; // for test TODO delete this variable afterwards---
     private int firste_spinner=0;
     private int first_spinner_counter=0;
+    private Button confirm;
+    private  Spinner spinner_faculty;
+    private Spinner spinner_semester;
 
 
     @Override
@@ -52,7 +55,23 @@ public class MainActivity extends AppCompatActivity  {
                         setContentView(activity_choose_fieldofstudy);
 
                         //by ray : to show the faculties in a dropdown on the UI.
-                        Spinner spinner_faculty = (Spinner)findViewById(R.id.fieldOfStudySpinner);
+                        confirm = (Button)findViewById(R.id.confirmButton) ;
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                               // String SelectdFieldOdStudy = Long.toString(spinner_semester.getSelectedItemId());
+                                String SelectdFieldOdStudy = ((Spinner)findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
+                                cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // pared the name , so we can find the Object field of study.
+                               /*
+                                Toast.makeText(MainActivity.this, SelectdFieldOdStudy,
+                                        Toast.LENGTH_LONG).show();
+                                        */
+
+
+
+                            }
+                        });
+                        spinner_faculty = (Spinner)findViewById(R.id.fieldOfStudySpinner);
                         ArrayList<String>Faculties = new ArrayList<String>();
                         ArrayList<Filter> output_filter_list = cp.getFilters();
                          // looping over the list to collect the name ofd each filter
@@ -84,10 +103,11 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-                                    Spinner spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
+                                     spinner_semester = (Spinner)findViewById(R.id.semesterSpinner);
 
                                     ArrayAdapter<String> adapter2 =new  ArrayAdapter<>(MainActivity.this,android.R.layout.simple_spinner_item,b);
                                     spinner_semester.setAdapter(adapter2);
+
 
                                 }
 

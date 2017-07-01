@@ -35,6 +35,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     private FieldOfStudy[] fieldsOfStudy;
     private String Filter_id;
+    private ArrayList < FieldOfStudy> fields_Of_study_list= new ArrayList<>();
+
+    private FieldOfStudy selectedFieldOfStudy;
 
 
     public static HashMap<String, Course> allCourses;
@@ -95,7 +98,12 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         // todo remove example
-        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "9999");
+        if(this.getSelectedFieldOfStudy()!=null){ // for testing purposes.
+            fieldOfStudy= this.getSelectedFieldOfStudy();
+        }else{ //TODO remove the else condition
+            fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+        }
+
 
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents);
@@ -133,7 +141,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Course course = new Course(jsonObject);
-            allCourses.put(course.getUntisID(), course);
+            allCourses.put(course.getName(), course); // for this reason i will use the name of the course ..
+           // allCourses.put(Integer.toString(course.getUntisID()), course); // we cannot differenbtiate between course of different field of study using the untis id
+            //it identifies the courses within all course ( I believe).
         }
 
         return allCourses;
@@ -324,7 +334,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<FieldOfStudy> getFieldsOfStudy(Filter filter) {
         JSONArray FOS =null;
-      ArrayList < FieldOfStudy> fields_Of_study_list= new ArrayList<>();
+      fields_Of_study_list= new ArrayList<>();
 
         try {
             FOS = wuc.getClasses().getJSONObject("response").getJSONArray("result");
@@ -333,11 +343,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                if(fos[i].getFilterID()==parseInt(filter.getId())){
                    FieldOfStudy f = fos[i];
                    fields_Of_study_list.add(f);
-                  // FieldOfStudy []fos =convertClassesJSONToFieldsOfStudy(FOS.getJSONArray(i));
-
-                  // fields_Of_study_list
-
-
                }
 
             }
@@ -358,6 +363,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         String fil_id=null;
         String fil_longName=null;
         JSONArray myFilterList = null;
+
         try {
             myFilterList = wuc.getFilters().getJSONObject("response").getJSONArray("result");
 
@@ -377,6 +383,23 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
        // return new Filter[0];
         return FilterFactory;
+    }
+// Ray: added the getCourses function. i guess it is obvious why.
+    @Override
+    public HashMap<String, Course> getCourses() {
+        HashMap<String, Course> course_List=new HashMap<>();
+        JSONArray myCourses =null;
+
+        try {
+            myCourses =wuc.getCourses().getJSONObject("response").getJSONArray("result");
+           course_List= convertCoursesJSONToCourses(myCourses);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return course_List;
     }
 
     private ArrayList<Event> getPersonalCalendar(long startDate, long endDate) {
@@ -441,24 +464,11 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return fil;
     }
 
-    public ArrayList<String> longName_FOS(FieldOfStudy[] list){
-        ArrayList<String> result = new ArrayList<>();
-
-        for(int i= 0;i < list.length;i++){
-            if(list[i]!=null && list[i].getLongName()!=null){
-                result.add(list[i].getLongName());
-            }
-        }
-
-        return  result;
-    }
 
     public ArrayList<String> longName_default(String Filter_longName){
         ArrayList<String> result = new ArrayList<>();
         ArrayList<FieldOfStudy>list=null;
         ArrayList<Filter> list_filter = this.getFilters();
-
-
         Filter default_filter = null;
 
         for(int i =0;i<list_filter.size();i++){
@@ -468,7 +478,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                 break;
 
             }
-
         }
         for(int j= 0;j < list.size();j++){
             if(list.get(j)!=null){
@@ -476,21 +485,43 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                 result.add(name);
             }
         }
-
-
-
-
         return  result;
     }
-    public ArrayList<String> testcp(){
-        ArrayList<String> l = new ArrayList<>();
-    for(int i= 0;i<200;i++){
-        l.add("belmo"+i);
-    }
-    return l ;
-    }
+ public HashMap<Integer,Course> findCourses(FieldOfStudy fos){
 
 
+     return null;
+ }
+    public ArrayList<FieldOfStudy> getFields_Of_study_list() {
+        return fields_Of_study_list;
+    }
+
+    // this function is called in the mainActivity to parse the String of the selected
+    // field of study . this function computes the field of study from the list of stored field
+    // of study , using the name parse, then this fos is set to the selected fos variable
+    //of this class . this way calling tzhe variable SelectedFIeldOfstudy from this class
+    // will always give the value of the FOS , if it was selected indeed.
+    public  void findChosenFieldOfSTudy(String selectedname){
+        ArrayList<FieldOfStudy> List = this.getFields_Of_study_list();
+        FieldOfStudy fos=null;
+        for(int i=0;i< List.size();i++){
+            if(List.get(i).toString().equals(selectedname)){
+                fos=List.get(i); // found the FOS with the selected. now we can futher work with the object .
+
+                break;
+
+            }
+
+        }
+        this.setSelectedFieldOfStudy(fos);
+
+    }
+    public void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy) {
+        this.selectedFieldOfStudy = selectedFieldOfStudy;
+    }
+    public FieldOfStudy getSelectedFieldOfStudy() {
+        return selectedFieldOfStudy;
+    }
 
 
 }
