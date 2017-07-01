@@ -59,8 +59,13 @@ public class MainActivity extends AppCompatActivity  {
                         confirm.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String SelectdFieldOdStudy = Long.toString(spinner_semester.getSelectedItemId());
+                               // String SelectdFieldOdStudy = Long.toString(spinner_semester.getSelectedItemId());
+                                String SelectdFieldOdStudy = ((Spinner)findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
                                 cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // pared the name , so we can find the Object field of study.
+                               /*
+                                Toast.makeText(MainActivity.this, SelectdFieldOdStudy,
+                                        Toast.LENGTH_LONG).show();
+                                        */
 
 
 

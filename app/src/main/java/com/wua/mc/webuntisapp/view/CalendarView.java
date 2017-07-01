@@ -717,7 +717,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         }
     }
 
-    // meine methods come bellow here.-----------------------------------------------------------
+    // my methods come bellow here.-----------------------------------------------------------
 
 
     public void showMonthlyViewCalendar()

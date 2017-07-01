@@ -86,7 +86,12 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         // todo remove example
-        fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "9999");
+        if(this.getSelectedFieldOfStudy()!=null){ // for testing purposes.
+            fieldOfStudy= this.getSelectedFieldOfStudy();
+        }else{ //TODO remove the else condition
+            fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
+        }
+
 
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents); //todo already saved
@@ -312,11 +317,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                if(fos[i].getFilterID()==parseInt(filter.getId())){
                    FieldOfStudy f = fos[i];
                    fields_Of_study_list.add(f);
-                  // FieldOfStudy []fos =convertClassesJSONToFieldsOfStudy(FOS.getJSONArray(i));
-
-                  // fields_Of_study_list
-
-
                }
 
             }
