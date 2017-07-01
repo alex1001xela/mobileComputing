@@ -226,7 +226,7 @@ public class DatabaseManager implements iDatabaseManager {
         //Tabelle Course
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_COURSE_NAME, event.getName());
-        values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, event.getLecturers()[0]);
+        values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, event.getTeachers()[0]);
         values.put(DatabaseHelper.COLUMN_COURSE_COLOR, event.getColor());
         values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID, event.getCourseID());
 

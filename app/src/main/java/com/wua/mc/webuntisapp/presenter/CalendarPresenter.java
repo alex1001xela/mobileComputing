@@ -36,9 +36,21 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private FieldOfStudy[] fieldsOfStudy;
     private String Filter_id;
 
+
+    public static HashMap<String, Course> allCourses;
+    public static HashMap<String, Teacher> allTeachers;
+
     public CalendarPresenter(Activity calendarView) {
         dbManager = new DatabaseManager(calendarView);
         wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+        try {
+            allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
+            allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
+        }
+        catch (JSONException e){
+
+        }
+
     }
 
     private ArrayList<Event> getAlreadySavedEvents(GregorianCalendar gc, ArrayList<Event> savedEvents){
@@ -86,8 +98,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "9999");
 
 
-        ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents); //todo already saved
-
+        ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents);
 
         if(weekEvents.size() == 0){
             GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
@@ -102,7 +113,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return weekEvents;
     }
 
-    private ArrayList<Event> convertTimetableToEvents(HashMap<String, Course> allCourses, JSONObject timetable) throws JSONException{
+    private ArrayList<Event> convertTimetableToEvents(JSONObject timetable) throws JSONException{
         ArrayList<Event> events = new ArrayList<>();
         JSONObject response = timetable.getJSONObject("response");
         JSONArray result = response.getJSONArray("result");
@@ -126,6 +137,18 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         }
 
         return allCourses;
+    }
+
+    private HashMap<String, Teacher> convertTeachersJSONToTeachers(JSONArray jsonArray) throws JSONException {
+        HashMap<String, Teacher> allTeachers = new HashMap<>();
+
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            Teacher teacher = new Teacher(jsonObject);
+            allTeachers.put(teacher.getId(), teacher);
+        }
+
+        return allTeachers;
     }
 
     private FieldOfStudy[] convertClassesJSONToFieldsOfStudy(JSONArray jsonArray) throws JSONException{
@@ -167,17 +190,19 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         int i = 0;
         boolean found = false;
-
+        UniversityEvent ue = null;
         while(i < currentShownGlobalEvents.size() && !found){
-            UniversityEvent ue = (UniversityEvent) currentShownGlobalEvents.get(i);
+             ue = (UniversityEvent) currentShownGlobalEvents.get(i);
             if(ue.getCourseID().equals(courseID)){
                 found = true;
-                dbManager.connectToDatabase();
-                dbManager.saveCourseDB(ue);
-                dbManager.disconnectFromDatabase();
+
             }
             i++;
         }
+
+        dbManager.connectToDatabase();
+        dbManager.saveCourseDB(ue);
+        dbManager.disconnectFromDatabase();
     }
 
     @Override
@@ -202,8 +227,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime) {
         dbManager.connectToDatabase();
         Event event = new Event(null, name, details, new Date(startTime), new Date(endTime), EventType.PERSONAL);
+        DataBaseObject dbObject = dbManager.saveEventDB(event);
+        event.setID("" + dbObject.getEvent_id());
         currentShownPersonalEvents.add(event);
-        dbManager.saveEventDB(event);
         dbManager.disconnectFromDatabase();
     }
 
@@ -382,11 +408,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private ArrayList<Event> getGlobalCalendar(String startDate, String endDate, FieldOfStudy fieldOfStudy) {
         ArrayList<Event> events = new ArrayList<>();
         try{
-            HashMap<String, Course> allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result")); //todo public static, also teachers
-
             JSONObject timetable = wuc.getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
 
-            events = convertTimetableToEvents(allCourses, timetable);
+            events = convertTimetableToEvents(timetable);
         }
         catch (JSONException e){
             Log.i("JSONException", e.toString());

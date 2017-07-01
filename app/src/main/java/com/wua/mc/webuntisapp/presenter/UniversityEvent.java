@@ -16,17 +16,17 @@ public class UniversityEvent extends Event {
 
 	private String courseID = "";
 
-	private String[] lecturers = {};
+	private String[] teachers = {};
 
 	private String[] rooms = {};
 
 	private String semester = "";
 
-	public UniversityEvent(String id, String name, String details, Date startTime, Date endTime, EventType eventType, String untisID, String courseID, String[] lecturers, String[] rooms, String semester) {
+	public UniversityEvent(String id, String name, String details, Date startTime, Date endTime, EventType eventType, String untisID, String courseID, String[] teachers, String[] rooms, String semester) {
 		super(id, name, details, startTime, endTime, eventType);
 		this.untisID = untisID;
 		this.courseID = courseID;
-		this.lecturers = lecturers;
+		this.teachers = teachers;
 		this.rooms = rooms;
 		this.semester = semester;
 	}
@@ -36,7 +36,7 @@ public class UniversityEvent extends Event {
 		try {
 			this.untisID = jsonObject.getString("id");
 			this.rooms = convertRoomsJSONToRooms(jsonObject.getJSONArray("ro"));
-			this.lecturers = convertLecturesJSONToLecturers(jsonObject.getJSONArray("te"));
+			this.teachers = convertTeachersJSONToTeachers(jsonObject.getJSONArray("te"));
 			this.courseID = jsonObject.getJSONArray("su").getJSONObject(0).getString("id");
 		}
 		catch (JSONException e){
@@ -48,6 +48,8 @@ public class UniversityEvent extends Event {
 		super(dbObject);
 		this.untisID = "" + dbObject.getCourse_untis_id();
 		this.courseID = "" + dbObject.getCourse_id();
+        this.teachers[0] = dbObject.getCourse_lecturer();
+        this.rooms[0] = dbObject.getEvent_room();
 	}
 
 	private String[] convertRoomsJSONToRooms(JSONArray jsonArray) throws JSONException{
@@ -59,11 +61,11 @@ public class UniversityEvent extends Event {
 		return rooms;
 	}
 
-	private String[] convertLecturesJSONToLecturers(JSONArray jsonArray) throws JSONException{
+	private String[] convertTeachersJSONToTeachers(JSONArray jsonArray) throws JSONException{
 		String[] lecturers = new String[jsonArray.length()];
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject lecturer = jsonArray.getJSONObject(i);
-			lecturers[i] = lecturer.getString("id");
+			lecturers[i] = CalendarPresenter.allTeachers.get(lecturer.getString("id")).getLongName();
 		}
 		return lecturers;
 	}
@@ -76,8 +78,8 @@ public class UniversityEvent extends Event {
 		return courseID;
 	}
 
-	public String[] getLecturers() {
-		return lecturers;
+	public String[] getTeachers() {
+		return teachers;
 	}
 
 	public String[] getRooms() {
@@ -90,7 +92,7 @@ public class UniversityEvent extends Event {
 
 	@Override
 	public String toString(){
-		return getName();
+		return getName() + "\n" + getTeachers()[0];
 	}
 
 

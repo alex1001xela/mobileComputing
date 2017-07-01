@@ -97,6 +97,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
         buildWeeklyCalendar();
 
+
+    }
+
+    private void createDrawer(){
         menuItems = getResources().getStringArray(R.array.menu_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -188,7 +192,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
                 getWeeklyCalendar(gregCal, null);
 
-
+                createDrawer();
             }
         });
 

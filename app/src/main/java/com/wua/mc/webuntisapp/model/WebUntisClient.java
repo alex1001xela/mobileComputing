@@ -338,7 +338,7 @@ public class WebUntisClient implements iWebUntisClient {
 			JSONObject params = new JSONObject();
 			params.put("user", username);
 			params.put("password", password);
-			params.put("client", "CLIENT");
+			params.put("client", "RU-App");
 
 			authenticationData.put("method", "authenticate");
 			authenticationData.put("params", params);

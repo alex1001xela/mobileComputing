@@ -110,7 +110,11 @@ public class Event {
 		return color;
 	}
 
-	public boolean isEventOnThisDay (GregorianCalendar calendar){
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    public boolean isEventOnThisDay (GregorianCalendar calendar){
 		GregorianCalendar eventGregorianStart = GregorianCalendarFactory.getGregorianCalendar();
 		eventGregorianStart.setTime(this.startTime);
 		//GregorianCalendar eventGregorianEnd = GregorianCalendarFactory.getGregorianCalendar();
