@@ -64,12 +64,7 @@ public class MainActivity extends AppCompatActivity  {
                                // cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // parsed the name , so we can find the Object field of study.
                                 Intent i = new Intent(MainActivity.this, GlobalCalendarView.class);
                                 i.putExtra("SelectedFieldOfStudy", SelectdFieldOdStudy);
-
-                               /*
-                                Toast.makeText(MainActivity.this, SelectdFieldOdStudy,
-                                        Toast.LENGTH_LONG).show();
-                                        */
-
+                                startActivity(i);
 
 
                             }
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
                         spinner_faculty = (Spinner)findViewById(R.id.fieldOfStudySpinner);
                         ArrayList<String>Faculties = new ArrayList<String>();
                         ArrayList<Filter> output_filter_list = cp.getFilters();
-                         // looping over the list to collect the name ofd each filter
+                         // looping over the list to collect the name of each filter
                         for(int i=0;i<output_filter_list.size();i++){
                             String name =   output_filter_list.get(i).getLongName(); // use the toString to print both the Field of study longNAme and it's name+semester
                             Faculties.add(name);
