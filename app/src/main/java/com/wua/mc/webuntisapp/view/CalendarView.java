@@ -410,14 +410,53 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         eventBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                openEventDetailView(event);
             }
         });
 
         return eventBox;
     }
+    public void openEventDetailView (final Event event){
+        LayoutInflater li = LayoutInflater.from(context);
+        View view = li.inflate(R.layout.activity_delete_event_course, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        TextView courseInformation = (TextView) view.findViewById(R.id.textViewEventMenu);
 
+        Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
+        Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+        courseInformation.setText(event.getName() + "\b" + event.getStartTime().toString() + "\b" + event.getEndTime().toString());
 
+        /* --Additional
+        Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
+        Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
+        buttonExportEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    // TODO
+            }
+        });
+        buttonExportCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    //toDO
+            }
+        });*/
+        buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendarDataManagement.deleteEvent(event.getId());
+            }
+        });
+        buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendarDataManagement.deleteCourse(event.getId());
+            }
+        });
+        alertDialogBuilder.setView(view);
+        alertDialogBuilder.show();
+    }
+/*
     @Override
     public void onBackPressed(){ //todo why overriding that function?
 
@@ -493,7 +532,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             alertDialogBuilder.show();
         }
     }
-
+*/
     private int calculateEventHeight(EventBoxView eventBox){
         int bottom = calculateEventBottom(eventBox);
         int top = calculateEventTop(eventBox);
