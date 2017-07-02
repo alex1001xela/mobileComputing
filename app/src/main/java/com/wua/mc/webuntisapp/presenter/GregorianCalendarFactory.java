@@ -2,6 +2,7 @@ package com.wua.mc.webuntisapp.presenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -74,9 +75,49 @@ public abstract class GregorianCalendarFactory { //todo class diagram
         return date;
     }
 
+    public static GregorianCalendar getStartOfSemester(GregorianCalendar gc){
+        GregorianCalendar temp = createGregorianCalendarCopy(gc);
+
+        int currentMonth = temp.get(Calendar.MONTH);
+        if(currentMonth > 1 &  currentMonth < 8){
+            temp.set(Calendar.MONTH, 2);
+        }
+        else{
+            temp.set(Calendar.MONTH, 8);
+        }
+        if(currentMonth < 2){
+            temp.add(Calendar.YEAR, -1);
+        }
+        temp.set(Calendar.DAY_OF_MONTH, 1);
+        return temp;
+    }
+
+    public static GregorianCalendar getEndOfSemester(GregorianCalendar gc){
+        GregorianCalendar temp = createGregorianCalendarCopy(gc);
+
+        int currentMonth = temp.get(Calendar.MONTH);
+        if(currentMonth > 1 &  currentMonth < 8){
+            temp.set(Calendar.MONTH, 2);
+        }
+        else{
+            temp.set(Calendar.MONTH, 8);
+        }
+        if(currentMonth < 2){
+            temp.add(Calendar.YEAR, -1);
+        }
+        temp.set(Calendar.DAY_OF_MONTH, getEndOfMonth(temp).get(Calendar.DAY_OF_MONTH));
+        return temp;
+    }
+
     public static String gregorianCalendarToMilliseconds(GregorianCalendar gc){
 
         return "" + gc.getTime();
+    }
+
+    public static GregorianCalendar dateToGregorianCalendar(Date date){
+        GregorianCalendar temp = getGregorianCalendar();
+        temp.setTime(date);
+        return temp;
     }
 
 

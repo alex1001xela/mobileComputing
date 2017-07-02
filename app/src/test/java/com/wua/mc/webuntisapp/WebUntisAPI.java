@@ -2,6 +2,7 @@ package com.wua.mc.webuntisapp;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
+import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class WebUntisAPI {
 
     private iWebUntisClient wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
-/*
+
     @Test
     public void getCurrentSchoolYear() throws Exception{
         boolean throwedException = false;
@@ -28,13 +29,6 @@ public class WebUntisAPI {
         //JSONArray jsonObject = wuc.getFilters();
         System.out.print(jsonObject.toString());
         try {
-
-
-
-
-
-
-
 
             JSONObject result = jsonObject.getJSONObject("response").getJSONObject("result");
             result.getInt("id");
@@ -59,15 +53,15 @@ public class WebUntisAPI {
 
         assertTrue(throwedException);
     }
-    */
+
 
     // Ray: Tests-----------------------------------------------------------------------------------
     @Test
     public void Test_filter_classes() throws Exception{
          // this is the filter for INF .......
         boolean throwedException = false;
-        JSONObject jsonObject = wuc.getCourses();
-        JSONObject jsonObject = wuc.getClasses();
+        JSONObject jsonObject1 = wuc.getCourses();
+        JSONObject jsonObject2 = wuc.getClasses();
         CalendarPresenter cp = new CalendarPresenter(null);
         //JSONObject jsonObject = wuc.getFilters();
         //JSONArray jsonObject = wuc.getClasses();
@@ -115,7 +109,7 @@ public class WebUntisAPI {
 
 
 
-            JSONArray result = jsonObject.getJSONObject("response").getJSONArray("result");
+            JSONArray result = jsonObject1.getJSONObject("response").getJSONArray("result");
 
             // for filter .
            // result.getInt("id");
@@ -142,7 +136,7 @@ public class WebUntisAPI {
         assertFalse(throwedException);
 
         try {
-            jsonObject.getInt("result");
+            jsonObject2.getInt("result");
         }
         catch (JSONException e){
             throwedException = true;

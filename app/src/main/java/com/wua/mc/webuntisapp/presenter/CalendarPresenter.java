@@ -184,8 +184,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public String getEventInformationPersonal(String eventID) {
-        dbManager.connectToDatabase();
-        dbManager.disconnectFromDatabase();
         return "";
     }
 
@@ -200,18 +198,37 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         int i = 0;
         boolean found = false;
-        UniversityEvent ue = null;
+        UniversityEvent universityEvent = null;
         while(i < currentShownGlobalEvents.size() && !found){
-             ue = (UniversityEvent) currentShownGlobalEvents.get(i);
-            if(ue.getCourseID().equals(courseID)){
+             universityEvent = (UniversityEvent) currentShownGlobalEvents.get(i);
+            if(universityEvent.getCourseID().equals(courseID)){
                 found = true;
 
             }
             i++;
         }
+        GregorianCalendar eventTime = GregorianCalendarFactory.dateToGregorianCalendar(universityEvent.getStartTime());
+        String startOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getStartOfSemester(eventTime));
+        String endOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getEndOfSemester(eventTime));
+
+        JSONObject jsonObjectTimetable = wuc.getTimetableForElement(universityEvent.getCourseID(), ElementType.COURSE, startOfSemester, endOfSemester);
+        ArrayList<Event> semesterEvents = new ArrayList<>();
+        try{
+            semesterEvents = convertTimetableToEvents(jsonObjectTimetable);
+        }
+        catch (JSONException e){
+
+        }
 
         dbManager.connectToDatabase();
-        dbManager.saveCourseDB(ue);
+        dbManager.beginTransaction();
+        for(Event ue : semesterEvents){
+            dbManager.saveEventDB(ue);
+        }
+        dbManager.setTransactionSuccessful();
+        dbManager.endTransaction();
+
+        dbManager.saveCourseDB(universityEvent);
         dbManager.disconnectFromDatabase();
     }
 
@@ -261,6 +278,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public void deleteCourse(String courseID) {
+
         dbManager.connectToDatabase();
         dbManager.deleteCourseDB(Long.parseLong(courseID));
         dbManager.disconnectFromDatabase();

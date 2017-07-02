@@ -54,6 +54,18 @@ public class DatabaseManager implements iDatabaseManager {
         dbHelper.close();
     }
 
+    public void beginTransaction() {
+        database.beginTransaction();
+    }
+
+    public void endTransaction() {
+        database.endTransaction();
+    }
+
+    public void setTransactionSuccessful(){
+        database.setTransactionSuccessful();
+    }
+
     private DataBaseObject cursorToCourseDatabaseObject(Cursor cursor) {
 
         int idIndex_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_COURSE_ID);
