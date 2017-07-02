@@ -416,6 +416,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         return eventBox;
     }
+
     public void openEventDetailView (final Event event){
         LayoutInflater li = LayoutInflater.from(context);
         View view = li.inflate(R.layout.activity_delete_event_course, null);
@@ -424,7 +425,27 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
         Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
-        courseInformation.setText(event.getName() + "\b" + event.getStartTime().toString() + "\b" + event.getEndTime().toString());
+        courseInformation.setText(event.getName() + "\n" + event.getStartTime().toString() + "\n" + event.getEndTime().toString());
+
+        /* Code zur anpassung der Formatierung
+        String startTimeRes = "";
+        String endTimeRes = "";
+        try {
+            String startTime =event.getStartTime().toString();
+            String endTime =event.getEndTime().toString();
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EEE dd MMM yyyy hh:mm:ss Z");
+            Date newDate0 = format.parse(startTime);
+            Date newDate1 = format.parse(endTime);
+            format = new java.text.SimpleDateFormat("MMM dd,yyyy hh:mm a");
+            startTimeRes = format.format(newDate0);
+            endTimeRes = format.format(newDate1);
+
+        }catch (Exception e){
+
+        }
+        courseInformation.setText(event.getName() + "\n" + startTimeRes + "\n" + endTimeRes);
+        */
+
 
         /* --Additional
         Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
@@ -466,7 +487,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
             LayoutInflater li = LayoutInflater.from(context);
         if(add == false) {
-            View view = li.inflate(R.layout.activity_event_menu_alert, null);
+            View view = li.inflate(R.layout.activity_delete_event_course, null);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
             TextView courseInformation = (TextView) view.findViewById(R.id.textCourse);

@@ -7,6 +7,7 @@ import com.wua.mc.webuntisapp.model.DataBaseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
