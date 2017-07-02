@@ -132,8 +132,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Course course = new Course(jsonObject);
-            allCourses.put(course.getName(), course); // for this reason i will use the name of the course ..
-           // allCourses.put(Integer.toString(course.getUntisID()), course); // we cannot differenbtiate between course of different field of study using the untis id
+            //allCourses.put(course.getName(), course); // for this reason i will use the name of the course ..
+            allCourses.put(Integer.toString(course.getUntisID()), course); // we cannot differenbtiate between course of different field of study using the untis id
             //it identifies the courses within all course ( I believe).
         }
 
