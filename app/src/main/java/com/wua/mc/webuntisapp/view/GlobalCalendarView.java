@@ -16,6 +16,32 @@ public class GlobalCalendarView extends CalendarView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+
+        String chosenFieldOfStudy;
+        String id;
+        String filterID;
+        String name;
+
+        if(extras != null){
+            chosenFieldOfStudy = extras.getString("SelectedFieldOfStudy");
+            id = extras.getString("id");
+            filterID = extras.getString("filterID");
+            name = extras.getString("name");
+        }
+        else{
+            //todo temp data, getFromDatabase
+            chosenFieldOfStudy = "Medien- und Kommunikationsinformatik-3MKIB6";
+            id = "1803";
+            filterID = "2";
+            name = "3MKIB6";
+        }
+
+
+
+        FieldOfStudy fieldOfStudy = new FieldOfStudy(id, name, chosenFieldOfStudy, true, filterID);
+        calendarDataManagement.setSelectedFieldOfStudy(fieldOfStudy);
+        buildWeeklyCalendar();
     }
 
     @Override

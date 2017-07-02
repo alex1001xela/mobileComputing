@@ -16,6 +16,7 @@ public class PersonalCalendarView extends CalendarView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		buildWeeklyCalendar();
 	}
 
 	@Override

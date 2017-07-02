@@ -38,6 +38,12 @@ public interface iCalendarPresenter {
 
         void logout();
 
+        void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy);
+
+        FieldOfStudy getSelectedFieldOfStudy();
+
+        FieldOfStudy findChosenFieldOfSTudy(String selectedname);
+
     }
 
     interface iCalendarWebUntis {

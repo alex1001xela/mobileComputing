@@ -485,28 +485,34 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
 
-    public ArrayList<String> longName_default(String Filter_longName){
-        ArrayList<String> result = new ArrayList<>();
-        ArrayList<FieldOfStudy>list=null;
-        ArrayList<Filter> list_filter = this.getFilters();
-        Filter default_filter = null;
+    public Filter getFieldOfStudyFromLongName(String Filter_longName, ArrayList<Filter> list_filter){
+
+
+        Filter filter = null;
 
         for(int i =0;i<list_filter.size();i++){
             // compare the toString of ..
             if(list_filter.get(i).getLongName().equals(Filter_longName)){  //TODO jsut for testing purposes. later the id of the chosen filter
-               list= this.getFieldsOfStudy(list_filter.get(i));
+                filter = list_filter.get(i);
                 break;
 
             }
         }
+
+        return filter;
+    }
+
+    public ArrayList<String> longName_default(ArrayList<FieldOfStudy> list){
+        ArrayList<String> result = new ArrayList<>();
         for(int j= 0;j < list.size();j++){
             if(list.get(j)!=null){
                 String name = list.get(j).toString();
                 result.add(name);
             }
         }
-        return  result;
+        return result;
     }
+
  public HashMap<Integer,Course> findCourses(FieldOfStudy fos){
 
 
@@ -549,9 +555,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return fos;
 
     }
+
+    @Override
     public void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy) {
         this.selectedFieldOfStudy = selectedFieldOfStudy;
     }
+
+    @Override
     public FieldOfStudy getSelectedFieldOfStudy() {
         return selectedFieldOfStudy;
     }

@@ -51,8 +51,8 @@ import java.util.Locale;
 // modifications by ray : added to the implememted interfaces the OnclickListener
 abstract class CalendarView extends Activity implements iCalendarView ,OnClickListener{
 
-    private iCalendarPresenter.iCalendarDataManagement calendarDataManagement;
-    private iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
+    protected iCalendarPresenter.iCalendarDataManagement calendarDataManagement;
+    protected iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
     private GregorianCalendar gregCal;
 
     private int eventFieldHeight;
@@ -95,7 +95,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         gregCal = new GregorianCalendar(Locale.GERMANY);
         calendarDataManagement = new CalendarPresenter(this);
         calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
-        buildWeeklyCalendar();
+
 
 
     }
@@ -162,7 +162,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
 
 
-    private void buildWeeklyCalendar(){
+    protected void buildWeeklyCalendar(){
         setCalendarContentView();
 
         final ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
@@ -190,7 +190,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
                 updateCalendar();
 
-                getWeeklyCalendar(gregCal, null);
+
+                getWeeklyCalendar(gregCal, calendarDataManagement.getSelectedFieldOfStudy());
 
                 createDrawer();
             }
@@ -545,7 +546,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             this.button = new Button(context);
             this.layoutParams = new LinearLayout.LayoutParams(0, 0);
             this.button.setLayoutParams(this.layoutParams);
-            this.button.setText(event.toString());
+            String buttonText = event.toString();
+            this.button.setText(buttonText);
             this.button.setBackground(null);
             this.button.setBackgroundColor(Color.GRAY);
             this.button.getBackground().setAlpha(182);
