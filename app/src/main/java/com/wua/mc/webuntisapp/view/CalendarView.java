@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
@@ -419,63 +420,102 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     public void openEventDetailView (final Event event){
         LayoutInflater li = LayoutInflater.from(context);
-        View view = li.inflate(R.layout.activity_delete_event_course, null);
+        View view;
+
+        if (CalendarView.this instanceof GlobalCalendarView){
+            view = li.inflate(R.layout.activity_add_event_course, null);
+            Button buttonAddEvent = (Button) view.findViewById(R.id.buttonAddEvent);
+            Button buttonAddCourse = (Button) view.findViewById(R.id.buttonAddCourse);
+            TextView courseInformation = (TextView) view.findViewById(R.id.textCourse);
+            buttonAddEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calendarDataManagement.addEvent(event.getId());
+                    Toast toast = Toast.makeText(context, "Event added", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
+                    toast.show();
+
+                }
+            });
+            buttonAddCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calendarDataManagement.addCourse(event.getId());
+                    Toast toast = Toast.makeText(context, "Course added", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
+                    toast.show();
+                }
+            });
+            courseInformation.setText(reFormatDate(event));
+        } else {
+            view = li.inflate(R.layout.activity_delete_event_course, null);
+
+            Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
+            Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
+            Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
+            Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+            TextView courseInformation = (TextView) view.findViewById(R.id.textViewEventMenu);
+            buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calendarDataManagement.deleteEvent(event.getId());
+                    Toast toast = Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
+                    toast.show();
+                }
+            });
+            buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calendarDataManagement.deleteCourse(event.getId());
+                    Toast toast = Toast.makeText(context, "Course deleted", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
+                    toast.show();
+                }
+            });
+
+            buttonExportEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO
+                }
+            });
+            buttonExportCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //toDO
+                }
+            });
+            courseInformation.setText(reFormatDate(event));
+        }
+
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        TextView courseInformation = (TextView) view.findViewById(R.id.textViewEventMenu);
 
-        Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
-        Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
-        courseInformation.setText(event.getName() + "\n" + event.getStartTime().toString() + "\n" + event.getEndTime().toString());
+        alertDialogBuilder.setView(view);
+        alertDialogBuilder.show();
+    }
 
-        /* Code zur anpassung der Formatierung
+    public String reFormatDate(Event event){
+        String res="";
         String startTimeRes = "";
         String endTimeRes = "";
         try {
             String startTime =event.getStartTime().toString();
             String endTime =event.getEndTime().toString();
-            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EEE dd MMM yyyy hh:mm:ss Z");
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EEE MMM ww hh:mm:ss Z yyyy");
             Date newDate0 = format.parse(startTime);
             Date newDate1 = format.parse(endTime);
-            format = new java.text.SimpleDateFormat("MMM dd,yyyy hh:mm a");
+            format = new java.text.SimpleDateFormat("MMM dd,yyyy HH:mm ");
             startTimeRes = format.format(newDate0);
+            startTimeRes+= "Uhr";
             endTimeRes = format.format(newDate1);
+            endTimeRes+= "Uhr";
 
         }catch (Exception e){
-
+            Log.e("Format  ","Failed to Reformat Date Class: CalendarView.java");
         }
-        courseInformation.setText(event.getName() + "\n" + startTimeRes + "\n" + endTimeRes);
-        */
-
-
-        /* --Additional
-        Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
-        Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
-        buttonExportEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    // TODO
-            }
-        });
-        buttonExportCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    //toDO
-            }
-        });*/
-        buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendarDataManagement.deleteEvent(event.getId());
-            }
-        });
-        buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendarDataManagement.deleteCourse(event.getId());
-            }
-        });
-        alertDialogBuilder.setView(view);
-        alertDialogBuilder.show();
+        return res= event.getName() + "\n" + startTimeRes + "\n" + endTimeRes;
     }
 /*
     @Override
