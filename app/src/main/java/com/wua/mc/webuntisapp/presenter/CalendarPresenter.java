@@ -40,7 +40,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private FieldOfStudy selectedFieldOfStudy;
 
     public CalendarPresenter(Activity calendarView) {
-        dbManager = new DatabaseManager(calendarView);
+       dbManager = new DatabaseManager(calendarView);
         wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
     }
 
@@ -86,12 +86,14 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
         // todo remove example
+        /*
         if(this.getSelectedFieldOfStudy()!=null){ // for testing purposes.
             fieldOfStudy= this.getSelectedFieldOfStudy();
         }else{ //TODO remove the else condition
             fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
         }
-
+        */
+       // fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "3");
 
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents); //todo already saved
@@ -117,8 +119,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         for(int i = 0; i < result.length(); i++){
             JSONObject eventJSON = result.getJSONObject(i);
-            String courseID = eventJSON.getJSONArray("su").getJSONObject(0).getString("id");
-            events.add(new UniversityEvent(eventJSON, allCourses.get(courseID).getLongName()));
+            int courseID = eventJSON.getJSONArray("su").getJSONObject(0).getInt("id");
+            events.add(new UniversityEvent(eventJSON, allCourses.get(Integer.toString(courseID)).getLongName()));
         }
 
         return events;
@@ -427,13 +429,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void setSelected_filterId(String id){
         this.Filter_id =id ;
     }
-    public Filter findFilter(){
+    public Filter findFilter(String Longname){
         Filter fil =null;
         String longName_filter=null;
-        longName_filter= getSelecter_filterId();
-        ArrayList<Filter> All_filters = getFilters();
+
+        ArrayList<Filter> All_filters = this.getFilters();
         for( int i = 0;i<All_filters.size();i++){
-            if(All_filters.get(i).getLongName()==longName_filter){
+            if(All_filters.get(i).getLongName().equals(Longname)){
                 fil=All_filters.get(i);
             }
         }
@@ -477,10 +479,22 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     // of study , using the name parse, then this fos is set to the selected fos variable
     //of this class . this way calling tzhe variable SelectedFIeldOfstudy from this class
     // will always give the value of the FOS , if it was selected indeed.
-    public  void findChosenFieldOfSTudy(String selectedname){
+    public  FieldOfStudy findChosenFieldOfSTudy(String selectedname){
+
         ArrayList<FieldOfStudy> List = this.getFields_Of_study_list();
+
+
         FieldOfStudy fos=null;
+
+
+        if(List.isEmpty()){
+            Log.v("BELMO!","list empty");
+        }else{
+            Log.v("BELMO!","list not empty");
+        }
+
         for(int i=0;i< List.size();i++){
+
             if(List.get(i).toString().equals(selectedname)){
                 fos=List.get(i); // found the FOS with the selected. now we can futher work with the object .
 
@@ -489,7 +503,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             }
 
         }
-        this.setSelectedFieldOfStudy(fos);
+       // this.setSelectedFieldOfStudy(fos);
+        return fos;
 
     }
     public void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy) {
