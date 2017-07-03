@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wua.mc.webuntisapp.view.MainActivity">
+
+
+    <TextView
+        android:id="@+id/textCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:text="Course information"/>
+
+
+    <Button
+        android:id="@+id/colorBlue"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/blue"
+        android:onClick="clickColorBlue"/>
+
+    <Button
+        android:id="@+id/colorPurple"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/purple"
+        android:onClick="clickColorPurple"/>
+
+    <Button
+        android:id="@+id/colorPink"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/pink"
+        android:onClick="clickColorPink"/>
+
+    <Button
+        android:id="@+id/colorOrange"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/orange"
+        android:onClick="clickColorOrange"/>
+
+
+    <Button
+        android:id="@+id/colorRed"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="270dp"
+        android:background="@color/red"
+        android:onClick="clickColorRed"/>
+
+    <Button
+        android:id="@+id/colorYellow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/yellow"
+        android:onClick="clickColorYellow"/>
+
+    <Button
+        android:id="@+id/colorLightgreen"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/lightgreen"
+        android:onClick="clickColorLightgreen"/>
+
+    <Button
+        android:id="@+id/colorGreen"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/green"
+        android:onClick="clickColorGreen"/>
+
+    <Button
+        android:id="@+id/colorAqua"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/aqua"
+        android:onClick="clickColorAqua"/>
+
+    <Button
+        android:id="@+id/colorOcean"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="320dp"
+        android:background="@color/ocean"
+        android:onClick="clickColorOcean"/>
+
+
+    <Button
+        android:id="@+id/buttonAddEvent"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="350dp"
+        android:text="Add Event to my calendar" />
+
+    <Button
+        android:id="@+id/buttonAddCourse"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="380dp"
+        android:layout_marginBottom="30dp"
+        android:text="Add Course to my calendar"
+/>
+
+    <Button
+        android:id="@+id/buttonAddEventNEW"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="410dp"
+        android:text="Add Event to my calendar"
+/>
+
+    <Button
+        android:id="@+id/buttonAddCourseNEW"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="440dp"
+        android:layout_marginBottom="30dp"
+        android:text="Add Course to my calendar"
+/>
+
+</RelativeLayout>
