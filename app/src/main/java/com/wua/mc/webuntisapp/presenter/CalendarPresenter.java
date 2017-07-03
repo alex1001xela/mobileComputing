@@ -492,7 +492,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         for(int i =0;i<list_filter.size();i++){
             // compare the toString of ..
-            if(list_filter.get(i).getLongName().equals(Filter_longName)){  //TODO jsut for testing purposes. later the id of the chosen filter
+            if(list_filter.get(i).getLongName().equals(Filter_longName)){  //TODO just for testing purposes. later the id of the chosen filter
                 filter = list_filter.get(i);
                 break;
 
@@ -533,13 +533,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
 
         FieldOfStudy fos=null;
-
-
-        if(List.isEmpty()){
-            Log.v("BELMO!","list empty");
-        }else{
-            Log.v("BELMO!","list not empty");
-        }
 
         for(int i=0;i< List.size();i++){
 

@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollContainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.wua.mc.webuntisapp.view.MainActivity">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewEventMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true"
-        android:text="Event"/>
-    <TextView
-        android:id="@+id/textCourse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_centerHorizontal="true"
-        android:text="Course"/>
+        android:text="TextView"
+        android:lines="3"/>
 
     <Button
-        android:id="@+id/buttonDeleteCourse"
-        android:layout_width="300dp"
+        android:id="@+id/buttonExportEvent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="390dp"
-        android:text="Delete Course"
-        android:textColor="@android:color/background_light"
-        android:background="@drawable/button_color"
-        android:layout_centerHorizontal="true" />
+        android:text="export event" />
+
+    <Button
+        android:id="@+id/buttonExportCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="export course" />
 
     <Button
         android:id="@+id/buttonDeleteEvent"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="450dp"
-        android:text="Delete Event"
-        android:textColor="@android:color/background_light"
-        android:background="@drawable/button_color"
-        android:layout_centerHorizontal="true" />
+        android:text="delete event" />
 
-
-</RelativeLayout>
+    <Button
+        android:id="@+id/buttonDeleteCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="delete course" />
+</LinearLayout>
