@@ -29,6 +29,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +64,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private int eventFieldXStart;
     private int eventFieldYStart;
     private int eventFieldYEnd;
-    private int heightPerQuarter;
+    private double heightPerQuarter;
     private final int numberOfQuartersIn24Hours = 24 * 4;
 
     private DayButton[] dayButtons = new DayButton[7];
@@ -188,7 +190,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 eventFieldWidth = firstLine.getWidth();
                 eventFieldXStart = (int) firstLine.getX();
 
-                heightPerQuarter = eventFieldHeight / numberOfQuartersIn24Hours;
+                heightPerQuarter = (double)eventFieldHeight / (double)numberOfQuartersIn24Hours;
 
 
                 scrollViewLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -199,6 +201,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 getWeeklyCalendar(gregCal, calendarDataManagement.getSelectedFieldOfStudy());
 
                 createDrawer();
+
+                scrollToCurrentTime();
+
+
             }
         });
 
@@ -212,6 +218,20 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
             }
         });
+    }
+
+    private void scrollToCurrentTime(){
+        ScrollView scrollView = (ScrollView) findViewById(R.id.day_plan);
+        int top = scrollView.getTop();
+        int bottom = scrollView.getBottom();
+        int range = bottom - top;
+        double distancePerQuarter = (double)range / (double)(numberOfQuartersIn24Hours);
+        int hour = gregCal.get(Calendar.HOUR_OF_DAY);
+        int minute = gregCal.get(Calendar.MINUTE);
+        double quarter = (double)minuteToQuarter(minute + hourToMinute(hour));
+        double calculatedPosition = (distancePerQuarter * (quarter + 35));
+        double positionToBeScrolled = calculatedPosition > bottom ? bottom : calculatedPosition;
+        scrollView.setScrollY((int)positionToBeScrolled);
     }
 
     void showEventsOnDailyPlan(ArrayList<Event>  events){
@@ -292,8 +312,34 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         currentDayButton.getButton().setBackgroundResource(R.drawable.rounded_button_black);
         currentDayButton.getButton().setTextColor(Color.WHITE);
 
+        if(this instanceof GlobalCalendarView){
+            final Button fieldOfStudyButton = (Button) findViewById(R.id.filter_and_field_of_study);
+            fieldOfStudyButton.setText(calendarDataManagement.getSelectedFieldOfStudy().getName());
+
+            fieldOfStudyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setContentView(R.layout.activity_choose_fieldofstudy);
+
+                    FieldOfStudyChooser fieldOfStudyChooser = new FieldOfStudyChooser((CalendarPresenter) calendarDataManagement, CalendarView.this);
+                    Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyChooser();
+                    confirmationButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            String SelectdFieldOdStudy = ((Spinner) findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
 
 
+                            FieldOfStudy fos = calendarDataManagement.findChosenFieldOfSTudy(SelectdFieldOdStudy);
+                            calendarWebUntis.resetCurrentShownGlobalEvents();
+                            calendarDataManagement.setSelectedFieldOfStudy(fos);
+                            buildWeeklyCalendar();
+
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private DayButton getDayButtonFromDayOfWeek(int dayOfWeek){
@@ -606,11 +652,11 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     private int calculateEventTop(EventBoxView eventBox){
-        return eventFieldYStart + (heightPerQuarter * eventBox.getStartQuarter());
+        return eventFieldYStart + (int)(heightPerQuarter * eventBox.getStartQuarter());
     }
 
     private int calculateEventBottom(EventBoxView eventBox){
-        return eventFieldYStart + (heightPerQuarter * eventBox.getEndQuarter());
+        return eventFieldYStart + (int)(heightPerQuarter * eventBox.getEndQuarter());
     }
 
     private int convertDateToQuarter(Date date){

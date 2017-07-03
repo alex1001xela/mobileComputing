@@ -23,13 +23,12 @@ public class GlobalCalendarView extends CalendarView {
         String filterID;
         String name;
 
-        if(extras != null){
+        if (extras != null) {
             chosenFieldOfStudy = extras.getString("SelectedFieldOfStudy");
             id = extras.getString("id");
             filterID = extras.getString("filterID");
             name = extras.getString("name");
-        }
-        else{
+        } else {
             //todo temp data, getFromDatabase
             chosenFieldOfStudy = "Medien- und Kommunikationsinformatik-3MKIB6";
             id = "1803";
@@ -38,8 +37,7 @@ public class GlobalCalendarView extends CalendarView {
         }
 
 
-
-        FieldOfStudy fieldOfStudy = new FieldOfStudy(id, name, chosenFieldOfStudy, true, filterID);
+        final FieldOfStudy fieldOfStudy = new FieldOfStudy(id, name, chosenFieldOfStudy, true, filterID);
         calendarDataManagement.setSelectedFieldOfStudy(fieldOfStudy);
         buildWeeklyCalendar();
     }
@@ -70,7 +68,7 @@ public class GlobalCalendarView extends CalendarView {
         setContentView(R.layout.activity_global_calendar);
     }
 
-    public void showFilterAndFieldOfStudyPicker(){
+    public void showFilterAndFieldOfStudyPicker() {
 
     }
 }
