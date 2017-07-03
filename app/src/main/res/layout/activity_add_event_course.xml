@@ -107,7 +107,7 @@
         android:layout_marginLeft="270dp"
         android:layout_marginTop="320dp"
         android:background="@color/ocean"
-        android:onClick="clickColorOcean"/>
+        android:onClick="clickColorOcean"/>ne
 
 
     <Button

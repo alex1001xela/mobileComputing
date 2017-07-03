@@ -521,7 +521,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 }
             });
 
-            buttonExportEvent.setOnClickListener(new View.OnClickListener() {
+            /*buttonExportEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // TODO
@@ -532,7 +532,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 public void onClick(View v) {
                     //toDO
                 }
-            });
+            });*/
             courseInformation.setText(reFormatDate(event));
         }
 
