@@ -497,10 +497,22 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         } else {
             view = li.inflate(R.layout.activity_delete_event_course, null);
 
-            Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
-            Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);
+            /*Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
+            Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);*/
             Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
             Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+            //colorButtons
+            Button colorBlue = (Button) view.findViewById(R.id.colorBlue);
+            Button colorPurple = (Button) view.findViewById(R.id.colorPurple);
+            Button colorPink = (Button) view.findViewById(R.id.colorPink);
+            Button colorOrange = (Button) view.findViewById(R.id.colorOrange);
+            Button colorRed = (Button) view.findViewById(R.id.colorRed);
+            Button colorYellow = (Button) view.findViewById(R.id.colorYellow);
+            Button colorLightgreen = (Button) view.findViewById(R.id.colorLightgreen);
+            Button colorGreen = (Button) view.findViewById(R.id.colorGreen);
+            Button colorAqua = (Button) view.findViewById(R.id.colorAqua);
+            Button colorOcean = (Button) view.findViewById(R.id.colorOcean);
+
             TextView courseInformation = (TextView) view.findViewById(R.id.textViewEventMenu);
             buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -533,6 +545,70 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                     //toDO
                 }
             });*/
+
+
+            //ToDo
+            colorBlue.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorPurple.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorPink.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorOrange.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorRed.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorYellow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorLightgreen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorGreen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorAqua.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            colorOcean.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             courseInformation.setText(reFormatDate(event));
         }
 
