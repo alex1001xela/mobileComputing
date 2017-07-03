@@ -66,6 +66,8 @@ public interface iCalendarPresenter {
         boolean areLoginDataValid(String username, String password);
 
         boolean isAlreadyLoggedIn();
+
+        void resetCurrentShownGlobalEvents();
     }
 
 

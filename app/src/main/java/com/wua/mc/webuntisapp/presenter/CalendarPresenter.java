@@ -191,7 +191,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public String getEventInformationGlobal(String eventID) {
-
         return "";
     }
 
@@ -559,5 +558,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return selectedFieldOfStudy;
     }
 
-
+    public void resetCurrentShownGlobalEvents(){
+        currentShownGlobalEvents = new ArrayList<>();
+    }
 }
