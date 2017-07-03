@@ -485,7 +485,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
 
-    public Filter getFieldOfStudyFromLongName(String Filter_longName, ArrayList<Filter> list_filter){
+    public Filter getFilterFromLongName(String Filter_longName, ArrayList<Filter> list_filter){
 
 
         Filter filter = null;

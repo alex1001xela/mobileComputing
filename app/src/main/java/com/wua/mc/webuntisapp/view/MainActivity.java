@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     String default_selected = (String) parent.getItemAtPosition(0); // default field of study.
 
-                                    Filter selectedFilter = cp.getFieldOfStudyFromLongName(default_selected, output_filter_list);
+                                    Filter selectedFilter = cp.getFilterFromLongName(default_selected, output_filter_list);
                                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                 } else { // called when an Item is selected.
                                     String selectedItem = (String) parent.getItemAtPosition(position);
 
-                                    Filter selectedFilter = cp.getFieldOfStudyFromLongName(selectedItem, output_filter_list);
+                                    Filter selectedFilter = cp.getFilterFromLongName(selectedItem, output_filter_list);
                                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
 
