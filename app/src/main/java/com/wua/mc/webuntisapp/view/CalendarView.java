@@ -90,9 +90,12 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private static final String dateTemplate = "MMMM yyyy";
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         gregCal = new GregorianCalendar(Locale.GERMANY);
         calendarDataManagement = new CalendarPresenter(this);
@@ -638,8 +641,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int height;
         private int maxHorizontalNeighbours;
         private int position = -1;
-        private String color = "FFFFFF";
-
+        private String color = "FF0000";
+//"FFFFFF";
         private LinearLayout.LayoutParams layoutParams;
 
         EventBoxView(Event event, Context context){
@@ -760,7 +763,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         public void setColor(String color){
             this.color = color;
-        }
+        } //TODO IMPLEMENT SETCOLOR RAY
 
         public void removeFromView(){
             ((ViewGroup) this.button.getParent()).removeView(this.button);
@@ -839,7 +842,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 + year);
 
         selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
-        selectedDayMonthYearButton.setText("Selected: " );
+        selectedDayMonthYearButton.setText("Event: " );
 
 
         prevMonth = (ImageView) this.findViewById(R.id.prevMonth);
@@ -920,7 +923,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
-        private TextView num_events_per_day;
+        private TextView num_events_per_day;  //TODO need to implement this to show the number of event per day on the monthly view of the calendar
         private final HashMap<String, Integer> eventsPerMonthMap;
         @SuppressWarnings("unused")
         @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
@@ -945,7 +948,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             printMonth(month, year);
 
                // Find Number of Events
-            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
+            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);  //// TODO---------------------------------------
         }
         private String getMonthAsString(int i) {
             return months[i];
@@ -967,7 +970,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         public int getCount() {
             return list.size();
         }
-   //TODO implement this metho with data from the database
+   //TODO implement this me with data from the database
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year,
                                                                     int month) {
             HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -1120,7 +1123,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                     num_events_per_day = (TextView) row
                             .findViewById(R.id.num_events_per_day);
                     Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
-                    num_events_per_day.setText(numEvents.toString());
+                    num_events_per_day.setText(numEvents.toString()); // TODO i am setting ther amount of events per day here oin the view : I need to get the evenspaerMonths first
                 }
             }
 
@@ -1151,7 +1154,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             int day = Integer.parseInt(stringdate[0]);
             int year= Integer.parseInt(stringdate[2]);
             int month = convertStringMonthToIntegerMonth(stringdate[1]);
-            selectedDayMonthYearButton.setText("Selected :" + date_month_year);
+            selectedDayMonthYearButton.setText("Selected:" + date_month_year);
             // call the function re3sponsible for the view changing from monthly to weekly/dayly.
             setCalendarContentView();
             showDate(year,month - 1,day);
