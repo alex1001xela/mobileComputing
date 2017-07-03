@@ -217,7 +217,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     void showEventsOnDailyPlan(ArrayList<Event>  events){
         ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
-
+//TODO remove the line 211 : it is for text purposes only:
+        Log.v("BELMO--->", String.valueOf(gregCal.DAY_OF_YEAR));
         for(Event event: events){
             if(event.isEventOnThisDay(gregCal)){
                 eventBoxes.add(createEventBoxView(event));
@@ -973,6 +974,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
    //TODO implement this me with data from the database
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year,
                                                                     int month) {
+
             HashMap<String, Integer> map = new HashMap<String, Integer>();
 
             return map;
