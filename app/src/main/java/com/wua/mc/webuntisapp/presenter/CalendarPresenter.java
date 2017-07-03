@@ -196,14 +196,14 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void addCourse(String courseID) {
+    public void addCourse(String untisEventID) {
 
         int i = 0;
         boolean found = false;
         UniversityEvent universityEvent = null;
         while(i < currentShownGlobalEvents.size() && !found){
              universityEvent = (UniversityEvent) currentShownGlobalEvents.get(i);
-            if(universityEvent.getCourseID().equals(courseID)){
+            if(universityEvent.getUntisID().equals(untisEventID)){
                 found = true;
 
             }
@@ -235,13 +235,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void addEvent(String eventID){
+    public void addEvent(String untisEventID){
         int i = 0;
         boolean found = false;
 
         while(i < currentShownGlobalEvents.size() && !found){
             UniversityEvent ue = (UniversityEvent) currentShownGlobalEvents.get(i);
-            if(ue.getUntisID().equals(eventID)){
+            if(ue.getUntisID().equals(untisEventID)){
                 found = true;
                 dbManager.connectToDatabase();
                 dbManager.saveEventDB(ue);

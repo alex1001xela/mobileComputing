@@ -37,6 +37,7 @@ import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 import com.wua.mc.webuntisapp.presenter.GregorianCalendarFactory;
+import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.text.ParseException;
@@ -430,7 +431,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonAddEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    calendarDataManagement.addEvent(event.getId());
+                    calendarDataManagement.addEvent(((UniversityEvent) event).getUntisID());
                     Toast toast = Toast.makeText(context, "Event added", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
                     toast.show();
@@ -440,7 +441,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonAddCourse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    calendarDataManagement.addCourse(event.getId());
+                    calendarDataManagement.addCourse(((UniversityEvent) event).getUntisID());
                     Toast toast = Toast.makeText(context, "Course added", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
                     toast.show();

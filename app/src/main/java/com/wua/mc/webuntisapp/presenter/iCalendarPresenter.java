@@ -16,15 +16,15 @@ public interface iCalendarPresenter {
 
         String getEventInformationPersonal(String eventID); //todo class diagram
 
-        void addCourse(String courseID);
+        void addCourse(String untisEventID);
 
-        void addEvent(String eventID);
+        void addEvent(String untisEventID);
 
         void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime);//todo class diagram
 
         void deleteEvent(String eventID);
 
-        void deleteCourse(String courseID);
+        void deleteCourse(String eventID);
 
         void setEventColor(String color, String eventID);
 
