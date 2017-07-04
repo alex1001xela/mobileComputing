@@ -279,10 +279,10 @@ public class DatabaseManager implements iDatabaseManager {
     @Override
     public void logoutDB() {
 
-        long authenticate = 0;
+        long authenticate = 1;
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
+        values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, 0);
 
         database.update(DatabaseHelper.TABLE_PERSONAL_INFORMATION, values,
                 DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + authenticate, null);
@@ -308,6 +308,7 @@ public class DatabaseManager implements iDatabaseManager {
             cursor.moveToNext();
         }
         cursor.close();
+        Log.i("MERO", ""+dataBaseObjectList.get(0).getAuthenticated());
 
         return dataBaseObjectList.size() > 0 && dataBaseObjectList.get(0).getAuthenticated() == 1L;
     }
