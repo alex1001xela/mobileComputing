@@ -1146,7 +1146,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
              * @return
              */
             HashMap<Integer,Integer> receivedList = new HashMap<>();
-               receivedList =cp.getEventsPerMonths(year,month);
+          //     receivedList =cp.getEventsPerMonths(year,month);
             HashMap map = new HashMap<String, Integer>();
 
             Calendar cal = Calendar.getInstance();
