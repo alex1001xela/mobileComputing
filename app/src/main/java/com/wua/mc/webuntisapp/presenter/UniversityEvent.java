@@ -16,9 +16,9 @@ public class UniversityEvent extends Event {
 
 	private String courseID = "";
 
-	private String[] teachers = {};
+	private String[] teachers = new String[1];
 
-	private String[] rooms = {};
+	private String[] rooms = new String[1];
 
 	private String semester = "";
 

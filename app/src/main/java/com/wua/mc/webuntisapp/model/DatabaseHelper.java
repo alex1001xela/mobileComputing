@@ -64,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     COLUMN_EVENT_TYPE + " TEXT CHECK ("+COLUMN_EVENT_TYPE+"='LAB' or ("+COLUMN_EVENT_TYPE+"='EXAM' or ("+COLUMN_EVENT_TYPE+"='DEADLINE' or ("+COLUMN_EVENT_TYPE+"='LECTURE' or ("+COLUMN_EVENT_TYPE+"='PERSONAL'))))), " +
                     COLUMN_COURSE_ID + " INTEGER NOT NULL, " +
                     COLUMN_EVENT_COLOR + " TEXT NOT NULL, " +
-                    "FOREIGN KEY ("+COLUMN_COURSE_ID+") REFERENCES "+TABLE_COURSE+"("+COLUMN_COURSE_ID+")"+ "ON DELETE CASCADE" + ");";
+                    "FOREIGN KEY ("+COLUMN_COURSE_ID+") REFERENCES "+TABLE_COURSE+"("+COLUMN_COURSE_UNTIS_ID+")"+ "ON DELETE CASCADE" + ");";
 
     public static final String CREATE_TABLE_PERSONAL_INFORMATION =
             " CREATE TABLE " + TABLE_PERSONAL_INFORMATION  +

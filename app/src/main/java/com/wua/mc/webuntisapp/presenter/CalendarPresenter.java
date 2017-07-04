@@ -82,7 +82,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownPersonalEvents);
         if(weekEvents.size() == 0){
-            Log.i("WHAT", "WHAT");
             GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
             GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
@@ -91,7 +90,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
             currentShownPersonalEvents = weekEvents = getPersonalCalendar(weekStartMillis, weekEndMillis);
         }
-        Log.i("EVENTS", ""+weekEvents.size());
         calendarView.showEventsOnCalendar(weekEvents);
         return weekEvents;
     }
@@ -223,6 +221,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         }
         dbManager.connectToDatabase();
+        dbManager.saveCourseDB(universityEvent);
+
+
         dbManager.beginTransaction();
         for(Event ue : semesterEvents){
             dbManager.saveEventDB(ue);
@@ -230,7 +231,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         dbManager.setTransactionSuccessful();
         dbManager.endTransaction();
 
-        dbManager.saveCourseDB(universityEvent);
+
         dbManager.disconnectFromDatabase();
     }
 
@@ -280,11 +281,23 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void deleteCourse(String courseID) {
+    public ArrayList<String> deleteCourse(String courseID) {
+        ArrayList<String> eventIDs = new ArrayList<>();
+        for(int j = 0; j < currentShownPersonalEvents.size(); j++){
+            Event e = currentShownPersonalEvents.get(j);
+
+            if(e instanceof UniversityEvent && ((UniversityEvent) e).getCourseID().equals(courseID)){
+                eventIDs.add(e.getId());
+                currentShownPersonalEvents.remove(j);
+                j--;
+            }
+        }
 
         dbManager.connectToDatabase();
         dbManager.deleteCourseDB(Long.parseLong(courseID));
         dbManager.disconnectFromDatabase();
+
+        return eventIDs;
     }
 
     @Override
@@ -430,25 +443,16 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         dbManager.disconnectFromDatabase();
         int allEventsCount = allEventsDB.size();
 
-        Log.i("START", ""+startDate);
-        Log.i("END", ""+endDate);
-        Log.i("ALL", ""+allEventsCount);
-
         for(int i = 0; i < allEventsCount; i++){
             DataBaseObject eventDB = allEventsDB.get(i);
-            /*Log.i("COURSE_ID", ""+eventDB.getCourse_id());
-            Log.i("EVENT_ID", ""+eventDB.getEvent_id());
-            Log.i("COURSE_NAME", ""+eventDB.getCourse_name());
-            Log.i("EVENT_NAME", ""+eventDB.getEvent_name());*/
-            Log.i("EVENT", eventDB.toString());
             if(eventDB.getEvent_timestamp_start() >= startDate && eventDB.getEvent_timestamp_end() <= endDate){
-                events.add(new Event(eventDB));
-                /*if(eventDB.getCourse_id() != 0){
+
+                if(eventDB.getCourse_id() != 0){
                     events.add(new UniversityEvent(eventDB));
                 }
                 else{
-
-                }*/
+                    events.add(new Event(eventDB));
+                }
             }
         }
         return events;
