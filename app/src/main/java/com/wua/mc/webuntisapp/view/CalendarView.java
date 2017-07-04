@@ -137,6 +137,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                         Intent personal = new Intent(CalendarView.this, PersonalCalendarView.class);
                         startActivity(personal);
                         break;
+                    case 2:
+                        Intent logout = new Intent(CalendarView.this, MainActivity.class);
+                        startActivity(logout);
+                        break;
                 }
             }
         });
@@ -1197,7 +1201,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
              * @return
              */
             HashMap<Integer,Integer> receivedList = new HashMap<>();
-               receivedList =cp.getEventsPerMonths(year,month);
+          //     receivedList =cp.getEventsPerMonths(year,month);
             HashMap map = new HashMap<String, Integer>();
 
             Calendar cal = Calendar.getInstance();
