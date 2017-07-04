@@ -155,10 +155,11 @@ public class DataBaseObject {
     public String toString() {
         String output = "";
         if(course_name!=null){
-            output += course_id + " " + course_name + " " + course_lecturer + " " + course_color + " " + course_untis_id;
+            output += "COURSE_ID: " + course_id + "\n COURSE_NAME: " + course_name + "\n COURSE_LECTURER: " + course_lecturer + "\n COURSE_COLOR: " + course_color + "\n UNTIS_ID: " + course_untis_id;
         }
         else if (event_name!=null){
-            output += event_id + " " + event_room + " " + event_timestamp_start + " " + event_timestamp_end + " " + event_name + " " + event_color + " " + event_type;
+            output += "EVENT_ID: " + event_id + "\n EVENT_ROOM: " + event_room + "\n EVENT_START: " + event_timestamp_start + "\n EVENT_END: " + event_timestamp_end +
+                    "\n EVENT_NAME: " + event_name + "\n EVENT_COLOR: " + event_color + "\n EVENT_TYPE " + event_type;
         }
         else {
             output += authenticated;

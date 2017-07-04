@@ -30,10 +30,11 @@ public class FieldOfStudyChooser {
     FieldOfStudyChooser(CalendarPresenter cp, Activity activity){
         this.activity = activity;
         this.cp = cp;
+        activity.setContentView(activity_choose_fieldofstudy);
     }
 
-    public Button getFieldOfStudyChooser() {
-        activity.setContentView(activity_choose_fieldofstudy);
+    public Button getFieldOfStudyConfirmationButton() {
+
 
         spinner_faculty = (Spinner) activity.findViewById(R.id.fieldOfStudySpinner);
         ArrayList<String> Faculties = new ArrayList<String>();

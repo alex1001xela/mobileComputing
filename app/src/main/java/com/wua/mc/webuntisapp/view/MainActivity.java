@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         setContentView(activity_choose_fieldofstudy);
 
                         FieldOfStudyChooser fieldOfStudyChooser = new FieldOfStudyChooser(cp, MainActivity.this);
-                        Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyChooser();
+                        Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyConfirmationButton();
 
 
                         confirmationButton.setOnClickListener(new View.OnClickListener() {

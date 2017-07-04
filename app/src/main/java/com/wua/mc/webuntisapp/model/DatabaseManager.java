@@ -184,7 +184,7 @@ public class DatabaseManager implements iDatabaseManager {
         //Tabelle Event
         ContentValues values = new ContentValues();
         String room = "";
-        String untisID = "";
+        String courseId = "";
 
         //values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
 
@@ -195,10 +195,10 @@ public class DatabaseManager implements iDatabaseManager {
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());
         if (event instanceof UniversityEvent) {
             room = ((UniversityEvent) event).getRooms()[0];
-            untisID = ((UniversityEvent) event).getUntisID();
+            courseId = ((UniversityEvent) event).getCourseID();
         }
         values.put(DatabaseHelper.COLUMN_EVENT_ROOM, room);
-        values.put(DatabaseHelper.COLUMN_COURSE_ID, untisID); //todo could be null
+        values.put(DatabaseHelper.COLUMN_COURSE_ID, courseId); //todo could be null
 
         //Event
 
