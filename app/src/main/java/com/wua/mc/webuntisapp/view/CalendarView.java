@@ -137,6 +137,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                         Intent personal = new Intent(CalendarView.this, PersonalCalendarView.class);
                         startActivity(personal);
                         break;
+                    case 2:
+                        Intent logout = new Intent(CalendarView.this, MainActivity.class);
+                        startActivity(logout);
+                        break;
                 }
             }
         });
