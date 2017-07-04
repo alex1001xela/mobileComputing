@@ -559,62 +559,85 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
             //ToDo
             colorBlue.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                   // v.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.blue,null));
+
+
 
                 }
             });
             colorPurple.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
 
                 }
             });
             colorPink.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.pink,null));
 
                 }
             });
             colorOrange.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.orange,null));
 
                 }
             });
             colorRed.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.red,null));
 
                 }
             });
             colorYellow.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.yellow,null));
 
                 }
             });
             colorLightgreen.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.lightgreen,null));
 
                 }
             });
             colorGreen.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.green,null));
 
                 }
             });
             colorAqua.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.aqua,null));
 
                 }
             });
             colorOcean.setOnClickListener(new OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.ocean,null));
 
                 }
             });
