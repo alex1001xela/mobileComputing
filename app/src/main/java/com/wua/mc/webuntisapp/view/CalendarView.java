@@ -59,6 +59,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     protected iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
     private GregorianCalendar gregCal;
 
+    private CalendarPresenter cp = new CalendarPresenter(this);
+
     private int eventFieldHeight;
     private int eventFieldWidth;
     private int eventFieldXStart;
@@ -90,6 +92,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
+    private GridCellAdapter ga;
 
 
 
@@ -237,8 +240,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     void showEventsOnDailyPlan(ArrayList<Event>  events){
         ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
+
 //TODO remove the line 211 : it is for text purposes only:
-        Log.v("BELMO--->", String.valueOf(gregCal.DAY_OF_YEAR));
         for(Event event: events){
             if(event.isEventOnThisDay(gregCal)){
                 eventBoxes.add(createEventBoxView(event));
@@ -1031,30 +1034,32 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     //inner class  for monthly view calendar
     @TargetApi(3)
-    public class GridCellAdapter extends BaseAdapter implements View.OnClickListener{
+    public class GridCellAdapter extends BaseAdapter implements View.OnClickListener {
         private static final String tag = "GridCellAdapter";
         private final Context _context;
         private final List<String> list;
         private static final int DAY_OFFSET = 1;
         //TODO after importing the project in our main file in git, i will have to change all to dynamically created string to strings created in res files.
-        private final String[] weekdays = new String[] { "Sun", "Mon", "Tue",
-                "Wed", "Thu", "Fri", "Sat" };
-        private final String[] months = { "January","February", " March ",
+        private final String[] weekdays = new String[]{"Sun", "Mon", "Tue",
+                "Wed", "Thu", "Fri", "Sat"};
+        private final String[] months = {"January", "February", " March ",
                 "April", "May", "June", "July", "August", "September",
-                "October", "November", "December" };
-        private final int[] daysOfMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30,
-                31, 30, 31 };
+                "October", "November", "December"};
+        private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30,
+                31, 30, 31};
 
         private int daysInMonth;
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
+
         private TextView num_events_per_day;  //TODO need to implement this to show the number of event per day on the monthly view of the calendar
         private final HashMap<String, Integer> eventsPerMonthMap;
         @SuppressWarnings("unused")
-        @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
+        @SuppressLint({"NewApi", "NewApi", "NewApi", "NewApi"})
         private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
                 "dd-MMM-yyyy");
+
         // Days in Current Month
         public GridCellAdapter(Context context, int textViewResourceId,
                                int month, int year) {
@@ -1073,9 +1078,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             // Print Month
             printMonth(month, year);
 
-               // Find Number of Events
+            // Find Number of Events
             eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);  //// TODO---------------------------------------
         }
+
         private String getMonthAsString(int i) {
             return months[i];
         }
@@ -1096,14 +1102,58 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         public int getCount() {
             return list.size();
         }
-   //TODO implement this me with data from the database
+        //TODO implement this me with data from the database
+
+        // retrieve a entries fom the sql databse then iterate to find element by date
+
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year,
                                                                     int month) {
+            /**
+             * NOTE: YOU NEED TO IMPLEMENT THIS PART Given the YEAR, MONTH, retrieve
+             * ALL entries from a SQLite database for that month. Iterate over the
+             * List of All entries, and get the dateCreated, which is converted into
+             * day.
+             *
+             * @param year
+             * @param month
+             * @return
+             */
+            HashMap<Integer,Integer> receivedList = new HashMap<>();
+               receivedList =cp.getEventsPerMonths(year,month);
+            HashMap map = new HashMap<String, Integer>();
 
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            Calendar cal = Calendar.getInstance();
+            int date = cal.get(Calendar.DATE);
+/*
+            HashMap<Integer,Integer> list= cp.getEventsPerMonths(year,month);
 
+            for(HashMap.Entry<Integer,Integer>entry: list.entrySet()){
+                int key = entry.getKey();
+                int value = entry.getValue();
+                Log.v("BEL-Key -->",Integer.toString(key));
+                Log.v("BEL-Value-->",Integer.toString(value));
+
+            }
+*/
+            //   DateFormat dateFormatter = new DateFormat()DateFormat();
+
+
+            // String day = dateFormatter2.format("dd", dateCreated).toString();
+/*
+            if (map.containsKey(day))
+            {
+             Integer val = (Integer) map.get(day) + 1;
+             map.put(day, val);
+            }
+             else
+             {
+            map.put(day, 1);
+            }
+
+            */
             return map;
-        }
+    }
+    //TODO remove :TEMPORAL FUNCTIION USED TO SEE THE VALUES IN THE HASHMAP:
 
         @Override
         public long getItemId(int position) {
@@ -1243,6 +1293,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             Log.d(tag, "Current Day: "+ getCurrentDayOfMonth());
             String[] day_color = list.get(position).split("-");
             String theday = day_color[0];
+            Log.d(tag, "DAY-->: "+ theday);
             String themonth = day_color[2];
             String theyear = day_color[3];
             if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null)) {
