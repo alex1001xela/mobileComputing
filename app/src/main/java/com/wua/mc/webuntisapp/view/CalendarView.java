@@ -237,6 +237,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         scrollView.setScrollY((int)positionToBeScrolled);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     void showEventsOnDailyPlan(ArrayList<Event>  events){
         ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
@@ -456,6 +457,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         return taken;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private EventBoxView createEventBoxView(final Event event){
 
         final EventBoxView eventBox = new EventBoxView(event, this);
@@ -564,6 +566,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 public void onClick(View v) {
                    // v.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.blue,null));
+                    eventBoxView.getEventboxEvent().setColor("#babce5");//TODO RAY change this.
 
 
 
@@ -574,6 +577,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+                    eventBoxView.getEventboxEvent().setColor("#cec1e7");
 
                 }
             });
@@ -582,6 +586,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.pink,null));
+                    eventBoxView.getEventboxEvent().setColor("#e5bac4");
 
                 }
             });
@@ -590,6 +595,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.orange,null));
+                    eventBoxView.getEventboxEvent().setColor("#e5c9ba");
 
                 }
             });
@@ -598,6 +604,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.red,null));
+                    eventBoxView.getEventboxEvent().setColor("#ff9994");
 
                 }
             });
@@ -606,6 +613,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.yellow,null));
+                    eventBoxView.getEventboxEvent().setColor("#e5e2ba");
 
                 }
             });
@@ -614,6 +622,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.lightgreen,null));
+                    eventBoxView.getEventboxEvent().setColor("#cde5ba");
 
                 }
             });
@@ -622,6 +631,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.green,null));
+                    eventBoxView.getEventboxEvent().setColor("#bae5c0");
 
                 }
             });
@@ -630,6 +640,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.aqua,null));
+                    eventBoxView.getEventboxEvent().setColor("#bae5da");
 
                 }
             });
@@ -638,6 +649,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                     eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.ocean,null));
+                    eventBoxView.getEventboxEvent().setColor("#b7d4e7");
 
                 }
             });
@@ -783,6 +795,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
 
     private class EventBoxView {
+
+
         private Event event;
         private Button button;
         private int startQuarter;
@@ -794,23 +808,64 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int maxHorizontalNeighbours;
         private int position = -1;
         private String color = "FF0000";
+        private int eventColor = 0;
 //"FFFFFF";
         private LinearLayout.LayoutParams layoutParams;
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         EventBoxView(Event event, Context context){
             this.event = event;
+             eventColor =this.GetEventsColor(event);
             this.button = new Button(context);
             this.layoutParams = new LinearLayout.LayoutParams(0, 0);
             this.button.setLayoutParams(this.layoutParams);
             String buttonText = event.toString();
             this.button.setText(buttonText);
             this.button.setBackground(null);
-            this.button.setBackgroundColor(Color.GRAY);
+            this.button.setBackgroundColor(eventColor);
             this.button.getBackground().setAlpha(182);
 
             this.startQuarter = convertDateToQuarter(event.getStartTime());
             this.endQuarter = convertDateToQuarter(event.getEndTime());
             this.maxHorizontalNeighbours = 1;
+        }
+  //Ray: this function getEventBoxEvent used to set the color oof the Event when the user changes the color of the event on the view
+        public Event getEventboxEvent() {
+            return this.event;
+        }
+        // needed thos so when creating an event the color should be difined.
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public int GetEventsColor(Event event){
+            String eColor=event.getColor();
+            int found =getResources().getColor(R.color.gray,null);
+
+            switch (eColor){
+                case ("#babce5") : found =getResources().getColor(R.color.blue,null);  // blue
+                    break;
+                case ("#cec1e7") : found =getResources().getColor(R.color.purple,null);  // purple
+                    break;
+                case ("#e5bac4") :found = getResources().getColor(R.color.pink,null); //PINK
+                    break;
+                case ("ff9994") :found = getResources().getColor(R.color.red,null);  //red
+                    break;
+                case ("#e5c9ba") :found =getResources().getColor(R.color.orange,null); ;//orange
+                    break;
+                case ("#e7e7e7") :found =getResources().getColor(R.color.lightgray,null); ;//light gray
+                    break;
+                case ("#e5e2ba") :found =getResources().getColor(R.color.yellow,null); ;//yellow
+                    break;
+                case ("#cde5ba") :found =getResources().getColor(R.color.lightgreen,null); ;//lightgreen
+                    break;
+                case ("#bae5c0") :found =getResources().getColor(R.color.green,null); ;//green
+                    break;
+                case ("#bae5da") :found =getResources().getColor(R.color.aqua,null); ;//aqua
+                    break;
+                case ("#b7d4e7") :found =getResources().getColor(R.color.ocean,null); ;//ocean
+                    break;
+
+            }
+              return found;
         }
 
         Button getButton() {
