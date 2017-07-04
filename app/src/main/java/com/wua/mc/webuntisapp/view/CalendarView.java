@@ -318,7 +318,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                     setContentView(R.layout.activity_choose_fieldofstudy);
 
                     FieldOfStudyChooser fieldOfStudyChooser = new FieldOfStudyChooser((CalendarPresenter) calendarDataManagement, CalendarView.this);
-                    Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyChooser();
+                    Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyConfirmationButton();
                     confirmationButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -458,16 +458,17 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         eventBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openEventDetailView(event);
+                openEventDetailView(eventBox);
             }
         });
 
         return eventBox;
     }
 
-    public void openEventDetailView (final Event event){
+    public void openEventDetailView (final EventBoxView eventBoxView){
         LayoutInflater li = LayoutInflater.from(context);
         View view;
+        final Event event = eventBoxView.getEvent();
 
         if (CalendarView.this instanceof GlobalCalendarView){
             view = li.inflate(R.layout.activity_add_event_course, null);
@@ -505,6 +506,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.removeFromView();
                     calendarDataManagement.deleteEvent(event.getId());
                     Toast toast = Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
@@ -514,6 +516,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    eventBoxView.removeFromView();
                     calendarDataManagement.deleteCourse(event.getId());
                     Toast toast = Toast.makeText(context, "Course deleted", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);

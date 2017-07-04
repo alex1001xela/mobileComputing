@@ -80,10 +80,10 @@ public abstract class GregorianCalendarFactory { //todo class diagram
 
         int currentMonth = temp.get(Calendar.MONTH);
         if(currentMonth > 1 &  currentMonth < 8){
-            temp.set(Calendar.MONTH, 2);
+            temp.set(Calendar.MONTH, 1);
         }
         else{
-            temp.set(Calendar.MONTH, 8);
+            temp.set(Calendar.MONTH, 7);
         }
         if(currentMonth < 2){
             temp.add(Calendar.YEAR, -1);
@@ -96,14 +96,15 @@ public abstract class GregorianCalendarFactory { //todo class diagram
         GregorianCalendar temp = createGregorianCalendarCopy(gc);
 
         int currentMonth = temp.get(Calendar.MONTH);
-        if(currentMonth > 1 &  currentMonth < 8){
-            temp.set(Calendar.MONTH, 2);
+
+        if(currentMonth > 1 & currentMonth < 8){
+            temp.set(Calendar.MONTH, 7);
         }
         else{
-            temp.set(Calendar.MONTH, 8);
+            temp.set(Calendar.MONTH, 1);
         }
-        if(currentMonth < 2){
-            temp.add(Calendar.YEAR, -1);
+        if(currentMonth > 7){
+            temp.add(Calendar.YEAR, 1);
         }
         temp.set(Calendar.DAY_OF_MONTH, getEndOfMonth(temp).get(Calendar.DAY_OF_MONTH));
         return temp;

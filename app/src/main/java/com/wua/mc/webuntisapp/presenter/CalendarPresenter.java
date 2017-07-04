@@ -82,6 +82,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownPersonalEvents);
         if(weekEvents.size() == 0){
+            Log.i("WHAT", "WHAT");
             GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
             GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
@@ -90,6 +91,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
             currentShownPersonalEvents = weekEvents = getPersonalCalendar(weekStartMillis, weekEndMillis);
         }
+        Log.i("EVENTS", ""+weekEvents.size());
         calendarView.showEventsOnCalendar(weekEvents);
         return weekEvents;
     }
@@ -220,7 +222,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         catch (JSONException e){
 
         }
-
         dbManager.connectToDatabase();
         dbManager.beginTransaction();
         for(Event ue : semesterEvents){
@@ -270,6 +271,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                 found = true;
                 currentShownPersonalEvents.remove(i);
             }
+            i++;
         }
 
         dbManager.connectToDatabase();
@@ -430,18 +432,23 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         Log.i("START", ""+startDate);
         Log.i("END", ""+endDate);
+        Log.i("ALL", ""+allEventsCount);
 
         for(int i = 0; i < allEventsCount; i++){
             DataBaseObject eventDB = allEventsDB.get(i);
-            Log.i("EVENT_START", ""+eventDB.getEvent_timestamp_start());
-            Log.i("EVENT_END", ""+eventDB.getEvent_timestamp_end());
+            /*Log.i("COURSE_ID", ""+eventDB.getCourse_id());
+            Log.i("EVENT_ID", ""+eventDB.getEvent_id());
+            Log.i("COURSE_NAME", ""+eventDB.getCourse_name());
+            Log.i("EVENT_NAME", ""+eventDB.getEvent_name());*/
+            Log.i("EVENT", eventDB.toString());
             if(eventDB.getEvent_timestamp_start() >= startDate && eventDB.getEvent_timestamp_end() <= endDate){
-                if(eventDB.getCourse_untis_id() != 0){
+                events.add(new Event(eventDB));
+                /*if(eventDB.getCourse_id() != 0){
                     events.add(new UniversityEvent(eventDB));
                 }
                 else{
-                    events.add(new Event(eventDB));
-                }
+
+                }*/
             }
         }
         return events;
