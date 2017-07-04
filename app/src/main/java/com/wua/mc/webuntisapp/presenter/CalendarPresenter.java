@@ -561,4 +561,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void resetCurrentShownGlobalEvents(){
         currentShownGlobalEvents = new ArrayList<>();
     }
+    public ArrayList<String> EventsPerMont(int month, int year){
+       // this.currentShownGlobalEvents
+        return null;
+    }
 }
