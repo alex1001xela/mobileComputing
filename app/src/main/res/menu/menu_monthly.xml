@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue">
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/menu_option_logout"
+        android:itemBackground="@color/white"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/Global_calendar"
+        android:icon="@drawable/ic_export_calendar"
+        android:title="@string/Global_Calendar"
+        android:itemBackground="@color/white"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/Personal_calendar"
+        android:icon="@drawable/ic_export_calendar"
+        android:title="@string/Personal_calenar"
+        android:itemBackground="@color/white"
+        app:showAsAction="never"/>
+</menu>
