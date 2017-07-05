@@ -454,6 +454,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return events;
     }
 
+
     private ArrayList<Event> getGlobalCalendar(String startDate, String endDate, FieldOfStudy fieldOfStudy) {
         ArrayList<Event> events = new ArrayList<>();
         try{
@@ -519,20 +520,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return result;
     }
 
- public HashMap<Integer,Course> findCourses(FieldOfStudy fos){
-
-
-     return null;
- }
     public ArrayList<FieldOfStudy> getFields_Of_study_list() {
         return fields_Of_study_list;
     }
 
-    // this function is called in the mainActivity to parse the String of the selected
-    // field of study . this function computes the field of study from the list of stored field
-    // of study , using the name parse, then this fos is set to the selected fos variable
-    //of this class . this way calling tzhe variable SelectedFIeldOfstudy from this class
-    // will always give the value of the FOS , if it was selected indeed.
     public  FieldOfStudy findChosenFieldOfSTudy(String selectedname){
 
         ArrayList<FieldOfStudy> List = this.getFields_Of_study_list();
@@ -550,7 +541,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             }
 
         }
-       // this.setSelectedFieldOfStudy(fos);
+
         return fos;
 
     }
@@ -568,8 +559,49 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void resetCurrentShownGlobalEvents(){
         currentShownGlobalEvents = new ArrayList<>();
     }
-    public ArrayList<String> EventsPerMont(int month, int year){
-       // this.currentShownGlobalEvents
-        return null;
+
+    //TODO  :RAY CHANGE THE POSITION OF THIS FUNCTION
+    public HashMap<Integer,Integer> getEventsPerMonths (int year ,int month){
+        ArrayList<Event> GE = currentShownGlobalEvents;
+        ArrayList<Event> PE = currentShownPersonalEvents;
+        HashMap<Integer,Integer> result = new HashMap<>();
+        ArrayList<Event>EventsList=new ArrayList<>();
+        int num_events=1;
+
+        Calendar cal1 =  Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+
+        Date EventDate =null ;
+
+        if(GE.isEmpty() || GE==null){
+            Log.v("BELMO","lsit of saved elements is empty");
+        }else {
+            for(int i = 0;i<GE.size();i++){
+                Log.v("BELMO","BELMO");
+                EventDate= GE.get(i).getEndTime();
+                cal2.setTime(EventDate);
+                int EVentMonth= cal2.get(Calendar.MONTH);
+                int Event_year = cal2.get(Calendar.YEAR);
+                int event_day= cal2.get(Calendar.DAY_OF_MONTH);
+
+
+                if(Event_year==year){
+                    if(EVentMonth==month){
+                        if(result.containsKey(event_day)){
+                            Integer val = (Integer) result.get(event_day)+1;
+                            result.put(event_day,val);
+                        }else{
+
+                            result.put(event_day,num_events);
+
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        return result;
     }
 }
