@@ -131,12 +131,12 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
-                        Intent global = new Intent(CalendarView.this, GlobalCalendarView.class);
-                        startActivity(global);
-                        break;
-                    case 1:
                         Intent personal = new Intent(CalendarView.this, PersonalCalendarView.class);
                         startActivity(personal);
+                        break;
+                    case 1:
+                        Intent global = new Intent(CalendarView.this, GlobalCalendarView.class);
+                        startActivity(global);
                         break;
                     case 2:
                         Intent logout = new Intent(CalendarView.this, MainActivity.class);

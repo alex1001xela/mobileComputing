@@ -308,7 +308,6 @@ public class DatabaseManager implements iDatabaseManager {
             cursor.moveToNext();
         }
         cursor.close();
-        Log.i("MERO", ""+dataBaseObjectList.get(0).getAuthenticated());
 
         return dataBaseObjectList.size() > 0 && dataBaseObjectList.get(0).getAuthenticated() == 1L;
     }
