@@ -573,29 +573,35 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         int num_events=1;
 
         Calendar cal1 =  Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
+
 
         Date EventDate =null ;
 
-        if(GE.isEmpty() || GE==null){
+        if(PE.isEmpty() || PE==null){
             Log.v("BELMO","lsit of saved elements is empty");
         }else {
-            for(int i = 0;i<GE.size();i++){
-                Log.v("BELMO","BELMO");
-                EventDate= GE.get(i).getEndTime();
+            for(int i = 0;i<PE.size();i++){
+                Calendar cal2 = Calendar.getInstance();
+                EventDate= PE.get(i).getEndTime();
                 cal2.setTime(EventDate);
                 int EVentMonth= cal2.get(Calendar.MONTH);
                 int Event_year = cal2.get(Calendar.YEAR);
                 int event_day= cal2.get(Calendar.DAY_OF_MONTH);
-
+                Log.v("EVENT MONTH",Integer.toString(EVentMonth));
+                Log.v("EVENT YEAR",Integer.toString(Event_year));
+                Log.v("EVENT DAY",Integer.toString(event_day));
+                Log.v("INCOMMING YEAR",Integer.toString(year));
+                Log.v("INCOMMING MONTH ",Integer.toString(month));
+                Log.v("EVENT DATE ",EventDate.toString());
 
                 if(Event_year==year){
-                    if(EVentMonth==month){
+                    if(EVentMonth==month -1){
+
                         if(result.containsKey(event_day)){
                             Integer val = (Integer) result.get(event_day)+1;
                             result.put(event_day,val);
                         }else{
-
+                            Log.v("MAP","INSERT");
                             result.put(event_day,num_events);
 
                         }

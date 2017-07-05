@@ -1,7 +1,10 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
@@ -19,6 +22,7 @@ public class PersonalCalendarView extends CalendarView {
 		buildWeeklyCalendar();
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.M)
 	@Override
 	public void showEventsOnCalendar(ArrayList<Event> events) {
 		showEventsOnDailyPlan(events);
@@ -28,6 +32,11 @@ public class PersonalCalendarView extends CalendarView {
 	public void showToast(String text) {
 		Context context = getApplicationContext();
 		Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public boolean onCreateOptionMenu(Menu menu) {
+		return false;
 	}
 
 	@Override

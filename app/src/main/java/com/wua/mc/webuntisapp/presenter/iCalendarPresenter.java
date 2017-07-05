@@ -68,6 +68,8 @@ public interface iCalendarPresenter {
         boolean isAlreadyLoggedIn();
 
         void resetCurrentShownGlobalEvents();
+
+        HashMap<Integer,Integer> getEventsPerMonths(int year, int month);
     }
 
 

@@ -7,7 +7,6 @@ import com.wua.mc.webuntisapp.model.DataBaseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,7 +19,7 @@ public class Event {
 	private Date startTime;
 	private Date endTime;
 	private EventType eventType = EventType.LECTURE;
-	private String color = "FFFFFF";
+	private String color = "FF0000"; // THIS A Default color for all events on creation
 
 	public Event(String id, String name, String details, Date startTime, Date endTime, EventType eventType) {
 		this.id = id;
@@ -29,6 +28,13 @@ public class Event {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.eventType = eventType;
+
+		if(this.getColor()==null){
+			this.color="#808080";
+		}else{
+			this.color=getColor();
+		}
+       // this.color= "#808080"; // alawys has a color..defualr gray....
 	}
 
 	public Event(JSONObject jsonObject, String name){
@@ -123,9 +129,16 @@ public class Event {
 
 		return calendar.get(Calendar.DAY_OF_YEAR) == eventGregorianStart.get(Calendar.DAY_OF_YEAR);
 	}
+	public void setColor(String color) { // by ray ..
+
+            this.color = color;
+
+	}
 
 	@Override
 	public String toString(){
 		return this.name;
 	}
+
+
 }

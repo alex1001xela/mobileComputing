@@ -1,4 +1,6 @@
 package com.wua.mc.webuntisapp.view;
+import android.view.Menu;
+
 import com.wua.mc.webuntisapp.presenter.Event;
 
 import java.util.ArrayList;
@@ -10,4 +12,5 @@ public interface iCalendarView {
 
 	void showToast(String text);
 
+    boolean onCreateOptionMenu(Menu menu);
 }

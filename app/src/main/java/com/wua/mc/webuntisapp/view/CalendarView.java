@@ -85,6 +85,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     private ImageView nextMonth;
     private GridView calendarView;
     private Button openMonthlyCalendar;
+    private Button setting ;
     private GridCellAdapter adapter; // inner class that manages the days cells.
     private Calendar _calendar;
     @SuppressLint("NewApi")
@@ -110,6 +111,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
 
     }
+
 
     private void createDrawer(){
         menuItems = getResources().getStringArray(R.array.menu_items);
@@ -221,6 +223,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         openMonthlyCalendar = (Button) findViewById(R.id.open_month_calendar_button);
         openMonthlyCalendar.setOnClickListener(new OnClickListener(){
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 showMonthlyViewCalendar();
@@ -1052,6 +1055,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     // my methods come bellow here.-----------------------------------------------------------
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void showMonthlyViewCalendar()
     {
         setContentView(R.layout.monthly_calendar_view);
@@ -1076,8 +1080,18 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         nextMonth = (ImageView) this.findViewById(R.id.nextMonth);
         nextMonth.setOnClickListener(this);
+      //  setting = (Button) this.findViewById(R.id.settings);
+        /*
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
 
+*/
         calendarView = (GridView) this.findViewById(R.id.calendar);
+
 
 // Initialised
         adapter = new GridCellAdapter(getApplicationContext(),
@@ -1086,6 +1100,9 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         calendarView.setAdapter(adapter);
 
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setGridCellAdapterToDate(int month, int year) {
         adapter = new GridCellAdapter(getApplicationContext(),
                 R.id.calendar_day_gridcell, month, year);
@@ -1095,7 +1112,18 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
     }
+/*
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_monthly, menu);
+
+
+        return true;
+    }
+*/
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v){
         if(v==prevMonth){
@@ -1125,6 +1153,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         super.onDestroy();
     }
 
+
+
     //inner class  for monthly view calendar
     @TargetApi(3)
     public class GridCellAdapter extends BaseAdapter implements View.OnClickListener {
@@ -1147,13 +1177,14 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private Button gridcell;
 
         private TextView num_events_per_day;  //TODO need to implement this to show the number of event per day on the monthly view of the calendar
-        private final HashMap<String, Integer> eventsPerMonthMap;
+        private  HashMap<String, Integer> eventsPerMonthMap =new HashMap<>(); //TODO VARIABLE
         @SuppressWarnings("unused")
         @SuppressLint({"NewApi", "NewApi", "NewApi", "NewApi"})
         private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
                 "dd-MMM-yyyy");
 
         // Days in Current Month
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public GridCellAdapter(Context context, int textViewResourceId,
                                int month, int year) {
             super();
@@ -1170,9 +1201,11 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
             // Print Month
             printMonth(month, year);
+       if(CalendarView.this instanceof GlobalCalendarView){
 
-            // Find Number of Events
-            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);  //// TODO---------------------------------------
+       }else{
+           eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
+       }
         }
 
         private String getMonthAsString(int i) {
@@ -1199,54 +1232,38 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         // retrieve a entries fom the sql databse then iterate to find element by date
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year,
                                                                     int month) {
-            /**
-             * NOTE: YOU NEED TO IMPLEMENT THIS PART Given the YEAR, MONTH, retrieve
-             * ALL entries from a SQLite database for that month. Iterate over the
-             * List of All entries, and get the dateCreated, which is converted into
-             * day.
-             *
-             * @param year
-             * @param month
-             * @return
-             */
+
             HashMap<Integer,Integer> receivedList = new HashMap<>();
-          //     receivedList =cp.getEventsPerMonths(year,month);
-            HashMap map = new HashMap<String, Integer>();
-
-            Calendar cal = Calendar.getInstance();
-            int date = cal.get(Calendar.DATE);
-/*
-            HashMap<Integer,Integer> list= cp.getEventsPerMonths(year,month);
-
-            for(HashMap.Entry<Integer,Integer>entry: list.entrySet()){
-                int key = entry.getKey();
-                int value = entry.getValue();
-                Log.v("BEL-Key -->",Integer.toString(key));
-                Log.v("BEL-Value-->",Integer.toString(value));
-
-            }
-*/
-            //   DateFormat dateFormatter = new DateFormat()DateFormat();
+               receivedList =calendarWebUntis.getEventsPerMonths(year,month);
+            HashMap result = new HashMap<String, Integer>();
+            DateFormat dateFormatter = new DateFormat();
+            SimpleDateFormat f = new SimpleDateFormat("dd");
+            Calendar calendar = Calendar.getInstance();
 
 
-            // String day = dateFormatter2.format("dd", dateCreated).toString();
-/*
-            if (map.containsKey(day))
-            {
-             Integer val = (Integer) map.get(day) + 1;
-             map.put(day, val);
-            }
-             else
-             {
-            map.put(day, 1);
-            }
 
-            */
-            return map;
+
+       for(Integer key : receivedList.keySet()){
+
+           if(receivedList.get(key)!=null && !receivedList.isEmpty()){
+               Log.v("Key CV",Integer.toString(key));
+               Integer value = receivedList.get(key);
+               String DAY = Integer.toOctalString(key);
+              // String DAY = DateFormat.format("dd",key).toString();
+               Log.v("DAY stored IN MAP",DAY);
+               Log.v("DAY'S VALUE",Integer.toString(value));
+               Log.v("BELMO CV","LIST NONT EMPTY");
+               result.put(DAY,value);
+           }
+
+       }
+
+            return result;
     }
-    //TODO remove :TEMPORAL FUNCTIION USED TO SEE THE VALUES IN THE HASHMAP:
+
 
         @Override
         public long getItemId(int position) {
@@ -1395,6 +1412,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                             .findViewById(R.id.num_events_per_day);
                     Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
                     num_events_per_day.setText(numEvents.toString()); // TODO i am setting ther amount of events per day here oin the view : I need to get the evenspaerMonths first
+                    selectedDayMonthYearButton.setText("you have "+numEvents.toString()+" Events today");
                 }
             }
 
@@ -1484,6 +1502,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     }
 
+
     public iCalendarPresenter.iCalendarDataManagement getCalendarDataManagement() {
         return calendarDataManagement;
     }
@@ -1491,4 +1510,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     public iCalendarPresenter.iCalendarWebUntis getCalendarWebUntis() {
         return calendarWebUntis;
     }
+
+
+
+
 }

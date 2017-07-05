@@ -13,20 +13,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/addEvent"
-            android:layout_width="30sp"
-            android:layout_height="30sp"
-            android:layout_marginEnd="145dp"
-            android:background="@drawable/plus" />
-
-        <Button
-            android:id="@+id/settings"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="145dp"
-            android:background="@drawable/menu" />
-
 
     </LinearLayout>
     <TextView
@@ -39,9 +25,11 @@
 
     </TextView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
         <ImageView
             android:id="@+id/prevMonth"
             android:layout_width="20sp"
@@ -51,23 +39,28 @@
             android:background="@drawable/left_arrow">
 
         </ImageView>
+
         <ImageView
             android:id="@+id/nextMonth"
             android:layout_width="20sp"
             android:layout_height="20sp"
-            android:layout_marginStart="140sp"
+            android:layout_marginStart="300dp"
+            android:layout_weight="0.02"
             android:adjustViewBounds="true"
             android:src="@drawable/right_arrow">
 
         </ImageView>
 
-    </LinearLayout>
+    </RelativeLayout>
+
     <Button
         android:id="@+id/selectedDayMonthYear"
-        android:layout_width="280dp"
+        android:layout_width="261dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorPrimaryDark"
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="8sp"
+        android:background="@color/aqua"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/dark" />
 

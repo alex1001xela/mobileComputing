@@ -1,17 +1,37 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
+import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
+import com.wua.mc.webuntisapp.presenter.Filter;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class GlobalCalendarView extends CalendarView {
+private final CalendarPresenter cp = new CalendarPresenter(this);
+private FieldOfStudy f ;
+    private Filter filter ;
+    private String selected_field_Of_Study;
+    private String filtername ;
+    private String TAG = "BELMO----";
+    public FieldOfStudy getFieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
+    }
+
+    FieldOfStudy fieldOfStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +62,7 @@ public class GlobalCalendarView extends CalendarView {
         buildWeeklyCalendar();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void showEventsOnCalendar(ArrayList<Event> events) {
         showEventsOnDailyPlan(events);
@@ -51,6 +72,11 @@ public class GlobalCalendarView extends CalendarView {
     public void showToast(String text) {
         Context context = getApplicationContext();
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionMenu(Menu menu) {
+        return false;
     }
 
     @Override

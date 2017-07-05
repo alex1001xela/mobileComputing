@@ -2,7 +2,6 @@ package com.wua.mc.webuntisapp;
 
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
-import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +61,7 @@ public class WebUntisAPI {
         boolean throwedException = false;
         JSONObject jsonObject1 = wuc.getCourses();
         JSONObject jsonObject2 = wuc.getClasses();
-        CalendarPresenter cp = new CalendarPresenter(null);
+        //CalendarPresenter cp = new CalendarPresenter(null);
         //JSONObject jsonObject = wuc.getFilters();
         //JSONArray jsonObject = wuc.getClasses();
         //System.out.print(jsonObject.toString());
@@ -99,22 +98,16 @@ public class WebUntisAPI {
              }
 
 
+
              */
-
-
-
-
-
-
-
 
 
             JSONArray result = jsonObject1.getJSONObject("response").getJSONArray("result");
 
             // for filter .
-           // result.getInt("id");
-           // result.getString("name");
-           // result.getInt("startDate");
+            // result.getInt("id");
+            // result.getString("name");
+            // result.getInt("startDate");
             //result.getInt("endDate");
             String FOS_name = "3MKIB1"; // with this we can figure out the courses
             // for MKI in first semester
@@ -124,10 +117,13 @@ public class WebUntisAPI {
             for (int i = 0; i< result.length();i++){
                 if( result.getJSONObject(i).getString("name").contains(FOS_name)){
                     // priintout the course of thge field of study : 3MKIB1
-                      System.out.print("|"+result.getJSONObject(i)+"|");
-               }
+                   // System.out.print("|"+result.getJSONObject(i)+"|");
+                }
 
             }
+
+
+
         }
         catch (JSONException e){
             throwedException = true;
@@ -147,4 +143,5 @@ public class WebUntisAPI {
     }
     //-------------------------------------------futher tests could be inserted bellow.
     //Test für ADD mit (query)select kann man werte abfragen
+
 }
