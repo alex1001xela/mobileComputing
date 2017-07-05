@@ -24,7 +24,7 @@ public interface iCalendarPresenter {
 
         void deleteEvent(String eventID);
 
-        void deleteCourse(String eventID);
+        ArrayList<String> deleteCourse(String eventID);
 
         void setEventColor(String color, String eventID);
 

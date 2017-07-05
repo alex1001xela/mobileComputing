@@ -71,6 +71,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     private DayButton[] dayButtons = new DayButton[7];
     private DayButton currentDayButton;
+    ArrayList<EventBoxView> eventBoxes;
     private final Context context = this;
 
     private DrawerLayout mDrawerLayout;
@@ -130,15 +131,16 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
-                        Intent global = new Intent(CalendarView.this, GlobalCalendarView.class);
-                        startActivity(global);
-                        break;
-                    case 1:
                         Intent personal = new Intent(CalendarView.this, PersonalCalendarView.class);
                         startActivity(personal);
                         break;
+                    case 1:
+                        Intent global = new Intent(CalendarView.this, GlobalCalendarView.class);
+                        startActivity(global);
+                        break;
                     case 2:
                         Intent logout = new Intent(CalendarView.this, MainActivity.class);
+                        getCalendarDataManagement().logout();
                         startActivity(logout);
                         break;
                 }
@@ -243,7 +245,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     void showEventsOnDailyPlan(ArrayList<Event>  events){
-        ArrayList<EventBoxView> eventBoxes = new ArrayList<>();
+        eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
 //TODO remove the line 211 : it is for text purposes only:
@@ -541,8 +543,17 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonDeleteCourse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.removeFromView();
-                    calendarDataManagement.deleteCourse(event.getId());
+
+                    ArrayList<String> deletedEventIDs = calendarDataManagement.deleteCourse(((UniversityEvent)event).getCourseID());
+
+                    for(EventBoxView eventBoxView : eventBoxes){
+                        for(String eventID : deletedEventIDs){
+                            if(eventBoxView.getEvent().getId().equals(eventID)){
+                                eventBoxView.removeFromView();
+                            }
+                        }
+                    }
+
                     Toast toast = Toast.makeText(context, "Course deleted", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
                     toast.show();

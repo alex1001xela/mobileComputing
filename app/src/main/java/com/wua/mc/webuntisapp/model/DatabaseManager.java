@@ -34,7 +34,8 @@ public class DatabaseManager implements iDatabaseManager {
             DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END,
             DatabaseHelper.COLUMN_EVENT_NAME,
             DatabaseHelper.COLUMN_EVENT_COLOR,
-            DatabaseHelper.COLUMN_EVENT_TYPE
+            DatabaseHelper.COLUMN_EVENT_TYPE,
+            DatabaseHelper.COLUMN_COURSE_ID
     };
 
     private String[] columns3 = {
@@ -91,6 +92,7 @@ public class DatabaseManager implements iDatabaseManager {
         int eventName_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_NAME);
         int eventColor_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_COLOR);
         int eventType_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_EVENT_TYPE);
+        int courseId_ = cursor.getColumnIndex(DatabaseHelper.COLUMN_COURSE_ID);
 
         String eventRoom = cursor.getString(eventRoom_);
 
@@ -100,10 +102,9 @@ public class DatabaseManager implements iDatabaseManager {
         String eventColor = cursor.getString(eventColor_);
         String eventType = cursor.getString(eventType_);
         long eventId = cursor.getLong(eventId_);
+        long courseId = cursor.getLong(courseId_);
 
-        Log.i("TIMEDB", ""+eventTimestampStart + " / " + eventTimestampEnd);
-
-        return new DataBaseObject(eventRoom, eventTimestampStart, eventTimestampEnd, eventName, eventColor, eventType, eventId);
+        return new DataBaseObject(eventRoom, eventTimestampStart, eventTimestampEnd, eventName, eventColor, eventType, eventId, courseId);
     }
 
     private DataBaseObject cursorToPersonalDatabaseObject(Cursor cursor) {
@@ -237,6 +238,7 @@ public class DatabaseManager implements iDatabaseManager {
     public DataBaseObject saveCourseDB(UniversityEvent event) {
         //Tabelle Course
         ContentValues values = new ContentValues();
+        Log.i("COURSE_ID", event.getCourseID());
         values.put(DatabaseHelper.COLUMN_COURSE_NAME, event.getName());
         values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, event.getTeachers()[0]);
         values.put(DatabaseHelper.COLUMN_COURSE_COLOR, event.getColor());
@@ -277,10 +279,10 @@ public class DatabaseManager implements iDatabaseManager {
     @Override
     public void logoutDB() {
 
-        long authenticate = 0;
+        long authenticate = 1;
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, authenticate);
+        values.put(DatabaseHelper.COLUMNN_AUTHENTICATE, 0);
 
         database.update(DatabaseHelper.TABLE_PERSONAL_INFORMATION, values,
                 DatabaseHelper.COLUMNN_AUTHENTICATE + "=" + authenticate, null);

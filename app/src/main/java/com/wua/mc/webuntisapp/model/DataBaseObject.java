@@ -29,7 +29,7 @@ public class DataBaseObject {
 
     }
 
-    public DataBaseObject(String event_room, long event_timestamp_start, long event_timestamp_end, String event_name, String event_color, String event_type, long event_id){
+    public DataBaseObject(String event_room, long event_timestamp_start, long event_timestamp_end, String event_name, String event_color, String event_type, long event_id, long courseId){
 
         this.setEvent_id(event_id);
         this.setEvent_room(event_room);
@@ -38,6 +38,7 @@ public class DataBaseObject {
         this.setEvent_name(event_name);
         this.setEvent_color(event_color);
         this.setEvent_type(event_type);
+        this.setCourse_id(courseId);
     }
 
     public DataBaseObject(long authenticated){
