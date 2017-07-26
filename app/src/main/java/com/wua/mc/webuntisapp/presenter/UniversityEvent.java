@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class UniversityEvent extends Event {
 
@@ -22,7 +23,7 @@ public class UniversityEvent extends Event {
 
 	private String semester = "";
 
-	public UniversityEvent(String id, String name, String details, Date startTime, Date endTime, EventType eventType, String untisID, String courseID, String[] teachers, String[] rooms, String semester) {
+	public UniversityEvent(String id, String name, String details, GregorianCalendar startTime, GregorianCalendar endTime, EventType eventType, String untisID, String courseID, String[] teachers, String[] rooms, String semester) {
 		super(id, name, details, startTime, endTime, eventType);
 		this.untisID = untisID;
 		this.courseID = courseID;

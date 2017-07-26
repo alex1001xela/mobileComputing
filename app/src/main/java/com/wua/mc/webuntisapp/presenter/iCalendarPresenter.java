@@ -10,17 +10,17 @@ public interface iCalendarPresenter {
 
     interface iCalendarDataManagement {
 
-        ArrayList<Event> getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
+        ArrayList<Event> getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);
 
-        ArrayList<Event> getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);//todo class diagram
+        ArrayList<Event> getMonthlyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc);
 
-        String getEventInformationPersonal(String eventID); //todo class diagram
+        String getEventInformationPersonal(String eventID);
 
         void addCourse(String untisEventID);
 
         void addEvent(String untisEventID);
 
-        void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime);//todo class diagram
+        void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime);
 
         void deleteEvent(String eventID);
 
@@ -49,18 +49,16 @@ public interface iCalendarPresenter {
     interface iCalendarWebUntis {
 
 
-        ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
+        ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);
 
-        ArrayList<Event> getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);//todo class diagram
+        ArrayList<Event> getMonthlyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy);
 
-       // FieldOfStudy[] getFieldsOfStudy(Filter[] filter);
         ArrayList<FieldOfStudy>getFieldsOfStudy(Filter filter);
 
+        String getEventInformationGlobal(String eventID);
 
-        String getEventInformationGlobal(String eventID);  //todo class diagram
-
-       // Filter[] getFilters();
         ArrayList<Filter> getFilters();
+
         HashMap<String, Course> getCourses();
 
         boolean areLoginDataValid(String username, String password);

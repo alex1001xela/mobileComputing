@@ -61,15 +61,11 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         GregorianCalendar[] startAndEndOfMonth = GregorianCalendarFactory.getStartAndEndOfMonth(gc);
         for(Event event : savedEvents){
 
-            GregorianCalendar eventGregorianStart = GregorianCalendarFactory.getGregorianCalendar();
-            eventGregorianStart.setTime(event.getStartTime());
-            GregorianCalendar eventGregorianEnd = GregorianCalendarFactory.getGregorianCalendar();
-            eventGregorianEnd.setTime(event.getEndTime());
             int startDayOfYear = startAndEndOfMonth[0].get(Calendar.DAY_OF_YEAR);
             int endDayOfYear = startAndEndOfMonth[1].get(Calendar.DAY_OF_YEAR);
 
-            if(startDayOfYear <= eventGregorianStart.get(Calendar.DAY_OF_YEAR) &&
-                    endDayOfYear >= eventGregorianEnd.get(Calendar.DAY_OF_YEAR)){
+            if(startDayOfYear <= event.getStartTime().get(Calendar.DAY_OF_YEAR) &&
+                    endDayOfYear >= event.getEndTime().get(Calendar.DAY_OF_YEAR)){
                 weekEvents.add(event);
             }
         }
@@ -97,17 +93,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
-        // todo remove example
-        /*
-        if(this.getSelectedFieldOfStudy()!=null){ // for testing purposes.
-            fieldOfStudy= this.getSelectedFieldOfStudy();
-        }else{ //TODO remove the else condition
-            fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, null);
-        }
-        */
-       // fieldOfStudy = new FieldOfStudy("1798", "3MKIB1", null, false, "3");
-
-
         ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents);
 
         if(weekEvents.size() == 0){
@@ -208,7 +193,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             }
             i++;
         }
-        GregorianCalendar eventTime = GregorianCalendarFactory.dateToGregorianCalendar(universityEvent.getStartTime());
+        GregorianCalendar eventTime = universityEvent.getStartTime();
         String startOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getStartOfSemester(eventTime));
         String endOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getEndOfSemester(eventTime));
 
@@ -256,7 +241,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public void createEvent(String name, String details, GregorianCalendar gc, long startTime, long endTime) {
         dbManager.connectToDatabase();
-        Event event = new Event(null, name, details, new Date(startTime), new Date(endTime), EventType.PERSONAL);
+
+        GregorianCalendar start = GregorianCalendarFactory.getGregorianCalendar();
+        GregorianCalendar end = GregorianCalendarFactory.getGregorianCalendar();
+        start.setTimeInMillis(startTime);
+        end.setTimeInMillis(endTime);
+
+        Event event = new Event(null, name, details, start, end, EventType.PERSONAL);
         DataBaseObject dbObject = dbManager.saveEventDB(event);
         event.setID("" + dbObject.getEvent_id());
         currentShownPersonalEvents.add(event);
@@ -572,18 +563,18 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         ArrayList<Event>EventsList=new ArrayList<>();
         int num_events=1;
 
-        Calendar cal1 =  Calendar.getInstance();
+        //Calendar cal1 =  Calendar.getInstance();
 
 
-        Date EventDate =null ;
+        //Date EventDate =null ;
 
         if(PE.isEmpty() || PE==null){
             Log.v("BELMO","lsit of saved elements is empty");
         }else {
             for(int i = 0;i<PE.size();i++){
-                Calendar cal2 = Calendar.getInstance();
-                EventDate= PE.get(i).getEndTime();
-                cal2.setTime(EventDate);
+                Calendar cal2 = PE.get(i).getEndTime();
+                //EventDate= PE.get(i).getEndTime();
+                //cal2.setTime(EventDate);
                 int EVentMonth= cal2.get(Calendar.MONTH);
                 int Event_year = cal2.get(Calendar.YEAR);
                 int event_day= cal2.get(Calendar.DAY_OF_MONTH);
@@ -592,7 +583,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
                 Log.v("EVENT DAY",Integer.toString(event_day));
                 Log.v("INCOMMING YEAR",Integer.toString(year));
                 Log.v("INCOMMING MONTH ",Integer.toString(month));
-                Log.v("EVENT DATE ",EventDate.toString());
+                Log.v("EVENT DATE ",cal2.toString());
 
                 if(Event_year==year){
                     if(EVentMonth==month -1){

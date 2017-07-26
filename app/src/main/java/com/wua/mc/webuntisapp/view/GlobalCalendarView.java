@@ -17,21 +17,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class GlobalCalendarView extends CalendarView {
-private final CalendarPresenter cp = new CalendarPresenter(this);
-private FieldOfStudy f ;
-    private Filter filter ;
-    private String selected_field_Of_Study;
-    private String filtername ;
-    private String TAG = "BELMO----";
-    public FieldOfStudy getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
-    }
-
-    FieldOfStudy fieldOfStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +77,5 @@ private FieldOfStudy f ;
     @Override
     protected void setCalendarContentView() {
         setContentView(R.layout.activity_global_calendar);
-    }
-
-    public void showFilterAndFieldOfStudyPicker() {
-
     }
 }

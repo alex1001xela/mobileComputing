@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,19 +61,17 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     protected iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
     private GregorianCalendar gregCal;
 
-    private CalendarPresenter cp = new CalendarPresenter(this);
+    private View[] hourLines;
+    private float eventFieldWidth;
+    private float eventFieldXStart;
 
-    private int eventFieldHeight;
-    private int eventFieldWidth;
-    private int eventFieldXStart;
-    private int eventFieldYStart;
-    private int eventFieldYEnd;
-    private double heightPerQuarter;
-    private final int numberOfQuartersIn24Hours = 24 * 4;
+    public static final int HOURS_IN_DAY = 24;
+    public static final int QUARTERS_IN_HOUR = 4;
+    public static final int QUARTERS_IN_DAY = HOURS_IN_DAY * QUARTERS_IN_HOUR;
 
     private DayButton[] dayButtons = new DayButton[7];
     private DayButton currentDayButton;
-    ArrayList<EventBoxView> eventBoxes;
+    ArrayList<EventBox> eventBoxes;
     private final Context context = this;
 
     private DrawerLayout mDrawerLayout;
@@ -191,17 +191,12 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 getDayButtonsAndListen();
 
 
-                View firstLine = findViewById(R.id.hour00Line);
-                View lastLine = findViewById(R.id.hour24Line);
+                putHourLinesInMap();
 
-                eventFieldYStart = (int) firstLine.getY();
-                eventFieldYEnd = (int) lastLine.getY();
-                eventFieldHeight = eventFieldYEnd - eventFieldYStart;
+                View firstLine = hourLines[0];
 
                 eventFieldWidth = firstLine.getWidth();
-                eventFieldXStart = (int) firstLine.getX();
-
-                heightPerQuarter = (double)eventFieldHeight / (double)numberOfQuartersIn24Hours;
+                eventFieldXStart = firstLine.getX();
 
 
                 scrollViewLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -232,16 +227,45 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         });
     }
 
+    private void putHourLinesInMap(){
+        hourLines = new View[25];
+        hourLines[0] =  findViewById(R.id.hour00Line);
+        hourLines[1] = findViewById(R.id.hour01Line);
+        hourLines[2] = findViewById(R.id.hour02Line);
+        hourLines[3] = findViewById(R.id.hour03Line);
+        hourLines[4] = findViewById(R.id.hour04Line);
+        hourLines[5] = findViewById(R.id.hour05Line);
+        hourLines[6] = findViewById(R.id.hour06Line);
+        hourLines[7] = findViewById(R.id.hour07Line);
+        hourLines[8] = findViewById(R.id.hour08Line);
+        hourLines[9] = findViewById(R.id.hour09Line);
+        hourLines[10] = findViewById(R.id.hour10Line);
+        hourLines[11] = findViewById(R.id.hour11Line);
+        hourLines[12] = findViewById(R.id.hour12Line);
+        hourLines[13] = findViewById(R.id.hour13Line);
+        hourLines[14] = findViewById(R.id.hour14Line);
+        hourLines[15] = findViewById(R.id.hour15Line);
+        hourLines[16] = findViewById(R.id.hour16Line);
+        hourLines[17] = findViewById(R.id.hour17Line);
+        hourLines[18] = findViewById(R.id.hour18Line);
+        hourLines[19] = findViewById(R.id.hour19Line);
+        hourLines[20] = findViewById(R.id.hour20Line);
+        hourLines[21] = findViewById(R.id.hour21Line);
+        hourLines[22] = findViewById(R.id.hour22Line);
+        hourLines[23] = findViewById(R.id.hour23Line);
+        hourLines[24] = findViewById(R.id.hour24Line);
+    }
+
     private void scrollToCurrentTime(){
         ScrollView scrollView = (ScrollView) findViewById(R.id.day_plan);
         int top = scrollView.getTop();
         int bottom = scrollView.getBottom();
         int range = bottom - top;
-        double distancePerQuarter = (double)range / (double)(numberOfQuartersIn24Hours);
+        double distancePerQuarter = (double)range / (double)(QUARTERS_IN_DAY);
         int hour = gregCal.get(Calendar.HOUR_OF_DAY);
         int minute = gregCal.get(Calendar.MINUTE);
         double quarter = (double)minuteToQuarter(minute + hourToMinute(hour));
-        double calculatedPosition = (distancePerQuarter * (quarter + 35));
+        double calculatedPosition = distancePerQuarter * quarter;
         double positionToBeScrolled = calculatedPosition > bottom ? bottom : calculatedPosition;
         scrollView.setScrollY((int)positionToBeScrolled);
     }
@@ -251,21 +275,19 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         eventBoxes = new ArrayList<>();
         ConstraintLayout scrollViewLayout = (ConstraintLayout) findViewById(R.id.day_plan_layout);
 
-//TODO remove the line 211 : it is for text purposes only:
         for(Event event: events){
             if(event.isEventOnThisDay(gregCal)){
                 eventBoxes.add(createEventBoxView(event));
             }
         }
 
-        EventBoxView[] eventBoxesArray = eventBoxes.toArray(new EventBoxView[eventBoxes.size()]);
-        calculateHorizontalNeighbours(eventBoxesArray);
+        calculateHorizontalNeighbours(eventBoxes);
 
-        adjustEventsWidths(eventBoxesArray);
+        adjustEventsWidths(eventBoxes);
 
-        calculateHorizontalPositions(eventBoxesArray);
+        calculateHorizontalPositions(eventBoxes);
 
-        for(EventBoxView eventBox: eventBoxes){
+        for(EventBox eventBox: eventBoxes){
             scrollViewLayout.addView(eventBox.getButton());
         }
     }
@@ -402,41 +424,47 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         return day;
     }
 
-    private void calculateHorizontalNeighbours(EventBoxView[] eventBoxes){
-        for(int i = 0; i <= numberOfQuartersIn24Hours; i++){
+    private void calculateHorizontalNeighbours(ArrayList<EventBox> eventBoxes){
+        for(int i = 0; i <= QUARTERS_IN_DAY; i++){
             detectNeighboursInQuarter(i, eventBoxes);
         }
     }
 
-    private void detectNeighboursInQuarter(int quarter, EventBoxView[] eventBoxes){
-        ArrayList<EventBoxView> eventsOnThisQuarter = new ArrayList<>();
-        for (EventBoxView eventBox : eventBoxes){
+    private void detectNeighboursInQuarter(int quarter, ArrayList<EventBox> eventBoxes){
+        ArrayList<EventBox> eventsOnThisQuarter = new ArrayList<>();
+        for (EventBox eventBox : eventBoxes){
             if(eventBox.isOnQuarter(quarter)){
                 eventsOnThisQuarter.add(eventBox);
             }
         }
 
-        for (EventBoxView eventBox : eventsOnThisQuarter){
-            eventBox.setMaxHorizontalNeighbours(eventsOnThisQuarter.size());
+        int horizontalNeighbours = eventsOnThisQuarter.size();
+        for (EventBox eventBox : eventsOnThisQuarter){
+            eventBox.setMaxHorizontalNeighbours(horizontalNeighbours);
+            eventBox.addNeighbours(eventsOnThisQuarter);
+            HashSet<EventBox> neighbours = eventBox.getNeighbours();
+            for(EventBox eb : neighbours){
+                eb.setMaxHorizontalNeighbours(horizontalNeighbours);
+            }
         }
     }
 
-    private void adjustEventsWidths(EventBoxView[] eventBoxes){
-        for(EventBoxView eventBox: eventBoxes){
-            eventBox.setWidth(eventFieldWidth / eventBox.getMaxHorizontalNeighbours());
+    private void adjustEventsWidths(ArrayList<EventBox> eventBoxes){
+        for(EventBox eventBox: eventBoxes){
+            eventBox.setWidth((int)(eventFieldWidth / eventBox.getMaxHorizontalNeighbours()));
         }
     }
 
-    private void calculateHorizontalPositions(EventBoxView[] eventBoxes){
-        for(int i = 0; i <= numberOfQuartersIn24Hours; i++){
+    private void calculateHorizontalPositions(ArrayList<EventBox> eventBoxes){
+        for(int i = 0; i <= QUARTERS_IN_DAY; i++){
             adjustEventsLefts(i, eventBoxes);
         }
     }
 
-    private void adjustEventsLefts (int quarter, EventBoxView[] eventBoxes){
-        ArrayList<EventBoxView> eventsOnThisQuarter = new ArrayList<>();
+    private void adjustEventsLefts (int quarter, ArrayList<EventBox> eventBoxes){
+        ArrayList<EventBox> eventsOnThisQuarter = new ArrayList<>();
 
-        for (EventBoxView eventBox : eventBoxes){
+        for (EventBox eventBox : eventBoxes){
             if(eventBox.isOnQuarter(quarter)){
                 eventsOnThisQuarter.add(eventBox);
             }
@@ -444,19 +472,19 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         int positionCounter = 0;
         for (int i = 0; i < eventsOnThisQuarter.size(); i++){
-            EventBoxView eventBox = eventsOnThisQuarter.get(i);
+            EventBox eventBox = eventsOnThisQuarter.get(i);
             if(!eventBox.isPositioned()){
                 while(isPositionTaken(positionCounter, eventsOnThisQuarter)){
                     positionCounter++;
                 }
-                eventBox.setX(eventFieldXStart + (positionCounter * eventBox.getWidth()));
+                eventBox.setX((int) (eventFieldXStart + (positionCounter * eventBox.getWidth())));
                 eventBox.setPosition(positionCounter);
             }
 
         }
     }
 
-    private boolean isPositionTaken(int position, ArrayList<EventBoxView> eventBoxes){
+    private boolean isPositionTaken(int position, ArrayList<EventBox> eventBoxes){
         int i = 0;
         boolean taken = false;
         while(i < eventBoxes.size() && !taken){
@@ -467,13 +495,13 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private EventBoxView createEventBoxView(final Event event){
+    private EventBox createEventBoxView(final Event event){
 
-        final EventBoxView eventBox = new EventBoxView(event, this);
-        eventBox.setY(calculateEventTop(eventBox));
-        eventBox.setHeight(calculateEventHeight(eventBox));
+        final EventBox eventBox = new EventBox(event, this);
+        eventBox.setY((int)calculateEventTop(eventBox));
+        eventBox.setHeight((int)calculateEventHeight(eventBox));
 
-        eventBox.setOnClickListener(new View.OnClickListener() {
+        eventBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 openEventDetailView(eventBox);
@@ -483,10 +511,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         return eventBox;
     }
 
-    public void openEventDetailView (final EventBoxView eventBoxView){
+    public void openEventDetailView (final EventBox eventBox){
         LayoutInflater li = LayoutInflater.from(context);
         View view;
-        final Event event = eventBoxView.getEvent();
+        final Event event = eventBox.getEvent();
 
         if (CalendarView.this instanceof GlobalCalendarView){
             view = li.inflate(R.layout.activity_add_event_course, null);
@@ -536,7 +564,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             buttonDeleteEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.removeFromView();
+                    eventBox.removeFromView();
                     calendarDataManagement.deleteEvent(event.getId());
                     Toast toast = Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP|Gravity.TOP, 0, 0);
@@ -549,10 +577,10 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
                     ArrayList<String> deletedEventIDs = calendarDataManagement.deleteCourse(((UniversityEvent)event).getCourseID());
 
-                    for(EventBoxView eventBoxView : eventBoxes){
+                    for(EventBox eventBox : eventBoxes){
                         for(String eventID : deletedEventIDs){
-                            if(eventBoxView.getEvent().getId().equals(eventID)){
-                                eventBoxView.removeFromView();
+                            if(eventBox.getEvent().getId().equals(eventID)){
+                                eventBox.removeFromView();
                             }
                         }
                     }
@@ -583,8 +611,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @Override
                 public void onClick(View v) {
                    // v.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.blue,null));
-                    eventBoxView.getEventboxEvent().setColor("#babce5");//TODO RAY change this.
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.blue,null));
+                    eventBox.getEventboxEvent().setColor("#babce5");//TODO RAY change this.
 
 
 
@@ -594,8 +622,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
-                    eventBoxView.getEventboxEvent().setColor("#cec1e7");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+                    eventBox.getEventboxEvent().setColor("#cec1e7");
 
                 }
             });
@@ -603,8 +631,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.pink,null));
-                    eventBoxView.getEventboxEvent().setColor("#e5bac4");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.pink,null));
+                    eventBox.getEventboxEvent().setColor("#e5bac4");
 
                 }
             });
@@ -612,8 +640,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.orange,null));
-                    eventBoxView.getEventboxEvent().setColor("#e5c9ba");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.orange,null));
+                    eventBox.getEventboxEvent().setColor("#e5c9ba");
 
                 }
             });
@@ -621,8 +649,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.red,null));
-                    eventBoxView.getEventboxEvent().setColor("#ff9994");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.red,null));
+                    eventBox.getEventboxEvent().setColor("#ff9994");
 
                 }
             });
@@ -630,8 +658,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.yellow,null));
-                    eventBoxView.getEventboxEvent().setColor("#e5e2ba");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.yellow,null));
+                    eventBox.getEventboxEvent().setColor("#e5e2ba");
 
                 }
             });
@@ -639,8 +667,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.lightgreen,null));
-                    eventBoxView.getEventboxEvent().setColor("#cde5ba");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.lightgreen,null));
+                    eventBox.getEventboxEvent().setColor("#cde5ba");
 
                 }
             });
@@ -648,8 +676,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.green,null));
-                    eventBoxView.getEventboxEvent().setColor("#bae5c0");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.green,null));
+                    eventBox.getEventboxEvent().setColor("#bae5c0");
 
                 }
             });
@@ -657,8 +685,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.aqua,null));
-                    eventBoxView.getEventboxEvent().setColor("#bae5da");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.aqua,null));
+                    eventBox.getEventboxEvent().setColor("#bae5da");
 
                 }
             });
@@ -666,8 +694,8 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    eventBoxView.button.setBackgroundColor(getResources().getColor(R.color.ocean,null));
-                    eventBoxView.getEventboxEvent().setColor("#b7d4e7");
+                    eventBox.button.setBackgroundColor(getResources().getColor(R.color.ocean,null));
+                    eventBox.getEventboxEvent().setColor("#b7d4e7");
 
                 }
             });
@@ -780,23 +808,39 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         }
     }
 */
-    private int calculateEventHeight(EventBoxView eventBox){
-        int bottom = calculateEventBottom(eventBox);
-        int top = calculateEventTop(eventBox);
+    private float calculateEventHeight(EventBox eventBox){
+        float bottom = calculateEventBottom(eventBox);
+        float top = calculateEventTop(eventBox);
         return  bottom - top;
     }
 
-    private int calculateEventTop(EventBoxView eventBox){
-        return eventFieldYStart + (int)(heightPerQuarter * eventBox.getStartQuarter());
+    private float calculateEventTop(EventBox eventBox){
+        int quarterInDay = eventBox.getStartQuarter();
+        return calculateEventYFromQuarter(quarterInDay);
     }
 
-    private int calculateEventBottom(EventBoxView eventBox){
-        return eventFieldYStart + (int)(heightPerQuarter * eventBox.getEndQuarter());
+    private float calculateEventBottom(EventBox eventBox){
+        int quarterInDay = eventBox.getEndQuarter();
+        return calculateEventYFromQuarter(quarterInDay);
     }
 
-    private int convertDateToQuarter(Date date){
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
+    private float calculateEventYFromQuarter(int quarterInDay) {
+        int hourTop = quarterInDay * 15 / 60;
+        int quarterInHour = quarterInDay % 4;
+
+        View hourTopLine = hourLines[hourTop];
+        View hourBottomLine = hourLines[hourTop + 1];
+
+        float hourTopLineY = hourTopLine.getY();
+        float hourBottomLineY = hourBottomLine.getY();
+
+        float height = hourBottomLineY - hourTopLineY;
+        float heightPerQuarter = height / 4.0f;
+
+        return hourTopLine.getY() + heightPerQuarter * quarterInHour;
+    }
+
+    private int convertCalendarToQuarter(GregorianCalendar calendar){
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         return minuteToQuarter(minute + hourToMinute(hour));
@@ -812,7 +856,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
     }
 
 
-    private class EventBoxView {
+    private class EventBox {
 
 
         private Event event;
@@ -825,13 +869,14 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
         private int height;
         private int maxHorizontalNeighbours;
         private int position = -1;
-        private String color = "FF0000";
+        private HashSet<EventBox> neighbours;
+        private String color = "#808080";
         private int eventColor = 0;
-//"FFFFFF";
+
         private LinearLayout.LayoutParams layoutParams;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
-        EventBoxView(Event event, Context context){
+        EventBox(Event event, Context context){
             this.event = event;
              eventColor =this.GetEventsColor(event);
             this.button = new Button(context);
@@ -839,12 +884,17 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             this.button.setLayoutParams(this.layoutParams);
             String buttonText = event.toString();
             this.button.setText(buttonText);
-            this.button.setBackground(null);
-            this.button.setBackgroundColor(eventColor);
-            this.button.getBackground().setAlpha(182);
 
-            this.startQuarter = convertDateToQuarter(event.getStartTime());
-            this.endQuarter = convertDateToQuarter(event.getEndTime());
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setStroke(2, Color.BLACK);
+            drawable.setColor(Color.parseColor(color));
+            drawable.setAlpha(200);
+            this.button.setBackground(drawable);
+
+            this.neighbours = new HashSet<>();
+            this.startQuarter = convertCalendarToQuarter(event.getStartTime());
+            this.endQuarter = convertCalendarToQuarter(event.getEndTime());
             this.maxHorizontalNeighbours = 1;
         }
   //Ray: this function getEventBoxEvent used to set the color oof the Event when the user changes the color of the event on the view
@@ -867,19 +917,19 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
                     break;
                 case ("ff9994") :found = getResources().getColor(R.color.red,null);  //red
                     break;
-                case ("#e5c9ba") :found =getResources().getColor(R.color.orange,null); ;//orange
+                case ("#e5c9ba") :found =getResources().getColor(R.color.orange,null); //orange
                     break;
-                case ("#e7e7e7") :found =getResources().getColor(R.color.lightgray,null); ;//light gray
+                case ("#e7e7e7") :found =getResources().getColor(R.color.lightgray,null); //light gray
                     break;
-                case ("#e5e2ba") :found =getResources().getColor(R.color.yellow,null); ;//yellow
+                case ("#e5e2ba") :found =getResources().getColor(R.color.yellow,null); //yellow
                     break;
-                case ("#cde5ba") :found =getResources().getColor(R.color.lightgreen,null); ;//lightgreen
+                case ("#cde5ba") :found =getResources().getColor(R.color.lightgreen,null); //lightgreen
                     break;
-                case ("#bae5c0") :found =getResources().getColor(R.color.green,null); ;//green
+                case ("#bae5c0") :found =getResources().getColor(R.color.green,null); //green
                     break;
-                case ("#bae5da") :found =getResources().getColor(R.color.aqua,null); ;//aqua
+                case ("#bae5da") :found =getResources().getColor(R.color.aqua,null); //aqua
                     break;
-                case ("#b7d4e7") :found =getResources().getColor(R.color.ocean,null); ;//ocean
+                case ("#b7d4e7") :found =getResources().getColor(R.color.ocean,null); //ocean
                     break;
 
             }
@@ -966,6 +1016,14 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
             }
         }
 
+        void addNeighbours (ArrayList<EventBox> eventBoxes) {
+            this.neighbours.addAll(eventBoxes);
+        }
+
+        HashSet<EventBox> getNeighbours (){
+            return this.neighbours;
+        }
+
         boolean isOnQuarter(int quarter){
             return getStartQuarter() <= quarter & getEndQuarter() > quarter;
         }
@@ -1001,7 +1059,7 @@ abstract class CalendarView extends Activity implements iCalendarView ,OnClickLi
 
         @Override
         public boolean equals(Object o){
-            return (o instanceof EventBoxView) && (event == ((EventBoxView)o).getEvent());
+            return (o instanceof EventBox) && (event == ((EventBox)o).getEvent());
         }
     }
 

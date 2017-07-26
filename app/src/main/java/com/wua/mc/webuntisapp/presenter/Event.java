@@ -16,12 +16,12 @@ public class Event {
 	private String id = "";
 	private String name = "";
 	private String details = "";
-	private Date startTime;
-	private Date endTime;
+	private GregorianCalendar startTime;
+	private GregorianCalendar endTime;
 	private EventType eventType = EventType.LECTURE;
-	private String color = "FF0000"; // THIS A Default color for all events on creation
+	private String color = "#FF0000"; // THIS A Default color for all events on creation
 
-	public Event(String id, String name, String details, Date startTime, Date endTime, EventType eventType) {
+	public Event(String id, String name, String details, GregorianCalendar startTime, GregorianCalendar endTime, EventType eventType) {
 		this.id = id;
 		this.name = name;
 		this.details = details;
@@ -39,7 +39,7 @@ public class Event {
 
 	public Event(JSONObject jsonObject, String name){
 		try {
-			Date[] dates = webUntisDateToDates(jsonObject);
+			GregorianCalendar[] dates = webUntisDateToDates(jsonObject);
 			this.startTime = dates[0];
 			this.endTime = dates[1];
 			this.name = name;
@@ -52,14 +52,20 @@ public class Event {
 	public Event(DataBaseObject dbObject){
 		this.id = "" + dbObject.getEvent_id();
 		this.name = dbObject.getEvent_name();
-		this.startTime = new Date(dbObject.getEvent_timestamp_start());
-		this.endTime = new Date(dbObject.getEvent_timestamp_end());
+
+		GregorianCalendar start = GregorianCalendarFactory.getGregorianCalendar();
+		GregorianCalendar end = GregorianCalendarFactory.getGregorianCalendar();
+		start.setTimeInMillis(dbObject.getEvent_timestamp_start());
+		end.setTimeInMillis(dbObject.getEvent_timestamp_end());
+
+		this.startTime = start;
+		this.endTime = end;
 		this.eventType = EventType.valueOf(dbObject.getEvent_type());
 		this.color = dbObject.getEvent_color();
 	}
 
-	private Date[] webUntisDateToDates(JSONObject jsonObject) throws JSONException {
-		Date[] dates = new Date[2];
+	private GregorianCalendar[] webUntisDateToDates(JSONObject jsonObject) throws JSONException {
+		GregorianCalendar[] dates = new GregorianCalendar[2];
 		String date =  jsonObject.getString("date");
 
 		String startTime = jsonObject.getString("startTime");
@@ -76,7 +82,7 @@ public class Event {
 		int startMinute = Integer.parseInt(startTime.substring(startTimeSplitIndex, startTime.length()));
 
 		gc.set(year, month, dayOfMonth, startHour, startMinute);
-		dates[0] = new Date(gc.getTimeInMillis());
+		dates[0] = GregorianCalendarFactory.createGregorianCalendarCopy(gc);
 
 		int endTimeSplitIndex = endTime.length() / 2;
 
@@ -84,7 +90,7 @@ public class Event {
 		int endMinute = Integer.parseInt(endTime.substring(endTimeSplitIndex, endTime.length()));
 
 		gc.set(year, month, dayOfMonth, endHour, endMinute);
-		dates[1] = new Date(gc.getTimeInMillis());
+		dates[1] = GregorianCalendarFactory.createGregorianCalendarCopy(gc);
 
 		return dates;
 	}
@@ -101,11 +107,11 @@ public class Event {
 		return details;
 	}
 
-	public Date getStartTime() {
+	public GregorianCalendar getStartTime() {
 		return startTime;
 	}
 
-	public Date getEndTime() {
+	public GregorianCalendar getEndTime() {
 		return endTime;
 	}
 
@@ -122,12 +128,8 @@ public class Event {
     }
 
     public boolean isEventOnThisDay (GregorianCalendar calendar){
-		GregorianCalendar eventGregorianStart = GregorianCalendarFactory.getGregorianCalendar();
-		eventGregorianStart.setTime(this.startTime);
-		//GregorianCalendar eventGregorianEnd = GregorianCalendarFactory.getGregorianCalendar();
-		//eventGregorianEnd.setTime(this.endTime);
 
-		return calendar.get(Calendar.DAY_OF_YEAR) == eventGregorianStart.get(Calendar.DAY_OF_YEAR);
+		return calendar.get(Calendar.DAY_OF_YEAR) == this.startTime.get(Calendar.DAY_OF_YEAR);
 	}
 	public void setColor(String color) { // by ray ..
 

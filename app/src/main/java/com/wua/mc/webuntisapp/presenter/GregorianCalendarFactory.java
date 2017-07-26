@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public abstract class GregorianCalendarFactory { //todo class diagram
+public abstract class GregorianCalendarFactory {
 
 
     public static GregorianCalendar getGregorianCalendar(){

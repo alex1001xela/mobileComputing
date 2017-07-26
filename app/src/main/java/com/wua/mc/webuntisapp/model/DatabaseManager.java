@@ -189,8 +189,8 @@ public class DatabaseManager implements iDatabaseManager {
 
         //values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
 
-        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTime() / 1000));
-        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTime() / 1000));
+        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTimeInMillis() / 1000));
+        values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
         values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event.getEventType().toString());
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());
