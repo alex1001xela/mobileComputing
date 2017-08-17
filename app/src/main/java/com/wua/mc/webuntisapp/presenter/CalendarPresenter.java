@@ -230,6 +230,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             if(ue.getUntisID().equals(untisEventID)){
                 found = true;
                 dbManager.connectToDatabase();
+                dbManager.saveCourseDB(ue);
                 dbManager.saveEventDB(ue);
                 dbManager.disconnectFromDatabase();
             }

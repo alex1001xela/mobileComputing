@@ -47,7 +47,6 @@ public class UniversityEvent extends Event {
 
 	public UniversityEvent(DataBaseObject dbObject){
 		super(dbObject);
-		this.untisID = "" + dbObject.getCourse_untis_id();
 		this.courseID = "" + dbObject.getCourse_id();
         this.teachers[0] = dbObject.getCourse_lecturer();
         this.rooms[0] = dbObject.getEvent_room();

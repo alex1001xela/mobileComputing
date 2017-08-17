@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.wua.mc.webuntisapp.presenter.Event;
@@ -17,7 +18,6 @@ public class DatabaseManager implements iDatabaseManager {
 
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
-    private static final String LOG_TAG = DatabaseManager.class.getSimpleName();
 
     private String[] columns = {
             DatabaseHelper.COLUMN_COURSE_ID,
@@ -119,6 +119,7 @@ public class DatabaseManager implements iDatabaseManager {
     public List<DataBaseObject> getAllEventsDB() {
 
         List<DataBaseObject> dataBaseObjectList = new ArrayList<>();
+        List<DataBaseObject> coursesList = new ArrayList<>();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_EVENT,
                 columns2, null, null, null, null, null);
@@ -132,6 +133,24 @@ public class DatabaseManager implements iDatabaseManager {
             cursor.moveToNext();
         }
         cursor.close();
+
+
+        Cursor cursor2 = database.query(DatabaseHelper.TABLE_COURSE, columns, null, null, null, null, null);
+        cursor2.moveToFirst();
+        while (!cursor2.isAfterLast()) {
+            dataBaseObject2 = cursorToCourseDatabaseObject(cursor2);
+            coursesList.add(dataBaseObject2);
+            cursor2.moveToNext();
+        }
+
+        cursor2.close();
+        for (DataBaseObject dbo : dataBaseObjectList) {
+            for (DataBaseObject dbo2 : coursesList){
+                if(dbo2.getCourse_untis_id() == dbo.getCourse_id()){
+                    dbo.setCourse_lecturer(dbo2.getCourse_lecturer());
+                }
+            }
+        }
 
         return dataBaseObjectList;
     }
@@ -187,16 +206,15 @@ public class DatabaseManager implements iDatabaseManager {
         String room = "";
         String courseId = "";
 
-        //values.put(DatabaseHelper.COLUMN_EVENT_ID, event_id);
-
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
         values.put(DatabaseHelper.COLUMN_EVENT_TYPE, event.getEventType().toString());
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());
         if (event instanceof UniversityEvent) {
-            room = ((UniversityEvent) event).getRooms()[0];
-            courseId = ((UniversityEvent) event).getCourseID();
+            UniversityEvent ue = (UniversityEvent) event;
+            room = ue.getRooms()[0];
+            courseId = ue.getCourseID();
         }
         values.put(DatabaseHelper.COLUMN_EVENT_ROOM, room);
         values.put(DatabaseHelper.COLUMN_COURSE_ID, courseId); //todo could be null
@@ -238,14 +256,16 @@ public class DatabaseManager implements iDatabaseManager {
     public DataBaseObject saveCourseDB(UniversityEvent event) {
         //Tabelle Course
         ContentValues values = new ContentValues();
-        Log.i("COURSE_ID", event.getCourseID());
         values.put(DatabaseHelper.COLUMN_COURSE_NAME, event.getName());
         values.put(DatabaseHelper.COLUMN_COURSE_LECTURER, event.getTeachers()[0]);
         values.put(DatabaseHelper.COLUMN_COURSE_COLOR, event.getColor());
         values.put(DatabaseHelper.COLUMN_COURSE_UNTIS_ID, event.getCourseID());
 
+
+
         //Course Tabelle
         long insertId = database.insert(DatabaseHelper.TABLE_COURSE, null, values);
+
         DataBaseObject databaseObject;
         Cursor cursor = database.query(DatabaseHelper.TABLE_COURSE, columns, DatabaseHelper.COLUMN_COURSE_ID + "=" + insertId, null, null, null, null);
         cursor.moveToFirst();
@@ -257,7 +277,8 @@ public class DatabaseManager implements iDatabaseManager {
 
     @Override
     public int deleteCourseDB(long course_id) {
-        return database.delete(DatabaseHelper.TABLE_COURSE, DatabaseHelper.COLUMN_COURSE_ID + "=" + course_id, null);
+        database.delete(DatabaseHelper.TABLE_EVENT, DatabaseHelper.COLUMN_COURSE_ID + "=" + course_id, null);
+        return database.delete(DatabaseHelper.TABLE_COURSE, DatabaseHelper.COLUMN_COURSE_UNTIS_ID + "=" + course_id, null);
     }
 
     @Override
