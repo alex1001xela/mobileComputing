@@ -77,7 +77,7 @@ public class DatabaseManager implements iDatabaseManager {
 
         String courseName = cursor.getString(courseName_);
         String courseLecturer = cursor.getString(courseLecturer_);
-        String courseColor = cursor.getString(courseColor_);
+        int courseColor = cursor.getInt(courseColor_);
         int courseUntisId = cursor.getInt(courseUntisId_);
         long id = cursor.getLong(idIndex_);
 
@@ -99,7 +99,7 @@ public class DatabaseManager implements iDatabaseManager {
         long eventTimestampStart = (long) cursor.getInt(eventTimestampStart_) * 1000;
         long eventTimestampEnd = (long) cursor.getInt(eventTimestampEnd_) * 1000;
         String eventName = cursor.getString(eventName_);
-        String eventColor = cursor.getString(eventColor_);
+        int eventColor = cursor.getInt(eventColor_);
         String eventType = cursor.getString(eventType_);
         long eventId = cursor.getLong(eventId_);
         long courseId = cursor.getLong(courseId_);
@@ -205,7 +205,6 @@ public class DatabaseManager implements iDatabaseManager {
         ContentValues values = new ContentValues();
         String room = "";
         String courseId = "";
-
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
@@ -232,7 +231,7 @@ public class DatabaseManager implements iDatabaseManager {
     }
 
     @Override
-    public DataBaseObject setEventColorDB(long eventID, String color) {
+    public DataBaseObject setEventColorDB(long eventID, int color) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, color);
 

@@ -293,7 +293,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void setEventColor(String color, String eventID) {
+    public void setEventColor(int color, String eventID) {
         dbManager.connectToDatabase();
         dbManager.setEventColorDB(Long.parseLong(eventID), color);
         dbManager.disconnectFromDatabase();

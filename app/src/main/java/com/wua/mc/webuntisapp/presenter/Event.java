@@ -1,7 +1,9 @@
 package com.wua.mc.webuntisapp.presenter;
 
+import android.graphics.Color;
 import android.util.Log;
 
+import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.model.DataBaseObject;
 
 import org.json.JSONException;
@@ -19,7 +21,7 @@ public class Event {
 	private GregorianCalendar startTime;
 	private GregorianCalendar endTime;
 	private EventType eventType = EventType.LECTURE;
-	private String color = "#FF0000"; // THIS A Default color for all events on creation
+	private int color = Color.parseColor("#808080");
 
 	public Event(String id, String name, String details, GregorianCalendar startTime, GregorianCalendar endTime, EventType eventType) {
 		this.id = id;
@@ -28,13 +30,6 @@ public class Event {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.eventType = eventType;
-
-		if(this.getColor()==null){
-			this.color="#808080";
-		}else{
-			this.color=getColor();
-		}
-       // this.color= "#808080"; // alawys has a color..defualr gray....
 	}
 
 	public Event(JSONObject jsonObject, String name){
@@ -119,7 +114,7 @@ public class Event {
 		return eventType;
 	}
 
-	public String getColor() {
+	public int getColor() {
 		return color;
 	}
 
@@ -131,7 +126,7 @@ public class Event {
 
 		return calendar.get(Calendar.DAY_OF_YEAR) == this.startTime.get(Calendar.DAY_OF_YEAR);
 	}
-	public void setColor(String color) { // by ray ..
+	public void setColor(int color) { // by ray ..
 
             this.color = color;
 

@@ -5,7 +5,7 @@ public class DataBaseObject {
     private long course_id;
     private String course_name;
     private String course_lecturer;
-    private String course_color;
+    private int course_color;
     private int course_untis_id;
 
     private long event_id;
@@ -13,14 +13,14 @@ public class DataBaseObject {
     private long event_timestamp_start;
     private long event_timestamp_end;
     private String event_name;
-    private String event_color;
+    private int event_color;
     private String event_type;
 
     private long authenticated;
 
     public DataBaseObject(){}
 
-    public DataBaseObject(String course_name, String course_lecturer, String course_color, int course_untis_id, long course_id){
+    public DataBaseObject(String course_name, String course_lecturer, int course_color, int course_untis_id, long course_id){
         this.setCourse_id(course_id);
         this.setCourse_name(course_name);
         this.setCourse_lecturer(course_lecturer);
@@ -29,7 +29,7 @@ public class DataBaseObject {
 
     }
 
-    public DataBaseObject(String event_room, long event_timestamp_start, long event_timestamp_end, String event_name, String event_color, String event_type, long event_id, long courseId){
+    public DataBaseObject(String event_room, long event_timestamp_start, long event_timestamp_end, String event_name, int event_color, String event_type, long event_id, long courseId){
 
         this.setEvent_id(event_id);
         this.setEvent_room(event_room);
@@ -59,7 +59,7 @@ public class DataBaseObject {
         this.course_lecturer = course_lecturer;
     }
 
-    public void setCourse_color(String course_color) {
+    public void setCourse_color(int course_color) {
         this.course_color = course_color;
     }
 
@@ -87,7 +87,7 @@ public class DataBaseObject {
         this.event_name = event_name;
     }
 
-    public void setEvent_color(String event_color) {
+    public void setEvent_color(int event_color) {
         this.event_color = event_color;
     }
 
@@ -112,7 +112,7 @@ public class DataBaseObject {
         return course_lecturer;
     }
 
-    public String getCourse_color() {
+    public int getCourse_color() {
         return course_color;
     }
 
@@ -140,7 +140,7 @@ public class DataBaseObject {
         return event_name;
     }
 
-    public String getEvent_color() {
+    public int getEvent_color() {
         return event_color;
     }
 

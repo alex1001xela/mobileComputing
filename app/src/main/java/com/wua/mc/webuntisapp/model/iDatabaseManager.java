@@ -15,7 +15,7 @@ public interface iDatabaseManager {
 
 	DataBaseObject saveEventDB(Event event);
 
-	DataBaseObject setEventColorDB(long eventID, String color);
+	DataBaseObject setEventColorDB(long eventID, int color);
 
 	DataBaseObject saveCourseDB(UniversityEvent event);
 
