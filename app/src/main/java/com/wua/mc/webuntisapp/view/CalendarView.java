@@ -706,8 +706,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         alertDialogBuilder.show();
     }
 
-    public String reFormatDate(Event event) {
-        String res = "";
+    /*public String reFormatDate(Event event) {
         String startTimeRes = "";
         String endTimeRes = "";
         try {
@@ -725,7 +724,38 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         } catch (Exception e) {
             Log.e("Format  ", "Failed to Reformat Date Class: CalendarView.java");
         }
-        return res = event.getName() + "\n" + startTimeRes + "\n" + endTimeRes;
+        return event.getName() + "\n" + startTimeRes + "\n" + endTimeRes;
+    }
+    */
+
+    private String reFormatDate (Event event) {
+
+        GregorianCalendar startCalendar = event.getStartTime();
+        GregorianCalendar endCalendar = event.getEndTime();
+
+        int startDay = startCalendar.get(Calendar.DAY_OF_WEEK);
+        int startDate = startCalendar.get(Calendar.DAY_OF_MONTH);
+        String startDayString = startDate < 10 ? "0" + startDate : "" + startDate;
+        int startMonth = startCalendar.get(Calendar.MONTH) + 1;
+        String startMonthString = startMonth < 10 ? "0" + startMonth : "" + startMonth;
+        int startYear = startCalendar.get(Calendar.YEAR);
+        int startHour = startCalendar.get(Calendar.HOUR_OF_DAY);
+        String startHourString = startHour < 10 ? "0" + startHour : "" + startHour;
+        int startMinute = startCalendar.get(Calendar.MINUTE);
+        String startMinuteString = startMinute < 10 ? "0" + startMinute : "" + startMinute;
+
+        int endHour = endCalendar.get(Calendar.HOUR_OF_DAY);
+        String endHourString = endHour < 10 ? "0" + endHour : "" + endHour;
+        int endMinute = endCalendar.get(Calendar.MINUTE);
+        String endMinuteString = endMinute < 10 ? "0" + endMinute : "" + endMinute;
+
+        String startDateString = startDayString + "/" + startMonthString + "/" + startYear;
+        String startTimeString = startHourString + ":" + startMinuteString;
+        String endTimeString = "" + endHourString + ":" + endMinuteString;
+
+        return event.toString() + "\n" +
+                weekdayNumberToWord(startDay) + ", " + startDateString + "\n" +
+                startTimeString + " - " + endTimeString;
     }
 
     private float calculateEventHeight(EventBox eventBox) {

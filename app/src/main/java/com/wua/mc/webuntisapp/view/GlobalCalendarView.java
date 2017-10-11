@@ -36,7 +36,7 @@ public class GlobalCalendarView extends CalendarView {
         } else {
             //todo temp data, getFromDatabase
             chosenFieldOfStudy = "Medien- und Kommunikationsinformatik-3MKIB6";
-            id = "1803";
+            id = "2129";
             filterID = "2";
             name = "3MKIB6";
         }

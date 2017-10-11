@@ -112,7 +112,6 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         ArrayList<Event> events = new ArrayList<>();
         JSONObject response = timetable.getJSONObject("response");
         JSONArray result = response.getJSONArray("result");
-
         for(int i = 0; i < result.length(); i++){
             JSONObject eventJSON = result.getJSONObject(i);
             int courseID = eventJSON.getJSONArray("su").getJSONObject(0).getInt("id");
@@ -452,14 +451,14 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
 
     private ArrayList<Event> getGlobalCalendar(String startDate, String endDate, FieldOfStudy fieldOfStudy) {
+
         ArrayList<Event> events = new ArrayList<>();
         try{
             JSONObject timetable = wuc.getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
-
             events = convertTimetableToEvents(timetable);
         }
         catch (JSONException e){
-            Log.i("JSONException", e.toString());
+            Log.e("getGlobalCalendar", e.toString());
         }
         return events;
     }
