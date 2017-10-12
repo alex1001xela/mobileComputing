@@ -23,19 +23,19 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
+public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
 
     private iWebUntisClient wuc;
     private DatabaseManager dbManager;
 
-    private ArrayList<Event> currentShownPersonalEvents =  new ArrayList<>();
-    private ArrayList<Event> currentShownGlobalEvents =  new ArrayList<>();
+    private ArrayList<Event> currentShownPersonalEvents = new ArrayList<>();
+    private ArrayList<Event> currentShownGlobalEvents = new ArrayList<>();
 
     private ArrayList<Filter> filters; // Ray from Array to Array list
 
     private FieldOfStudy[] fieldsOfStudy;
     private String Filter_id;
-    private ArrayList < FieldOfStudy> fields_Of_study_list= new ArrayList<>();
+    private ArrayList<FieldOfStudy> fields_Of_study_list = new ArrayList<>();
 
     private FieldOfStudy selectedFieldOfStudy;
 
@@ -44,28 +44,27 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public static HashMap<String, Teacher> allTeachers;
 
     public CalendarPresenter(Activity calendarView) {
-       dbManager = new DatabaseManager(calendarView);
-        wuc = new WebUntisClient("Usercampusap2", "konst6app6","HS+Reutlingen");
+        dbManager = new DatabaseManager(calendarView);
+        wuc = new WebUntisClient("Usercampusap2", "konst6app6", "HS+Reutlingen");
         try {
             allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
             allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
 
         }
 
     }
 
-    private ArrayList<Event> getAlreadySavedEvents(GregorianCalendar gc, ArrayList<Event> savedEvents){
+    private ArrayList<Event> getAlreadySavedEvents(GregorianCalendar gc, ArrayList<Event> savedEvents) {
         ArrayList<Event> weekEvents = new ArrayList<>();
         GregorianCalendar[] startAndEndOfMonth = GregorianCalendarFactory.getStartAndEndOfMonth(gc);
-        for(Event event : savedEvents){
+        for (Event event : savedEvents) {
 
             int startDayOfYear = startAndEndOfMonth[0].get(Calendar.DAY_OF_YEAR);
             int endDayOfYear = startAndEndOfMonth[1].get(Calendar.DAY_OF_YEAR);
 
-            if(startDayOfYear <= event.getStartTime().get(Calendar.DAY_OF_YEAR) &&
-                    endDayOfYear >= event.getEndTime().get(Calendar.DAY_OF_YEAR)){
+            if (startDayOfYear <= event.getStartTime().get(Calendar.DAY_OF_YEAR) &&
+                    endDayOfYear >= event.getEndTime().get(Calendar.DAY_OF_YEAR)) {
                 weekEvents.add(event);
             }
         }
@@ -74,45 +73,43 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
 
     @Override
-    public ArrayList<Event> getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc){
+    public ArrayList<Event> getWeeklyCalendarPersonal(iCalendarView calendarView, GregorianCalendar gc) {
 
-        ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownPersonalEvents);
-        if(weekEvents.size() == 0){
-            GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
-            GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
-            long weekStartMillis = weekStart.getTimeInMillis();
-            long weekEndMillis = weekEnd.getTimeInMillis();
+        GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
+        GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
-            currentShownPersonalEvents = weekEvents = getPersonalCalendar(weekStartMillis, weekEndMillis);
-        }
-        calendarView.showEventsOnCalendar(weekEvents);
-        return weekEvents;
+        long weekStartMillis = weekStart.getTimeInMillis();
+        long weekEndMillis = weekEnd.getTimeInMillis();
+
+        currentShownPersonalEvents = getPersonalCalendar(weekStartMillis, weekEndMillis);
+
+        calendarView.showEventsOnCalendar(currentShownPersonalEvents);
+        return currentShownPersonalEvents;
     }
 
 
     @Override
     public ArrayList<Event> getWeeklyCalendarGlobal(iCalendarView calendarView, GregorianCalendar gc, FieldOfStudy fieldOfStudy) {
-        ArrayList<Event> weekEvents = getAlreadySavedEvents(gc, currentShownGlobalEvents);
 
-        if(weekEvents.size() == 0){
-            GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
-            GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
-            String weekStartString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekStart);
-            String weekEndString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekEnd);
+        GregorianCalendar weekStart = GregorianCalendarFactory.getStartOfWeek(gc);
+        GregorianCalendar weekEnd = GregorianCalendarFactory.getEndOfWeek(gc);
 
-            currentShownGlobalEvents = weekEvents = getGlobalCalendar(weekStartString, weekEndString, fieldOfStudy);
-        }
-        calendarView.showEventsOnCalendar(weekEvents);
-        return weekEvents;
+        String weekStartString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekStart);
+        String weekEndString = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(weekEnd);
+
+        currentShownGlobalEvents = getGlobalCalendar(weekStartString, weekEndString, fieldOfStudy);
+
+        calendarView.showEventsOnCalendar(currentShownGlobalEvents);
+        return currentShownGlobalEvents;
     }
 
-    private ArrayList<Event> convertTimetableToEvents(JSONObject timetable) throws JSONException{
+    private ArrayList<Event> convertTimetableToEvents(JSONObject timetable) throws JSONException {
         ArrayList<Event> events = new ArrayList<>();
         JSONObject response = timetable.getJSONObject("response");
         JSONArray result = response.getJSONArray("result");
-        for(int i = 0; i < result.length(); i++){
+        for (int i = 0; i < result.length(); i++) {
             JSONObject eventJSON = result.getJSONObject(i);
             int courseID = eventJSON.getJSONArray("su").getJSONObject(0).getInt("id");
             events.add(new UniversityEvent(eventJSON, allCourses.get(Integer.toString(courseID)).getLongName()));
@@ -121,10 +118,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return events;
     }
 
-    private HashMap<String, Course> convertCoursesJSONToCourses(JSONArray jsonArray) throws JSONException{
+    private HashMap<String, Course> convertCoursesJSONToCourses(JSONArray jsonArray) throws JSONException {
         HashMap<String, Course> allCourses = new HashMap<>();
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Course course = new Course(jsonObject);
             //allCourses.put(course.getName(), course); // for this reason i will use the name of the course ..
@@ -138,7 +135,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private HashMap<String, Teacher> convertTeachersJSONToTeachers(JSONArray jsonArray) throws JSONException {
         HashMap<String, Teacher> allTeachers = new HashMap<>();
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Teacher teacher = new Teacher(jsonObject);
             allTeachers.put(teacher.getId(), teacher);
@@ -147,10 +144,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return allTeachers;
     }
 
-    private FieldOfStudy[] convertClassesJSONToFieldsOfStudy(JSONArray jsonArray) throws JSONException{
+    private FieldOfStudy[] convertClassesJSONToFieldsOfStudy(JSONArray jsonArray) throws JSONException {
         FieldOfStudy[] allFieldsOfStudy = new FieldOfStudy[jsonArray.length()];
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             allFieldsOfStudy[i] = new FieldOfStudy(jsonObject);
         }
@@ -184,9 +181,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         int i = 0;
         boolean found = false;
         UniversityEvent universityEvent = null;
-        while(i < currentShownGlobalEvents.size() && !found){
-             universityEvent = (UniversityEvent) currentShownGlobalEvents.get(i);
-            if(universityEvent.getUntisID().equals(untisEventID)){
+        while (i < currentShownGlobalEvents.size() && !found) {
+            universityEvent = (UniversityEvent) currentShownGlobalEvents.get(i);
+            if (universityEvent.getUntisID().equals(untisEventID)) {
                 found = true;
 
             }
@@ -198,10 +195,9 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
         JSONObject jsonObjectTimetable = wuc.getTimetableForElement(universityEvent.getCourseID(), ElementType.COURSE, startOfSemester, endOfSemester);
         ArrayList<Event> semesterEvents = new ArrayList<>();
-        try{
+        try {
             semesterEvents = convertTimetableToEvents(jsonObjectTimetable);
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
 
         }
         dbManager.connectToDatabase();
@@ -209,7 +205,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
 
 
         dbManager.beginTransaction();
-        for(Event ue : semesterEvents){
+        for (Event ue : semesterEvents) {
             dbManager.saveEventDB(ue);
         }
         dbManager.setTransactionSuccessful();
@@ -220,13 +216,13 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public void addEvent(String untisEventID){
+    public void addEvent(String untisEventID) {
         int i = 0;
         boolean found = false;
 
-        while(i < currentShownGlobalEvents.size() && !found){
+        while (i < currentShownGlobalEvents.size() && !found) {
             UniversityEvent ue = (UniversityEvent) currentShownGlobalEvents.get(i);
-            if(ue.getUntisID().equals(untisEventID)){
+            if (ue.getUntisID().equals(untisEventID)) {
                 found = true;
                 dbManager.connectToDatabase();
                 dbManager.saveCourseDB(ue);
@@ -258,8 +254,8 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     public void deleteEvent(String eventID) {
         int i = 0;
         boolean found = false;
-        while(i < currentShownPersonalEvents.size() && !found){
-            if(currentShownPersonalEvents.get(i).getId().equals(eventID)){
+        while (i < currentShownPersonalEvents.size() && !found) {
+            if (currentShownPersonalEvents.get(i).getId().equals(eventID)) {
                 found = true;
                 currentShownPersonalEvents.remove(i);
             }
@@ -274,10 +270,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     @Override
     public ArrayList<String> deleteCourse(String courseID) {
         ArrayList<String> eventIDs = new ArrayList<>();
-        for(int j = 0; j < currentShownPersonalEvents.size(); j++){
+        for (int j = 0; j < currentShownPersonalEvents.size(); j++) {
             Event e = currentShownPersonalEvents.get(j);
 
-            if(e instanceof UniversityEvent && ((UniversityEvent) e).getCourseID().equals(courseID)){
+            if (e instanceof UniversityEvent && ((UniversityEvent) e).getCourseID().equals(courseID)) {
                 eventIDs.add(e.getId());
                 currentShownPersonalEvents.remove(j);
                 j--;
@@ -327,7 +323,7 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             dataValid = true;
             dbManager.disconnectFromDatabase();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("no sessionID", e.toString());
         }
 
@@ -335,14 +331,14 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     }
 
     @Override
-    public boolean areLoginDataValid(String username, String password){
+    public boolean areLoginDataValid(String username, String password) {
         dbManager.connectToDatabase();
         dbManager.disconnectFromDatabase();
         return true;
     }
 
     @Override
-    public boolean isAlreadyLoggedIn(){
+    public boolean isAlreadyLoggedIn() {
         dbManager.connectToDatabase();
         boolean isLoggedIn = dbManager.isLoggedIn();
         dbManager.disconnectFromDatabase();
@@ -355,49 +351,51 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         dbManager.logoutDB();
         dbManager.disconnectFromDatabase();
     }
-// ray ------------
+
+    // ray ------------
     @Override
     public ArrayList<FieldOfStudy> getFieldsOfStudy(Filter filter) {
-        JSONArray FOS =null;
-      fields_Of_study_list= new ArrayList<>();
+        JSONArray FOS = null;
+        fields_Of_study_list = new ArrayList<>();
 
         try {
             FOS = wuc.getClasses().getJSONObject("response").getJSONArray("result");
-            FieldOfStudy []fos =convertClassesJSONToFieldsOfStudy(FOS);
-            for(int i=0;i<fos.length;i++){
-               if(fos[i].getFilterID()==parseInt(filter.getId())){
-                   FieldOfStudy f = fos[i];
-                   fields_Of_study_list.add(f);
-               }
+            FieldOfStudy[] fos = convertClassesJSONToFieldsOfStudy(FOS);
+            for (int i = 0; i < fos.length; i++) {
+                if (fos[i].getFilterID() == parseInt(filter.getId())) {
+                    FieldOfStudy f = fos[i];
+                    fields_Of_study_list.add(f);
+                }
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-       // return new FieldOfStudy[0]
+        // return new FieldOfStudy[0]
         return fields_Of_study_list;
     }
-// ray ...........No param............. This method returns an Arraylist of Filters , created with the name ,id,LongName from filters from the API.
+
+    // ray ...........No param............. This method returns an Arraylist of Filters , created with the name ,id,LongName from filters from the API.
     @Override
     public ArrayList<Filter> getFilters() {
 
         Filter myfilters;
-        ArrayList<Filter> FilterFactory =new ArrayList<>();
-        String fil_name =null;
-        String fil_id=null;
-        String fil_longName=null;
+        ArrayList<Filter> FilterFactory = new ArrayList<>();
+        String fil_name = null;
+        String fil_id = null;
+        String fil_longName = null;
         JSONArray myFilterList = null;
 
         try {
             myFilterList = wuc.getFilters().getJSONObject("response").getJSONArray("result");
 
-            for (int i =0;i<myFilterList.length();i++ ){
+            for (int i = 0; i < myFilterList.length(); i++) {
 
-               fil_id =Integer.toString(myFilterList.getJSONObject(i).getInt("id")); /// parse the int id to string ..
-                fil_name =myFilterList.getJSONObject(i).getString("name");
+                fil_id = Integer.toString(myFilterList.getJSONObject(i).getInt("id")); /// parse the int id to string ..
+                fil_name = myFilterList.getJSONObject(i).getString("name");
                 fil_longName = myFilterList.getJSONObject(i).getString("longName");
-                myfilters= new Filter(fil_id,fil_name,fil_longName);
+                myfilters = new Filter(fil_id, fil_name, fil_longName);
                 FilterFactory.add(myfilters);
 
 
@@ -406,18 +404,19 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
             e.printStackTrace();
         }
 
-       // return new Filter[0];
+        // return new Filter[0];
         return FilterFactory;
     }
-// Ray: added the getCourses function. i guess it is obvious why.
+
+    // Ray: added the getCourses function. i guess it is obvious why.
     @Override
     public HashMap<String, Course> getCourses() {
-        HashMap<String, Course> course_List=new HashMap<>();
-        JSONArray myCourses =null;
+        HashMap<String, Course> course_List = new HashMap<>();
+        JSONArray myCourses = null;
 
         try {
-            myCourses =wuc.getCourses().getJSONObject("response").getJSONArray("result");
-           course_List= convertCoursesJSONToCourses(myCourses);
+            myCourses = wuc.getCourses().getJSONObject("response").getJSONArray("result");
+            course_List = convertCoursesJSONToCourses(myCourses);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -430,18 +429,17 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private ArrayList<Event> getPersonalCalendar(long startDate, long endDate) {
         ArrayList<Event> events = new ArrayList<>();
         dbManager.connectToDatabase();
-        List<DataBaseObject> allEventsDB =  dbManager.getAllEventsDB();
+        List<DataBaseObject> allEventsDB = dbManager.getAllEventsDB();
         dbManager.disconnectFromDatabase();
         int allEventsCount = allEventsDB.size();
 
-        for(int i = 0; i < allEventsCount; i++){
+        for (int i = 0; i < allEventsCount; i++) {
             DataBaseObject eventDB = allEventsDB.get(i);
-            if(eventDB.getEvent_timestamp_start() >= startDate && eventDB.getEvent_timestamp_end() <= endDate){
+            if (eventDB.getEvent_timestamp_start() >= startDate && eventDB.getEvent_timestamp_end() <= endDate) {
 
-                if(eventDB.getCourse_id() != 0){
+                if (eventDB.getCourse_id() != 0) {
                     events.add(new UniversityEvent(eventDB));
-                }
-                else{
+                } else {
                     events.add(new Event(eventDB));
                 }
             }
@@ -453,11 +451,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     private ArrayList<Event> getGlobalCalendar(String startDate, String endDate, FieldOfStudy fieldOfStudy) {
 
         ArrayList<Event> events = new ArrayList<>();
-        try{
+        try {
             JSONObject timetable = wuc.getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
             events = convertTimetableToEvents(timetable);
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
             Log.e("getGlobalCalendar", e.toString());
         }
         return events;
@@ -467,34 +464,36 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
     // create field od study object ,whose name/longNames will be shown at the choose filed of study dropdown.
     // the id to the the longname selected by the user as being his faculty.
     //TODO refactor the name : getSelected_filterID ----> getSelected_filter_longName;
-    public String getSelecter_filterId(){
-       return this.Filter_id;
+    public String getSelecter_filterId() {
+        return this.Filter_id;
     }
-    public void setSelected_filterId(String id){
-        this.Filter_id =id ;
+
+    public void setSelected_filterId(String id) {
+        this.Filter_id = id;
     }
-    public Filter findFilter(String Longname){
-        Filter fil =null;
-        String longName_filter=null;
+
+    public Filter findFilter(String Longname) {
+        Filter fil = null;
+        String longName_filter = null;
 
         ArrayList<Filter> All_filters = this.getFilters();
-        for( int i = 0;i<All_filters.size();i++){
-            if(All_filters.get(i).getLongName().equals(Longname)){
-                fil=All_filters.get(i);
+        for (int i = 0; i < All_filters.size(); i++) {
+            if (All_filters.get(i).getLongName().equals(Longname)) {
+                fil = All_filters.get(i);
             }
         }
         return fil;
     }
 
 
-    public Filter getFilterFromLongName(String Filter_longName, ArrayList<Filter> list_filter){
+    public Filter getFilterFromLongName(String Filter_longName, ArrayList<Filter> list_filter) {
 
 
         Filter filter = null;
 
-        for(int i =0;i<list_filter.size();i++){
+        for (int i = 0; i < list_filter.size(); i++) {
             // compare the toString of ..
-            if(list_filter.get(i).getLongName().equals(Filter_longName)){  //TODO just for testing purposes. later the id of the chosen filter
+            if (list_filter.get(i).getLongName().equals(Filter_longName)) {  //TODO just for testing purposes. later the id of the chosen filter
                 filter = list_filter.get(i);
                 break;
 
@@ -504,10 +503,10 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return filter;
     }
 
-    public ArrayList<String> longName_default(ArrayList<FieldOfStudy> list){
+    public ArrayList<String> longName_default(ArrayList<FieldOfStudy> list) {
         ArrayList<String> result = new ArrayList<>();
-        for(int j= 0;j < list.size();j++){
-            if(list.get(j)!=null){
+        for (int j = 0; j < list.size(); j++) {
+            if (list.get(j) != null) {
                 String name = list.get(j).toString();
                 result.add(name);
             }
@@ -519,17 +518,17 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return fields_Of_study_list;
     }
 
-    public  FieldOfStudy findChosenFieldOfSTudy(String selectedname){
+    public FieldOfStudy findChosenFieldOfSTudy(String selectedname) {
 
         ArrayList<FieldOfStudy> List = this.getFields_Of_study_list();
 
 
-        FieldOfStudy fos=null;
+        FieldOfStudy fos = null;
 
-        for(int i=0;i< List.size();i++){
+        for (int i = 0; i < List.size(); i++) {
 
-            if(List.get(i).toString().equals(selectedname)){
-                fos=List.get(i); // found the FOS with the selected. now we can futher work with the object .
+            if (List.get(i).toString().equals(selectedname)) {
+                fos = List.get(i); // found the FOS with the selected. now we can futher work with the object .
 
                 break;
 
@@ -551,49 +550,49 @@ public class CalendarPresenter  implements iCalendarPresenter.iCalendarDataManag
         return selectedFieldOfStudy;
     }
 
-    public void resetCurrentShownGlobalEvents(){
+    public void resetCurrentShownGlobalEvents() {
         currentShownGlobalEvents = new ArrayList<>();
     }
 
     //TODO  :RAY CHANGE THE POSITION OF THIS FUNCTION
-    public HashMap<Integer,Integer> getEventsPerMonths (int year ,int month){
+    public HashMap<Integer, Integer> getEventsPerMonths(int year, int month) {
         ArrayList<Event> GE = currentShownGlobalEvents;
         ArrayList<Event> PE = currentShownPersonalEvents;
-        HashMap<Integer,Integer> result = new HashMap<>();
-        ArrayList<Event>EventsList=new ArrayList<>();
-        int num_events=1;
+        HashMap<Integer, Integer> result = new HashMap<>();
+        ArrayList<Event> EventsList = new ArrayList<>();
+        int num_events = 1;
 
         //Calendar cal1 =  Calendar.getInstance();
 
 
         //Date EventDate =null ;
 
-        if(PE.isEmpty() || PE==null){
-            Log.v("BELMO","lsit of saved elements is empty");
-        }else {
-            for(int i = 0;i<PE.size();i++){
+        if (PE.isEmpty() || PE == null) {
+            Log.v("BELMO", "lsit of saved elements is empty");
+        } else {
+            for (int i = 0; i < PE.size(); i++) {
                 Calendar cal2 = PE.get(i).getEndTime();
                 //EventDate= PE.get(i).getEndTime();
                 //cal2.setTime(EventDate);
-                int EVentMonth= cal2.get(Calendar.MONTH);
+                int EVentMonth = cal2.get(Calendar.MONTH);
                 int Event_year = cal2.get(Calendar.YEAR);
-                int event_day= cal2.get(Calendar.DAY_OF_MONTH);
-                Log.v("EVENT MONTH",Integer.toString(EVentMonth));
-                Log.v("EVENT YEAR",Integer.toString(Event_year));
-                Log.v("EVENT DAY",Integer.toString(event_day));
-                Log.v("INCOMMING YEAR",Integer.toString(year));
-                Log.v("INCOMMING MONTH ",Integer.toString(month));
-                Log.v("EVENT DATE ",cal2.toString());
+                int event_day = cal2.get(Calendar.DAY_OF_MONTH);
+                Log.v("EVENT MONTH", Integer.toString(EVentMonth));
+                Log.v("EVENT YEAR", Integer.toString(Event_year));
+                Log.v("EVENT DAY", Integer.toString(event_day));
+                Log.v("INCOMMING YEAR", Integer.toString(year));
+                Log.v("INCOMMING MONTH ", Integer.toString(month));
+                Log.v("EVENT DATE ", cal2.toString());
 
-                if(Event_year==year){
-                    if(EVentMonth==month -1){
+                if (Event_year == year) {
+                    if (EVentMonth == month - 1) {
 
-                        if(result.containsKey(event_day)){
-                            Integer val = (Integer) result.get(event_day)+1;
-                            result.put(event_day,val);
-                        }else{
-                            Log.v("MAP","INSERT");
-                            result.put(event_day,num_events);
+                        if (result.containsKey(event_day)) {
+                            Integer val = (Integer) result.get(event_day) + 1;
+                            result.put(event_day, val);
+                        } else {
+                            Log.v("MAP", "INSERT");
+                            result.put(event_day, num_events);
 
                         }
 
