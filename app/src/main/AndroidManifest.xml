@@ -35,10 +35,9 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".model.WebUntisChecker"
-            android:enabled="true"
-            android:exported="false" />
-
+            android:name=".presenter.WebUntisService"
+            android:label="Web Untis Service" >
+        </service>
 
     </application>
 

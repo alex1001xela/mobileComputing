@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.model;
 
 import com.wua.mc.webuntisapp.presenter.Event;
+import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 
 import java.util.List;
@@ -27,6 +28,12 @@ public interface iDatabaseManager {
 
 	void logoutDB();
 
+	void setSelectedFieldOfStudyDB(FieldOfStudy fieldOfStudy);
+
+	FieldOfStudy getSelectedFieldOfStudyDB();
+
 	boolean isLoggedIn();
+
+
 
 }

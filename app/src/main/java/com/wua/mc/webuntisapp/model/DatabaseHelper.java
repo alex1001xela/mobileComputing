@@ -33,7 +33,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String TABLE_PERSONAL_INFORMATION= "personal_information";
 
-    public static final String COLUMNN_AUTHENTICATE = "authenticated";
+    public static final String COLUMN_AUTHENTICATE = "authenticated";
+    public static final String COLUMN_LAST_FIELD_OF_STUDY_ID = "last_field_of_study_id";
+    public static final String COLUMN_LAST_FIELD_OF_STUDY_FILTER = "last_field_of_study_filter";
+    public static final String COLUMN_LAST_FIELD_OF_STUDY_NAME = "last_field_of_study_name";
+    public static final String COLUMN_LAST_FIELD_OF_STUDY_LONGNAME = "last_field_of_study_longname";
 
     private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
@@ -68,7 +72,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_PERSONAL_INFORMATION =
             " CREATE TABLE " + TABLE_PERSONAL_INFORMATION  +
-                    "(" + COLUMNN_AUTHENTICATE +  " INTEGER DEFAULT 0" + ");";
+                    "(" + COLUMN_AUTHENTICATE +  " INTEGER DEFAULT 0," +
+                    COLUMN_LAST_FIELD_OF_STUDY_ID + " INTEGER DEFAULT 0," +
+                    COLUMN_LAST_FIELD_OF_STUDY_FILTER + " INTEGER DEFAULT 0," +
+                    COLUMN_LAST_FIELD_OF_STUDY_NAME + " TEXT DEFAULT '-'," +
+                    COLUMN_LAST_FIELD_OF_STUDY_LONGNAME + " TEXT DEFAULT '-'" +
+                    ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {

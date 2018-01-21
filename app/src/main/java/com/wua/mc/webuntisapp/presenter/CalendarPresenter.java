@@ -1,13 +1,21 @@
 package com.wua.mc.webuntisapp.presenter;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.model.ElementType;
 import com.wua.mc.webuntisapp.model.WebUntisClient;
 import com.wua.mc.webuntisapp.model.iWebUntisClient;
+//import com.wua.mc.webuntisapp.view.GlobalCalendarView;
 import com.wua.mc.webuntisapp.view.iCalendarView;
 
 import org.json.JSONArray;
@@ -16,16 +24,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManagement, iCalendarPresenter.iCalendarWebUntis {
+public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManagement,
+        iCalendarPresenter.iCalendarWebUntis {
 
-    private iWebUntisClient wuc;
+//    private iWebUntisClient wuc;
     private DatabaseManager dbManager;
 
     private ArrayList<Event> currentShownPersonalEvents = new ArrayList<>();
@@ -38,22 +46,18 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
     private ArrayList<FieldOfStudy> fields_Of_study_list = new ArrayList<>();
 
     private FieldOfStudy selectedFieldOfStudy;
+    private Activity calendarView;
 
+//    public static HashMap<String, Course> allCourses;
+//    public static HashMap<String, Teacher> allTeachers;
 
-    public static HashMap<String, Course> allCourses;
-    public static HashMap<String, Teacher> allTeachers;
 
     public CalendarPresenter(Activity calendarView) {
+        this.calendarView = calendarView;
         dbManager = new DatabaseManager(calendarView);
-        wuc = new WebUntisClient("Usercampusap2", "konst6app6", "HS+Reutlingen");
-        try {
-            allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
-            allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
-        } catch (JSONException e) {
-
-        }
-
     }
+
+
 
     private ArrayList<Event> getAlreadySavedEvents(GregorianCalendar gc, ArrayList<Event> savedEvents) {
         ArrayList<Event> weekEvents = new ArrayList<>();
@@ -112,7 +116,7 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         for (int i = 0; i < result.length(); i++) {
             JSONObject eventJSON = result.getJSONObject(i);
             int courseID = eventJSON.getJSONArray("su").getJSONObject(0).getInt("id");
-            events.add(new UniversityEvent(eventJSON, allCourses.get(Integer.toString(courseID)).getLongName()));
+            events.add(new UniversityEvent(eventJSON, WebUntisService.allCourses.get(Integer.toString(courseID)).getLongName()));
         }
 
         return events;
@@ -193,7 +197,7 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         String startOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getStartOfSemester(eventTime));
         String endOfSemester = GregorianCalendarFactory.gregorianCalendarToWebUntisDate(GregorianCalendarFactory.getEndOfSemester(eventTime));
 
-        JSONObject jsonObjectTimetable = wuc.getTimetableForElement(universityEvent.getCourseID(), ElementType.COURSE, startOfSemester, endOfSemester);
+        JSONObject jsonObjectTimetable = ((iCalendarView)this.calendarView).getWebUntisService().getTimetableForElement(universityEvent.getCourseID(), ElementType.COURSE, startOfSemester, endOfSemester);
         ArrayList<Event> semesterEvents = new ArrayList<>();
         try {
             semesterEvents = convertTimetableToEvents(jsonObjectTimetable);
@@ -359,7 +363,7 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         fields_Of_study_list = new ArrayList<>();
 
         try {
-            FOS = wuc.getClasses().getJSONObject("response").getJSONArray("result");
+            FOS = ((iCalendarView)this.calendarView).getWebUntisService().getClasses().getJSONObject("response").getJSONArray("result");
             FieldOfStudy[] fos = convertClassesJSONToFieldsOfStudy(FOS);
             for (int i = 0; i < fos.length; i++) {
                 if (fos[i].getFilterID() == parseInt(filter.getId())) {
@@ -388,7 +392,10 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         JSONArray myFilterList = null;
 
         try {
-            myFilterList = wuc.getFilters().getJSONObject("response").getJSONArray("result");
+//            if(wus == null) {
+//                wus = new WebUntisService();
+//            }
+            myFilterList = ((iCalendarView)this.calendarView).getWebUntisService().getFilters().getJSONObject("response").getJSONArray("result");
 
             for (int i = 0; i < myFilterList.length(); i++) {
 
@@ -415,7 +422,7 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         JSONArray myCourses = null;
 
         try {
-            myCourses = wuc.getCourses().getJSONObject("response").getJSONArray("result");
+            myCourses = ((iCalendarView)this.calendarView).getWebUntisService().getCourses().getJSONObject("response").getJSONArray("result");
             course_List = convertCoursesJSONToCourses(myCourses);
 
         } catch (JSONException e) {
@@ -452,7 +459,7 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
 
         ArrayList<Event> events = new ArrayList<>();
         try {
-            JSONObject timetable = wuc.getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
+            JSONObject timetable = ((iCalendarView)this.calendarView).getWebUntisService().getTimetableForElement(Integer.toString(fieldOfStudy.getUntisID()), ElementType.CLASS, startDate, endDate);
             events = convertTimetableToEvents(timetable);
         } catch (JSONException e) {
             Log.e("getGlobalCalendar", e.toString());
@@ -543,11 +550,25 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
     @Override
     public void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy) {
         this.selectedFieldOfStudy = selectedFieldOfStudy;
+        dbManager.connectToDatabase();
+        dbManager.setSelectedFieldOfStudyDB(selectedFieldOfStudy);
+        dbManager.disconnectFromDatabase();
+
     }
 
     @Override
     public FieldOfStudy getSelectedFieldOfStudy() {
-        return selectedFieldOfStudy;
+        FieldOfStudy fos;
+        if (selectedFieldOfStudy != null) {
+            fos = selectedFieldOfStudy;
+        } else {
+            dbManager.connectToDatabase();
+            fos = dbManager.getSelectedFieldOfStudyDB();
+            dbManager.disconnectFromDatabase();
+            selectedFieldOfStudy = fos;
+        }
+
+        return fos;
     }
 
     public void resetCurrentShownGlobalEvents() {

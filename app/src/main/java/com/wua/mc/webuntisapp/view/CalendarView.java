@@ -4,13 +4,16 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.DrawerLayout;
@@ -41,6 +44,7 @@ import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 import com.wua.mc.webuntisapp.presenter.GregorianCalendarFactory;
 import com.wua.mc.webuntisapp.presenter.UniversityEvent;
+import com.wua.mc.webuntisapp.presenter.WebUntisService;
 import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.text.ParseException;
@@ -55,7 +59,7 @@ import java.util.Locale;
 
 @TargetApi(3)
 // modifications by ray : added to the implememted interfaces the OnclickListener
-abstract class CalendarView extends Activity implements iCalendarView, OnClickListener {
+abstract class CalendarView extends Activity implements iCalendarView, OnClickListener, ServiceConnection {
 
     protected iCalendarPresenter.iCalendarDataManagement calendarDataManagement;
     protected iCalendarPresenter.iCalendarWebUntis calendarWebUntis;
@@ -95,20 +99,46 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
     private GridCellAdapter ga;
+    private WebUntisService wus;
 
+    public WebUntisService getWebUntisService() {
+        return this.wus;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         gregCal = new GregorianCalendar(Locale.GERMANY);
         calendarDataManagement = new CalendarPresenter(this);
         calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
-
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent= new Intent(this, WebUntisService.class);
+        bindService(intent, this, Context.BIND_AUTO_CREATE);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(this);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        WebUntisService.MyBinder b = (WebUntisService.MyBinder) service;
+        wus = b.getService();
+        calendarDataManagement = new CalendarPresenter(this);
+        calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        wus = null;
+    }
 
     private void createDrawer() {
         menuItems = getResources().getStringArray(R.array.menu_items);
@@ -345,7 +375,8 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
 
         if (this instanceof GlobalCalendarView) {
             final Button fieldOfStudyButton = (Button) findViewById(R.id.filter_and_field_of_study);
-            fieldOfStudyButton.setText(calendarDataManagement.getSelectedFieldOfStudy().getName());
+            FieldOfStudy selectedFieldOfStudy = calendarDataManagement.getSelectedFieldOfStudy();
+            fieldOfStudyButton.setText(selectedFieldOfStudy.getName());
 
             fieldOfStudyButton.setOnClickListener(new View.OnClickListener() {
                 @Override

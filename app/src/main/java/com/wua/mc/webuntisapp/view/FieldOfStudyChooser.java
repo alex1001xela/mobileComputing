@@ -1,6 +1,7 @@
 package com.wua.mc.webuntisapp.view;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,15 +27,20 @@ public class FieldOfStudyChooser {
     private Spinner spinner_semester;
     private Activity activity;
     private CalendarPresenter cp;
+    private String filterID;
+    private FieldOfStudy selectedFieldOfStudy;
 
     FieldOfStudyChooser(CalendarPresenter cp, Activity activity){
         this.activity = activity;
         this.cp = cp;
+        selectedFieldOfStudy = cp.getSelectedFieldOfStudy();
+        this.filterID = "" + selectedFieldOfStudy.getFilterID();
         activity.setContentView(activity_choose_fieldofstudy);
     }
 
     public Button getFieldOfStudyConfirmationButton() {
 
+        int index = 0;
 
         spinner_faculty = (Spinner) activity.findViewById(R.id.fieldOfStudySpinner);
         ArrayList<String> Faculties = new ArrayList<String>();
@@ -42,10 +48,15 @@ public class FieldOfStudyChooser {
         // looping over the list to collect the name of each filter
         for (int i = 0; i < output_filter_list.size(); i++) {
             String name = output_filter_list.get(i).getLongName(); // use the toString to print both the Field of study longNAme and it's name+semester
+            String filterID = output_filter_list.get(i).getId();
+            if(filterID.equals(this.filterID)){
+                index = i;
+            }
             Faculties.add(name);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, Faculties);
         spinner_faculty.setAdapter(adapter);
+        spinner_faculty.setSelection(index);
         spinner_faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -57,12 +68,13 @@ public class FieldOfStudyChooser {
                     Filter selectedFilter = cp.getFilterFromLongName(default_selected, output_filter_list);
                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
-
-                    Spinner spinner_semester = (Spinner) activity.findViewById(R.id.semesterSpinner);
+                    int index = getSpinnerIndexFromFieldOfStudy(fieldsOfStudyString);
+                    Log.i("INDEX", ""+index);
+                    spinner_semester = (Spinner) activity.findViewById(R.id.semesterSpinner);
 
                     ArrayAdapter<String> adapter2 = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, fieldsOfStudyString);
                     spinner_semester.setAdapter(adapter2);
-
+                    spinner_semester.setSelection(index);
                     first_spinner_counter++;
 
                 } else { // called when an Item is selected.
@@ -71,11 +83,13 @@ public class FieldOfStudyChooser {
                     Filter selectedFilter = cp.getFilterFromLongName(selectedItem, output_filter_list);
                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
-
+                    int index = getSpinnerIndexFromFieldOfStudy(fieldsOfStudyString);
+                    Log.i("INDEX", ""+index);
                     spinner_semester = (Spinner) activity.findViewById(R.id.semesterSpinner);
 
                     ArrayAdapter<String> adapter2 = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, fieldsOfStudyString);
                     spinner_semester.setAdapter(adapter2);
+                    spinner_semester.setSelection(index);
 
 
                 }
@@ -91,5 +105,23 @@ public class FieldOfStudyChooser {
         //by ray : to show the faculties in a dropdown on the UI.
         confirm = (Button) activity.findViewById(R.id.confirmButton);
         return  confirm;
+    }
+
+    private int getSpinnerIndexFromFieldOfStudy(ArrayList<String> spinnerStrings){
+        Log.i("STRING", spinnerStrings.toString());
+        String selectedFieldOfStudyLongame = selectedFieldOfStudy.getLongName();
+        Log.i("SELECTED", selectedFieldOfStudyLongame);
+        boolean found = false;
+        int i = 0;
+        while(i < spinnerStrings.size() & !found){
+            Log.i("CURRENT" + i, spinnerStrings.get(i));
+            if(spinnerStrings.get(i).equals(selectedFieldOfStudyLongame)){
+                found = true;
+                Log.i("FOUND", "FOUND");
+            }
+            i++;
+        }
+
+        return found ? i : 0;
     }
 }

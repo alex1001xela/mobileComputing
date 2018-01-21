@@ -65,7 +65,7 @@ public class UniversityEvent extends Event {
 		String[] lecturers = new String[jsonArray.length()];
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject lecturer = jsonArray.getJSONObject(i);
-			lecturers[i] = CalendarPresenter.allTeachers.get(lecturer.getString("id")).getLongName();
+			lecturers[i] = WebUntisService.allTeachers.get(lecturer.getString("id")).getLongName();
 		}
 		return lecturers;
 	}
@@ -92,7 +92,7 @@ public class UniversityEvent extends Event {
 
 	@Override
 	public String toString(){
-		return getName() + "\n" + getTeachers()[0];
+		return getName() + "\n" + getTeachers()[0];// + "\n" + getRooms()[0];
 	}
 
 

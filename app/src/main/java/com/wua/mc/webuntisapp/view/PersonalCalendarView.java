@@ -1,15 +1,20 @@
 package com.wua.mc.webuntisapp.view;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.view.Menu;
 import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
+import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
+import com.wua.mc.webuntisapp.presenter.WebUntisService;
+import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -19,6 +24,12 @@ public class PersonalCalendarView extends CalendarView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+	}
+
+	@Override
+	public void onServiceConnected(ComponentName name, IBinder service) {
+		super.onServiceConnected(name, service);
 		buildWeeklyCalendar();
 	}
 
