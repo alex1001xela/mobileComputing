@@ -101,25 +101,18 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
     private GridCellAdapter ga;
     private WebUntisService wus;
 
-    public WebUntisService getWebUntisService() {
-        return this.wus;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gregCal = new GregorianCalendar(Locale.GERMANY);
-        calendarDataManagement = new CalendarPresenter(this);
-        calendarWebUntis = (iCalendarPresenter.iCalendarWebUntis) calendarDataManagement;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent= new Intent(this, WebUntisService.class);
+        Intent intent = new Intent(this, WebUntisService.class);
         bindService(intent, this, Context.BIND_AUTO_CREATE);
     }
-
 
     @Override
     protected void onPause() {
@@ -138,6 +131,10 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
     @Override
     public void onServiceDisconnected(ComponentName name) {
         wus = null;
+    }
+
+    public WebUntisService getWebUntisService() {
+        return this.wus;
     }
 
     private void createDrawer() {

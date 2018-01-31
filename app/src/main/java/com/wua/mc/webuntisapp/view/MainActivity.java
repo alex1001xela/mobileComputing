@@ -1,9 +1,13 @@
 package com.wua.mc.webuntisapp.view;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,21 +18,50 @@ import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.R;
 import com.wua.mc.webuntisapp.presenter.CalendarPresenter;
+import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
+import com.wua.mc.webuntisapp.presenter.WebUntisService;
+
+import java.util.ArrayList;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements iCalendarView, ServiceConnection {
 
     final CalendarPresenter cp = new CalendarPresenter(this);
     TextView event;
-    private String temp = "not yet set"; // for test TODO delete this variable afterwards---
-    private int firste_spinner = 0;
-    private int first_spinner_counter = 0;
-    private Button confirm;
-    private Spinner spinner_faculty;
-    private Spinner spinner_semester;
+    private WebUntisService wus;
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        WebUntisService.MyBinder b = (WebUntisService.MyBinder) service;
+        wus = b.getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        wus = null;
+    }
+
+    @Override
+    public void showEventsOnCalendar(ArrayList<Event> events) {
+
+    }
+
+    @Override
+    public WebUntisService getWebUntisService() {
+        return wus;
+    }
+
+    @Override
+    public void showToast(String text) {
+
+    }
+
+    @Override
+    public boolean onCreateOptionMenu(Menu menu) {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

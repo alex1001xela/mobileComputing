@@ -21,36 +21,43 @@ public class WebUntisService extends Service {
     private final IBinder mBinder = new MyBinder();
     public static HashMap<String, Course> allCourses;
     public static HashMap<String, Teacher> allTeachers;
-    private iWebUntisClient wuc;
+    private static iWebUntisClient wuc;
+
+    public static iWebUntisClient getWuc() {
+        return WebUntisService.wuc;
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("BLA1", "BLA");
         initializeWebUntisData();
         return Service.START_NOT_STICKY;
     }
 
     @Override
+    public void onCreate() {
+        initializeWebUntisData();
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
-        Log.i("BLA2", "BLA");
-//        initializeWebUntisData();
         return mBinder;
     }
 
     public class MyBinder extends Binder {
         public WebUntisService getService() {
-            Log.i("BLA3", "BLA");
             return WebUntisService.this;
         }
     }
 
     private void initializeWebUntisData() {
-        wuc = new WebUntisClient("Usercampusap2", "konst6app6", "HS+Reutlingen");
-        try {
-            allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
-            allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
-        } catch (JSONException e) {
+        if(wuc == null) {
+            wuc = new WebUntisClient("Usercampusap2", "konst6app6", "HS+Reutlingen");
+            try {
+                allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
+                allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
+            } catch (JSONException e) {
 
+            }
         }
     }
 

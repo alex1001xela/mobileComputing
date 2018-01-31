@@ -392,9 +392,6 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         JSONArray myFilterList = null;
 
         try {
-//            if(wus == null) {
-//                wus = new WebUntisService();
-//            }
             myFilterList = ((iCalendarView)this.calendarView).getWebUntisService().getFilters().getJSONObject("response").getJSONArray("result");
 
             for (int i = 0; i < myFilterList.length(); i++) {
@@ -410,8 +407,6 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        // return new Filter[0];
         return FilterFactory;
     }
 

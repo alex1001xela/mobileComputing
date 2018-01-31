@@ -69,7 +69,6 @@ public class FieldOfStudyChooser {
                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
                     int index = getSpinnerIndexFromFieldOfStudy(fieldsOfStudyString);
-                    Log.i("INDEX", ""+index);
                     spinner_semester = (Spinner) activity.findViewById(R.id.semesterSpinner);
 
                     ArrayAdapter<String> adapter2 = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, fieldsOfStudyString);
@@ -84,7 +83,6 @@ public class FieldOfStudyChooser {
                     ArrayList<FieldOfStudy> filteredFieldsOfStudy = cp.getFieldsOfStudy(selectedFilter);
                     ArrayList<String> fieldsOfStudyString = cp.longName_default(filteredFieldsOfStudy);
                     int index = getSpinnerIndexFromFieldOfStudy(fieldsOfStudyString);
-                    Log.i("INDEX", ""+index);
                     spinner_semester = (Spinner) activity.findViewById(R.id.semesterSpinner);
 
                     ArrayAdapter<String> adapter2 = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, fieldsOfStudyString);
@@ -108,16 +106,12 @@ public class FieldOfStudyChooser {
     }
 
     private int getSpinnerIndexFromFieldOfStudy(ArrayList<String> spinnerStrings){
-        Log.i("STRING", spinnerStrings.toString());
         String selectedFieldOfStudyLongame = selectedFieldOfStudy.getLongName();
-        Log.i("SELECTED", selectedFieldOfStudyLongame);
         boolean found = false;
         int i = 0;
         while(i < spinnerStrings.size() & !found){
-            Log.i("CURRENT" + i, spinnerStrings.get(i));
             if(spinnerStrings.get(i).equals(selectedFieldOfStudyLongame)){
                 found = true;
-                Log.i("FOUND", "FOUND");
             }
             i++;
         }

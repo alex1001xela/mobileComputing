@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -35,22 +36,17 @@ public class GlobalCalendarView extends CalendarView {
         String id;
         String filterID;
         String fieldOfStudyName;
+        FieldOfStudy fieldOfStudy;
 
         if (extras != null) {
             chosenFieldOfStudy = extras.getString("SelectedFieldOfStudy");
             id = extras.getString("id");
             filterID = extras.getString("filterID");
             fieldOfStudyName = extras.getString("fieldOfStudyName");
+            fieldOfStudy = new FieldOfStudy(id, fieldOfStudyName, chosenFieldOfStudy, true, filterID);
         } else {
-            //todo temp data, getFromDatabase
-            chosenFieldOfStudy = "Medien- und Kommunikationsinformatik-3MKIB6";
-            id = "2129";
-            filterID = "2";
-            fieldOfStudyName = "3MKIB6";
+            fieldOfStudy = calendarDataManagement.getSelectedFieldOfStudy();
         }
-
-
-        final FieldOfStudy fieldOfStudy = new FieldOfStudy(id, fieldOfStudyName, chosenFieldOfStudy, true, filterID);
         calendarDataManagement.setSelectedFieldOfStudy(fieldOfStudy);
         buildWeeklyCalendar();
     }
