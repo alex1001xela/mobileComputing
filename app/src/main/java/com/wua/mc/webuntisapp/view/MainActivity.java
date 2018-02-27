@@ -1,6 +1,8 @@
 package com.wua.mc.webuntisapp.view;
 
+import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -26,11 +28,24 @@ import java.util.ArrayList;
 
 import static com.wua.mc.webuntisapp.R.layout.activity_choose_fieldofstudy;
 
-public class MainActivity extends AppCompatActivity implements iCalendarView, ServiceConnection {
+public class MainActivity extends Activity implements iCalendarView, ServiceConnection {
 
-    final CalendarPresenter cp = new CalendarPresenter(this);
+    private CalendarPresenter cp;
     TextView event;
     private WebUntisService wus;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = new Intent(this, WebUntisService.class);
+        bindService(intent, this, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(this);
+    }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -66,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements iCalendarView, Se
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        cp = new CalendarPresenter(this);
 
         boolean firstLogin = !cp.isAlreadyLoggedIn();
         if (firstLogin) {
@@ -88,12 +103,7 @@ public class MainActivity extends AppCompatActivity implements iCalendarView, Se
                         confirmationButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // String SelectdFieldOdStudy = Long.toString(spinner_semester.getSelectedItemId());
-
                                 String SelectdFieldOdStudy = ((Spinner) findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
-
-                                // cp.findChosenFieldOfSTudy(SelectdFieldOdStudy); // parsed the name , so we can find the Object field of study.
-
                                 Intent i = new Intent(MainActivity.this, GlobalCalendarView.class);
                                 FieldOfStudy fos = cp.findChosenFieldOfSTudy(SelectdFieldOdStudy);
 
@@ -102,29 +112,8 @@ public class MainActivity extends AppCompatActivity implements iCalendarView, Se
                                 i.putExtra("filterID", ""+fos.getFilterID());
                                 i.putExtra("name", fos.getName());
                                 startActivity(i);
-
-
                             }
                         });
-
-
-                        // adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-
-                        //setContentView(R.layout.activity_main);
-
-                    /*
-
-						Button buttonSelectColor = (Button) findViewById(R.id.buttonSelectColor);
-                        buttonSelectColor.setOnClickListener(new View.OnClickListener(){
-                            @Override
-                            public void onClick(View view) {
-                                setContentView(activity_add_event_course);
-								
-                                event = (TextView) findViewById(R.id.textCourse);
-                                event.setBackgroundResource(R.color.white);
-                            }
-                        });*/
-
 
                     } else {
                         Log.v("statusLogin", "Login Failed");
@@ -143,14 +132,7 @@ public class MainActivity extends AppCompatActivity implements iCalendarView, Se
             startActivity(intent1);
         }
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

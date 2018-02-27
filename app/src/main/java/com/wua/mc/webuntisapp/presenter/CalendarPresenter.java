@@ -1,21 +1,12 @@
 package com.wua.mc.webuntisapp.presenter;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.util.Log;
-import android.widget.CalendarView;
-import android.widget.Toast;
 
 import com.wua.mc.webuntisapp.model.DataBaseObject;
 import com.wua.mc.webuntisapp.model.DatabaseManager;
 import com.wua.mc.webuntisapp.model.ElementType;
 import com.wua.mc.webuntisapp.model.WebUntisClient;
-import com.wua.mc.webuntisapp.model.iWebUntisClient;
-//import com.wua.mc.webuntisapp.view.GlobalCalendarView;
 import com.wua.mc.webuntisapp.view.iCalendarView;
 
 import org.json.JSONArray;
@@ -33,24 +24,16 @@ import static java.lang.Integer.parseInt;
 public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManagement,
         iCalendarPresenter.iCalendarWebUntis {
 
-//    private iWebUntisClient wuc;
     private DatabaseManager dbManager;
 
     private ArrayList<Event> currentShownPersonalEvents = new ArrayList<>();
     private ArrayList<Event> currentShownGlobalEvents = new ArrayList<>();
 
-    private ArrayList<Filter> filters; // Ray from Array to Array list
-
-    private FieldOfStudy[] fieldsOfStudy;
     private String Filter_id;
     private ArrayList<FieldOfStudy> fields_Of_study_list = new ArrayList<>();
 
     private FieldOfStudy selectedFieldOfStudy;
     private Activity calendarView;
-
-//    public static HashMap<String, Course> allCourses;
-//    public static HashMap<String, Teacher> allTeachers;
-
 
     public CalendarPresenter(Activity calendarView) {
         this.calendarView = calendarView;
