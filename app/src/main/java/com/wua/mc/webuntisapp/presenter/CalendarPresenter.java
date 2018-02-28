@@ -99,7 +99,11 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
         for (int i = 0; i < result.length(); i++) {
             JSONObject eventJSON = result.getJSONObject(i);
             int courseID = eventJSON.getJSONArray("su").getJSONObject(0).getInt("id");
-            events.add(new UniversityEvent(eventJSON, WebUntisService.allCourses.get(Integer.toString(courseID)).getLongName()));
+            Course course = WebUntisService.allCourses.get(Integer.toString(courseID));
+
+            if(course != null) {
+                events.add(new UniversityEvent(eventJSON, course.getLongName()));
+            }
         }
 
         return events;

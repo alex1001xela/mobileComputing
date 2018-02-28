@@ -49,6 +49,7 @@ import com.wua.mc.webuntisapp.presenter.iCalendarPresenter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -1537,21 +1538,11 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
+    }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        public int convertStringMonthToIntegerMonth(String month) {
-
-            Calendar cal = Calendar.getInstance();
-            try {
-                cal.setTime(new SimpleDateFormat("MMM").parse(month));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            int monthInt = cal.get(Calendar.MONTH) + 1;
-
-            return monthInt;
-        }
-
+    private int convertStringMonthToIntegerMonth(String month) {
+        return Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August",
+        "September", "October", "November", "December").indexOf(month.trim()) + 1;
     }
 
 
