@@ -546,7 +546,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         final Event event = eventBox.getEvent();
 
         if (CalendarView.this instanceof GlobalCalendarView) {
-            view = li.inflate(R.layout.activity_add_event_course, null);
+            view = li.inflate(R.layout.activity_add_event_course, (ViewGroup)findViewById(R.layout.activity_global_calendar), false);
             Button buttonAddEvent = (Button) view.findViewById(R.id.buttonAddEvent);
             Button buttonAddCourse = (Button) view.findViewById(R.id.buttonAddCourse);
             TextView courseInformation = (TextView) view.findViewById(R.id.textCourse);
@@ -555,7 +555,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
                 public void onClick(View v) {
                     calendarDataManagement.addEvent(((UniversityEvent) event).getUntisID());
                     Toast toast = Toast.makeText(context, "Event added", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP | Gravity.TOP, 0, 0);
+                    toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
 
                 }
@@ -565,18 +565,17 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
                 public void onClick(View v) {
                     calendarDataManagement.addCourse(((UniversityEvent) event).getUntisID());
                     Toast toast = Toast.makeText(context, "Course added", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP | Gravity.TOP, 0, 0);
+                    toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
                 }
             });
             courseInformation.setText(reFormatDate(event));
         } else {
-            view = li.inflate(R.layout.activity_delete_event_course, null);
+            view = li.inflate(R.layout.activity_delete_event_course, (ViewGroup)findViewById(R.layout.activity_personal_calendar),false);
 
-            /*Button buttonExportEvent = (Button) view.findViewById(R.id.buttonExportEvent);
-            Button buttonExportCourse = (Button) view.findViewById(R.id.buttonExportCourse);*/
             Button buttonDeleteEvent = (Button) view.findViewById(R.id.buttonDeleteEvent);
             Button buttonDeleteCourse = (Button) view.findViewById(R.id.buttonDeleteCourse);
+
             //colorButtons
             Button colorBlue = (Button) view.findViewById(R.id.colorBlue);
             Button colorPurple = (Button) view.findViewById(R.id.colorPurple);
@@ -596,7 +595,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
                     eventBox.removeFromView();
                     calendarDataManagement.deleteEvent(event.getId());
                     Toast toast = Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP | Gravity.TOP, 0, 0);
+                    toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
                 }
             });
@@ -615,26 +614,11 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
                     }
 
                     Toast toast = Toast.makeText(context, "Course deleted", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP | Gravity.TOP, 0, 0);
+                    toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
                 }
             });
 
-            /*buttonExportEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO
-                }
-            });
-            buttonExportCourse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //toDO
-                }
-            });*/
-
-
-            //ToDo
             colorBlue.setOnClickListener(new OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
@@ -734,28 +718,6 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         alertDialogBuilder.setView(view);
         alertDialogBuilder.show();
     }
-
-    /*public String reFormatDate(Event event) {
-        String startTimeRes = "";
-        String endTimeRes = "";
-        try {
-            String startTime = event.getStartTime().toString();
-            String endTime = event.getEndTime().toString();
-            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EEE MMM ww hh:mm:ss Z yyyy");
-            Date newDate0 = format.parse(startTime);
-            Date newDate1 = format.parse(endTime);
-            format = new java.text.SimpleDateFormat("MMM dd,yyyy HH:mm ");
-            startTimeRes = format.format(newDate0);
-            startTimeRes += "Uhr";
-            endTimeRes = format.format(newDate1);
-            endTimeRes += "Uhr";
-
-        } catch (Exception e) {
-            Log.e("Format  ", "Failed to Reformat Date Class: CalendarView.java");
-        }
-        return event.getName() + "\n" + startTimeRes + "\n" + endTimeRes;
-    }
-    */
 
     private String reFormatDate (Event event) {
 
@@ -1509,21 +1471,9 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-
-            /**
-             try {
-             Date parseDate =dateFormatter.parse(date_month_year);
-             //  Date parsedDate = dateFormatter.parse(date_month_year);
-             Log.d(tag,"Parse date" + parsedDate.toString());
-
-             } catch (ParseException e) {
-             e.printStackTrace();
-             }
-             */
         }
 
-        public int getCurrentDayOfMonth() {
+        private int getCurrentDayOfMonth() {
             return currentDayOfMonth;
         }
 
@@ -1531,11 +1481,11 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
             this.currentDayOfMonth = currentDayOfMonth;
         }
 
-        public void setCurrentWeekDay(int currentWeekDay) {
+        private void setCurrentWeekDay(int currentWeekDay) {
             this.currentWeekDay = currentWeekDay;
         }
 
-        public int getCurrentWeekDay() {
+        private int getCurrentWeekDay() {
             return currentWeekDay;
         }
     }
