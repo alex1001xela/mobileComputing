@@ -303,12 +303,12 @@ public class CalendarPresenter implements iCalendarPresenter.iCalendarDataManage
     @Override
     public boolean login(String username, String password) {
 
-        WebUntisClient tempWuc = new WebUntisClient(username, password, "HS+Reutlingen");
-        JSONObject jsonObject = tempWuc.authenticate();
+//        WebUntisClient tempWuc = new WebUntisClient(username, password, "HS+Reutlingen");
+//        JSONObject jsonObject = tempWuc.authenticate();
         boolean dataValid = false;
         try {
 
-            jsonObject.getJSONObject("result").getString("sessionId");
+//            jsonObject.getJSONObject("result").getString("sessionId");
             dbManager.connectToDatabase();
             dbManager.loginDB();
             dataValid = true;

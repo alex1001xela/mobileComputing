@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements iCalendarView, ServiceConn
     private CalendarPresenter cp;
     TextView event;
     private WebUntisService wus;
+    private boolean firstLogin;
 
     @Override
     protected void onResume() {
@@ -51,6 +52,11 @@ public class MainActivity extends Activity implements iCalendarView, ServiceConn
     public void onServiceConnected(ComponentName name, IBinder service) {
         WebUntisService.MyBinder b = (WebUntisService.MyBinder) service;
         wus = b.getService();
+        if (firstLogin) {
+            cp.login("User", "Pass");
+            showFieldOfStudyChooser();
+
+        }
     }
 
     @Override
@@ -83,54 +89,56 @@ public class MainActivity extends Activity implements iCalendarView, ServiceConn
         super.onCreate(savedInstanceState);
         cp = new CalendarPresenter(this);
 
-        boolean firstLogin = !cp.isAlreadyLoggedIn();
-        if (firstLogin) {
-            setContentView(R.layout.activity_main);
-            Button loginButton = (Button) this.findViewById(R.id.loginButton);
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                    EditText username = (EditText) findViewById(R.id.usernameField);
-                    EditText password = (EditText) findViewById(R.id.passwordField);
-
-                    if (cp.login(username.getText().toString(), password.getText().toString())) {
-                        setContentView(activity_choose_fieldofstudy);
-
-                        FieldOfStudyChooser fieldOfStudyChooser = new FieldOfStudyChooser(cp, MainActivity.this);
-                        Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyConfirmationButton();
-
-
-                        confirmationButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String SelectdFieldOdStudy = ((Spinner) findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
-                                Intent i = new Intent(MainActivity.this, GlobalCalendarView.class);
-                                FieldOfStudy fos = cp.findChosenFieldOfSTudy(SelectdFieldOdStudy);
-
-                                i.putExtra("SelectedFieldOfStudy", SelectdFieldOdStudy);
-                                i.putExtra("id", ""+fos.getUntisID());
-                                i.putExtra("filterID", ""+fos.getFilterID());
-                                i.putExtra("name", fos.getName());
-                                startActivity(i);
-                            }
-                        });
-
-                    } else {
-                        Log.v("statusLogin", "Login Failed");
-                        Toast errorToast = Toast.makeText(getApplication(), "Login failed", Toast.LENGTH_SHORT);
-                        errorToast.show();
-                    }
-                }
-
-            });
-
-
-        } else {
+        firstLogin = !cp.isAlreadyLoggedIn();
+        if(!firstLogin) {
             Intent intent1 = new Intent(this, PersonalCalendarView.class);
-
-            //Intent intent2 = new Intent(this, GlobalCalendarView.class);
             startActivity(intent1);
         }
+    }
+
+    private void showFieldOfStudyChooser() {
+        setContentView(activity_choose_fieldofstudy);
+
+        FieldOfStudyChooser fieldOfStudyChooser = new FieldOfStudyChooser(cp, MainActivity.this);
+        Button confirmationButton = fieldOfStudyChooser.getFieldOfStudyConfirmationButton();
+
+
+        confirmationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String SelectdFieldOdStudy = ((Spinner) findViewById(R.id.semesterSpinner)).getSelectedItem().toString();
+                Intent i = new Intent(MainActivity.this, GlobalCalendarView.class);
+                FieldOfStudy fos = cp.findChosenFieldOfSTudy(SelectdFieldOdStudy);
+
+                i.putExtra("SelectedFieldOfStudy", SelectdFieldOdStudy);
+                i.putExtra("id", ""+fos.getUntisID());
+                i.putExtra("filterID", ""+fos.getFilterID());
+                i.putExtra("name", fos.getName());
+                startActivity(i);
+            }
+        });
+    }
+
+    private void showLoginScreen() {
+        setContentView(R.layout.activity_main);
+        Button loginButton = (Button) this.findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                EditText username = (EditText) findViewById(R.id.usernameField);
+                EditText password = (EditText) findViewById(R.id.passwordField);
+
+                if (cp.login(username.getText().toString(), password.getText().toString())) {
+                    showFieldOfStudyChooser();
+
+                } else {
+                    Log.v("statusLogin", "Login Failed");
+                    Toast errorToast = Toast.makeText(getApplication(), "Login failed", Toast.LENGTH_SHORT);
+                    errorToast.show();
+                }
+            }
+
+        });
     }
 
     @Override

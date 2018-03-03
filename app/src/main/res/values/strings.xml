@@ -50,6 +50,5 @@
     <string-array name="menu_items">
         <item name="menu_personal_calendar">Personal Calendar</item>
         <item name="menu_global_calendar">Global Calendar</item>
-        <item name="logout">Logout</item>
     </string-array>
 </resources>
