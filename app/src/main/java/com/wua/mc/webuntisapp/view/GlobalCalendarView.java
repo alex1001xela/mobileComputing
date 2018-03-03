@@ -38,11 +38,12 @@ public class GlobalCalendarView extends CalendarView {
         String fieldOfStudyName;
         FieldOfStudy fieldOfStudy;
 
+
         if (extras != null) {
             chosenFieldOfStudy = extras.getString("SelectedFieldOfStudy");
             id = extras.getString("id");
             filterID = extras.getString("filterID");
-            fieldOfStudyName = extras.getString("fieldOfStudyName");
+            fieldOfStudyName = extras.getString("name");
             fieldOfStudy = new FieldOfStudy(id, fieldOfStudyName, chosenFieldOfStudy, true, filterID);
         } else {
             fieldOfStudy = calendarDataManagement.getSelectedFieldOfStudy();

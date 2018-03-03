@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -89,7 +90,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
     private ImageView prevMonth;
     private ImageView nextMonth;
     private GridView calendarView;
-    private Button openMonthlyCalendar;
+    private ImageButton openMonthlyCalendar;
     private Button setting;
     private GridCellAdapter adapter; // inner class that manages the days cells.
     private Calendar _calendar;
@@ -239,7 +240,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         });
 
         //---------------------------------------setting the onclicklistener on the monthly button
-        openMonthlyCalendar = (Button) findViewById(R.id.open_month_calendar_button);
+        openMonthlyCalendar = (ImageButton) findViewById(R.id.open_month_calendar_button);
         openMonthlyCalendar.setOnClickListener(new OnClickListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.N)

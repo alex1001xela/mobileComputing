@@ -1,5 +1,5 @@
 <resources>
-    <string name="menu_button">Ξ</string>
+    <string name="menu_button">MenuButton</string>
     <string name="menu_option_logout">Logout</string>
     <string name="menu_option_export_calendar">Export Calendar</string>
     <string name="open_month_calendar_button">Month overview</string>

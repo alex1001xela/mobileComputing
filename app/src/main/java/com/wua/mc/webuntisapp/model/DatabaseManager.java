@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import com.wua.mc.webuntisapp.presenter.Event;
 import com.wua.mc.webuntisapp.presenter.FieldOfStudy;
 import com.wua.mc.webuntisapp.presenter.UniversityEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -209,6 +211,7 @@ public class DatabaseManager implements iDatabaseManager {
         ContentValues values = new ContentValues();
         String room = "";
         String courseId = "";
+        String[] rooms;
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_START, (int) (event.getStartTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_TIMESTAMP_END, (int) (event.getEndTime().getTimeInMillis() / 1000));
         values.put(DatabaseHelper.COLUMN_EVENT_NAME, event.getName());
@@ -216,7 +219,10 @@ public class DatabaseManager implements iDatabaseManager {
         values.put(DatabaseHelper.COLUMN_EVENT_COLOR, event.getColor());
         if (event instanceof UniversityEvent) {
             UniversityEvent ue = (UniversityEvent) event;
-            room = ue.getRooms()[0];
+            rooms = ue.getRooms();
+            if(rooms.length > 0) {
+                room = rooms[0];
+            }
             courseId = ue.getCourseID();
         }
         values.put(DatabaseHelper.COLUMN_EVENT_ROOM, room);
