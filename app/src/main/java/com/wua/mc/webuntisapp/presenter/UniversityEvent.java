@@ -92,7 +92,7 @@ public class UniversityEvent extends Event {
 
 	@Override
 	public String toString(){
-		return getName() + "\n" + getTeachers()[0];// + "\n" + getRooms()[0];
+		return getName() + "\n" + getTeachers()[0] + "\n" + getRooms()[0];
 	}
 
 

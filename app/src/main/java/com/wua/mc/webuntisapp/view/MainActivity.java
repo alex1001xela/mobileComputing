@@ -39,13 +39,14 @@ public class MainActivity extends Activity implements iCalendarView, ServiceConn
     protected void onResume() {
         super.onResume();
         Intent intent = new Intent(this, WebUntisService.class);
-        bindService(intent, this, Context.BIND_AUTO_CREATE);
+        startService(intent);
+        // bindService(intent, this, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(this);
+//        unbindService(this);
     }
 
     @Override

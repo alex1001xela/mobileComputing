@@ -31,12 +31,7 @@ public class WebUntisService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         initializeWebUntisData();
-        return Service.START_NOT_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        initializeWebUntisData();
+        return Service.START_STICKY;
     }
 
     @Override
@@ -51,11 +46,14 @@ public class WebUntisService extends Service {
     }
 
     private void initializeWebUntisData() {
+        Log.i("WebUntis", "started_1");
         if(wuc == null) {
+            Log.i("WebUntis", "started_2");
             wuc = new WebUntisClient("Usercampusap2", "konst6app6", "HS+Reutlingen");
             try {
                 allCourses = convertCoursesJSONToCourses(wuc.getCourses().getJSONObject("response").getJSONArray("result"));
                 allTeachers = convertTeachersJSONToTeachers(wuc.getTeachers().getJSONObject("response").getJSONArray("result"));
+                // wuc.getRooms().getJSONObject("response").getJSONArray("result");
             } catch (JSONException e) {
 
             }

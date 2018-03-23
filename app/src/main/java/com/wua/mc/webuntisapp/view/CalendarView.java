@@ -116,6 +116,7 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
         bindService(intent, this, Context.BIND_AUTO_CREATE);
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -1165,8 +1166,10 @@ abstract class CalendarView extends Activity implements iCalendarView, OnClickLi
 
     @Override
     public void onDestroy() {
-        Log.d(tag, "Destroying View.....");
+        Log.i("WebUntis", "destroy");
         super.onDestroy();
+        Intent intent = new Intent(this, WebUntisService.class);
+        startService(intent);
     }
 
 
